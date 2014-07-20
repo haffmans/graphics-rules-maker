@@ -117,6 +117,8 @@ void DeviceModel::load()
     m_devices.append(dev4);
     endInsertRows();
 
+    emit(loaded());
+
 #endif
 }
 
