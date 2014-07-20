@@ -1,8 +1,8 @@
 #ifndef DEVICEMODEL_H
 #define DEVICEMODEL_H
 
-#include <QAbstractTableModel>
-#include <QList>
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QList>
 
 struct GraphicsDevice
 {

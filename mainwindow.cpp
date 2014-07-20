@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include <QListView>
+#include <QtWidgets/QListView>
 
 #include "devicemodel.h"
 

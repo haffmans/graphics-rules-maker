@@ -1,7 +1,7 @@
 #ifndef VIDEOCARDDATABASE_H
 #define VIDEOCARDDATABASE_H
 
-#include <QAbstractTableModel>
+#include <QtCore/QAbstractTableModel>
 
 class VideoCardDatabase : public QAbstractTableModel
 {

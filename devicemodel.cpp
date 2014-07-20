@@ -1,5 +1,6 @@
 #include "devicemodel.h"
-#include <QtDebug>
+#include <QtCore/QtDebug>
+
 #ifdef Q_OS_WIN32
 #include <d3d9.h>
 #endif
