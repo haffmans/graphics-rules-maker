@@ -7,6 +7,11 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    app.setApplicationName("GraphicRulesMaker");
+    app.setApplicationDisplayName("GraphicRules Maker");
+    app.setApplicationVersion("1.0");
+    app.setOrganizationName("SimsNetwork");
+    app.setOrganizationDomain("simsnetwork.com");
 
     DeviceModel *model = new DeviceModel();
     VideoCardDatabase *database = new VideoCardDatabase();

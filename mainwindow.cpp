@@ -29,6 +29,10 @@ void MainWindow::selectCard(int row)
 {
     if (row >= 0) {
         GraphicsDevice dev = m_model->device(row);
+        ui->display->setText("TODO");
+        ui->deviceVendor->setText("0x" + QString::number(dev.vendorId, 16));
+        ui->deviceId->setText("0x" + QString::number(dev.deviceId, 16));
+        ui->driver->setText(dev.driver);
         ui->memory->setText(tr("%1 Mb").arg(dev.memory / (1024*1024)));
     }
 }

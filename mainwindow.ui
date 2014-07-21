@@ -28,20 +28,46 @@
         <string>Device Info</string>
        </attribute>
        <layout class="QFormLayout" name="formLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
-        <item row="3" column="0">
-         <widget class="QLabel" name="memoryLabel">
+        <item row="0" column="0">
+         <widget class="QLabel" name="deviceNameLabel">
           <property name="text">
-           <string>Device memory:</string>
+           <string>Device:</string>
+          </property>
+          <property name="buddy">
+           <cstring>deviceSelect</cstring>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="memory">
+        <item row="0" column="1">
+         <widget class="QComboBox" name="deviceSelect"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="deviceVendorLabel">
           <property name="text">
-           <string>-1 MB</string>
+           <string>Vendor (id):</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="deviceVendor">
+          <property name="text">
+           <string>Unknown Vendor (0x0000)</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="deviceIdLabel">
+          <property name="text">
+           <string>Device Id:</string>
           </property>
           <property name="textFormat">
            <enum>Qt::PlainText</enum>
@@ -49,12 +75,72 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QComboBox" name="deviceSelect"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="deviceNameLabel">
+         <widget class="QLabel" name="deviceId">
           <property name="text">
-           <string>Device:</string>
+           <string>0x0000</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="displayLabel">
+          <property name="text">
+           <string>Display:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="display">
+          <property name="text">
+           <string>Unknown</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="driverLabel">
+          <property name="text">
+           <string>Driver:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="driver">
+          <property name="text">
+           <string>unknown.dll</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="memoryLabel">
+          <property name="text">
+           <string>Texture memory:</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLabel" name="memory">
+          <property name="text">
+           <string>-1 MB</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::PlainText</enum>
           </property>
          </widget>
         </item>
@@ -101,6 +187,9 @@
          <widget class="QLabel" name="forceMemLabel">
           <property name="text">
            <string>Force texture memory:</string>
+          </property>
+          <property name="buddy">
+           <cstring>forceMem</cstring>
           </property>
          </widget>
         </item>
@@ -228,6 +317,16 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>forceMem</tabstop>
+  <tabstop>disableSimShadows</tabstop>
+  <tabstop>graphicsRulesText</tabstop>
+  <tabstop>graphicsRulesSave</tabstop>
+  <tabstop>videoCardsTable</tabstop>
+  <tabstop>videoCardsView</tabstop>
+  <tabstop>videoCardsText</tabstop>
+  <tabstop>videoCardsSave</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
