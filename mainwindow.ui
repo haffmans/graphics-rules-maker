@@ -33,88 +33,7 @@
           <property name="title">
            <string>Game Tweaks</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <widget class="QStackedWidget" name="stackedWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="sims2">
-              <layout class="QFormLayout" name="formLayout_2">
-               <property name="fieldGrowthPolicy">
-                <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-               </property>
-               <item row="3" column="0">
-                <widget class="QLabel" name="forceMemLabel">
-                 <property name="text">
-                  <string>Force texture memory:</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>forceMem</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1">
-                <widget class="QSpinBox" name="forceMem">
-                 <property name="specialValueText">
-                  <string>Do not force</string>
-                 </property>
-                 <property name="suffix">
-                  <string> Mb</string>
-                 </property>
-                 <property name="minimum">
-                  <number>32</number>
-                 </property>
-                 <property name="maximum">
-                  <number>8192</number>
-                 </property>
-                 <property name="singleStep">
-                  <number>32</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QCheckBox" name="disableSimShadows">
-                 <property name="text">
-                  <string>Disable Sim Shadows</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="0">
-                <widget class="QLabel" name="defaultResolutionLabel">
-                 <property name="text">
-                  <string>Default resolution:</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>defaultResolution</cstring>
-                 </property>
-                </widget>
-               </item>
-               <item row="5" column="1">
-                <widget class="QComboBox" name="defaultResolution"/>
-               </item>
-               <item row="6" column="1">
-                <widget class="QComboBox" name="maxResolution"/>
-               </item>
-               <item row="6" column="0">
-                <widget class="QLabel" name="maxResolutionLabel">
-                 <property name="text">
-                  <string>Maximum resolution:</string>
-                 </property>
-                 <property name="buddy">
-                  <cstring>maxResolution</cstring>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="simcity"/>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QVBoxLayout" name="verticalLayout"/>
          </widget>
         </item>
         <item row="1" column="0">
@@ -431,10 +350,6 @@
   <tabstop>gamePath</tabstop>
   <tabstop>browseFilesButton</tabstop>
   <tabstop>loadDatabase</tabstop>
-  <tabstop>forceMem</tabstop>
-  <tabstop>disableSimShadows</tabstop>
-  <tabstop>defaultResolution</tabstop>
-  <tabstop>maxResolution</tabstop>
   <tabstop>deviceSelect</tabstop>
   <tabstop>graphicsRulesText</tabstop>
   <tabstop>graphicsRulesSave</tabstop>

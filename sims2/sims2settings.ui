@@ -6,10 +6,80 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>498</width>
+    <height>182</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string>Sims 2 Settings</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="forceMemLabel">
+     <property name="text">
+      <string>Force texture memory:</string>
+     </property>
+     <property name="buddy">
+      <cstring>forceMem</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="forceMem">
+     <property name="specialValueText">
+      <string>Do not force</string>
+     </property>
+     <property name="suffix">
+      <string> Mb</string>
+     </property>
+     <property name="minimum">
+      <number>32</number>
+     </property>
+     <property name="maximum">
+      <number>8192</number>
+     </property>
+     <property name="singleStep">
+      <number>32</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="disableSimShadows">
+     <property name="text">
+      <string>Disable Sim Shadows</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="defaultResolutionLabel">
+     <property name="text">
+      <string>Default resolution:</string>
+     </property>
+     <property name="buddy">
+      <cstring>defaultResolution</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="defaultResolution"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="maxResolutionLabel">
+     <property name="text">
+      <string>Maximum resolution:</string>
+     </property>
+     <property name="buddy">
+      <cstring>maxResolution</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="maxResolution"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

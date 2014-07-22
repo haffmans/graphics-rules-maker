@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
     pluginFactory->loadPlugins();
 
-    MainWindow window(model, database);
+    MainWindow window(model, database, pluginFactory);
 
     model->load();
     window.show();
