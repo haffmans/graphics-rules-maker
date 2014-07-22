@@ -50,20 +50,20 @@ QFileInfo Sims2GameWriter::gameExecutable(const QDir& gameDirectory) const
 {
     return findFile(gameDirectory, QStringList()
         // Sims 2 Ultimate Collection with store
-        << "Fun With Pets/EP99/TSBin/Sims2SC.exe"
+        << "Fun with Pets/EP99/TSBin/Sims2SC.exe"
         // Sims 2 Ultimate Collection without store
-        << "Fun With Pets/SP9/TSBin/Sims2SP9.exe"
+        << "Fun with Pets/SP9/TSBin/Sims2EP9.exe"
         // Fun with Pets/Best of Business/University Life discs has store edition
         << "EP99/TSBin/Sims2SC.exe"
         // Fun with Pets download - EP9 exe
-        << "SP9/TSBin/Sims2SP9.exe"
+        << "SP9/TSBin/Sims2EP9.exe"
         // Best of Business download - SP7 exe(?)
         << "SP7/TSBin/Sims2SP7.exe"
         // University Life download - SP8 exe(?)
         << "SP8/TSBin/Sims2SP8.exe"
         // Directory to game/EP/SP installation directly
         << "TSBin/Sims2SC.exe"
-        << "TSBin/Sims2SP9.exe"
+        << "TSBin/Sims2EP9.exe"
         << "TSBin/Sims2EP8.exe"
         << "TSBin/Sims2SP8.exe"
         << "TSBin/Sims2SP7.exe"
@@ -87,9 +87,9 @@ QFileInfo Sims2GameWriter::rulesFileName(const QDir& gameDirectory) const
 {
     return findFile(gameDirectory, QStringList()
         // Sims 2 Ultimate Collection with store
-        << "Fun With Pets/EP99/TSData/Res/Config/Graphics Rules.sgr"
+        << "Fun with Pets/EP99/TSData/Res/Config/Graphics Rules.sgr"
         // Sims 2 Ultimate Collection without store
-        << "Fun With Pets/SP9/TSData/Res/Config/Graphics Rules.sgr"
+        << "Fun with Pets/SP9/TSData/Res/Config/Graphics Rules.sgr"
         // Fun with Pets/Best of Business/University Life discs has store edition
         << "EP99/TSData/Res/Config/Graphics Rules.sgr"
         // Fun with Pets download - EP9 exe
@@ -107,9 +107,9 @@ QFileInfo Sims2GameWriter::databaseFileName(const QDir& gameDirectory) const
 {
     return findFile(gameDirectory, QStringList()
         // Sims 2 Ultimate Collection with store
-        << "Fun With Pets/EP99/TSData/Res/Config/Video Cards.sgr"
+        << "Fun with Pets/EP99/TSData/Res/Config/Video Cards.sgr"
         // Sims 2 Ultimate Collection without store
-        << "Fun With Pets/SP9/TSData/Res/Config/Video Cards.sgr"
+        << "Fun with Pets/SP9/TSData/Res/Config/Video Cards.sgr"
         // Fun with Pets/Best of Business/University Life discs has store edition
         << "EP99/TSData/Res/Config/Video Cards.sgr"
         // Fun with Pets download - EP9 exe
@@ -126,7 +126,7 @@ QFileInfo Sims2GameWriter::databaseFileName(const QDir& gameDirectory) const
 QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
 {
     foreach(const QString &option, options) {
-        QString path = baseDir.relativeFilePath(option);
+        QString path = baseDir.absoluteFilePath(option);
         if (QFileInfo::exists(path)) {
             return path;
         }
