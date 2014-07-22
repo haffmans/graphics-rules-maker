@@ -4,6 +4,7 @@
 #include <QtWidgets/QListView>
 #include <QtCore/QBuffer>
 #include <QtCore/QSettings>
+#include <QtWidgets/QFileDialog>
 
 #include "devicemodel.h"
 #include "videocarddatabase.h"
@@ -25,6 +26,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->mainTabs, SIGNAL(currentChanged(int)), SLOT(tabOpen(int)));
     connect(ui->gameSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectGame(int)));
     connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
+    connect(ui->browseFilesButton, SIGNAL(clicked(bool)), SLOT(browseGame()));
 
     ui->deviceSelect->setModel(m_model);
     ui->videoCardsView->setModel(m_videoCardDatabase);
@@ -44,6 +46,19 @@ void MainWindow::selectCard(int row)
         ui->deviceId->setText("0x" + QString::number(dev.deviceId, 16));
         ui->driver->setText(dev.driver);
         ui->memory->setText(tr("%1 Mb").arg(dev.memory / (1024*1024)));
+    }
+}
+
+void MainWindow::browseGame()
+{
+    QString dir = QFileDialog::getExistingDirectory(
+        this,
+        tr("Find the installation path of %1").arg(m_currentPlugin->displayName()),
+        ui->gamePath->text()
+    );
+
+    if (!dir.isEmpty()) {
+        ui->gamePath->setText(dir);
     }
 }
 

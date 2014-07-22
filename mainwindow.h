@@ -26,6 +26,7 @@ private slots:
     void tabOpen(int tabIndex = 0);
     void locateGameFiles(const QString &directory);
     void setStatus(const QString &text, bool allok);
+    void browseGame();
 
 private:
     Ui::MainWindow *ui;
