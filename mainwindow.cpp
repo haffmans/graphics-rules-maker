@@ -155,13 +155,25 @@ void MainWindow::tabOpen(int tabIndex)
 {
     Q_UNUSED(tabIndex);
 
-    if (ui->mainTabs->currentWidget() == ui->videoCardsTab) {
+    if (ui->mainTabs->currentWidget() == ui->graphicsRulesTab && m_currentPlugin) {
         QBuffer buffer;
+        buffer.open(QIODevice::WriteOnly | QIODevice::Text);
+        m_currentPlugin->write(m_currentGameSettingsWidget, &buffer);
+        QString plainText(buffer.data());
+        buffer.close();
+
+        ui->graphicsRulesText->setPlainText(plainText);
+    }
+    else if (ui->mainTabs->currentWidget() == ui->videoCardsTab) {
+        QBuffer buffer;
+        buffer.open(QIODevice::WriteOnly | QIODevice::Text);
         m_videoCardDatabase->write(&buffer);
         QString plainText(buffer.data());
+        buffer.close();
 
         ui->videoCardsText->setPlainText(plainText);
     }
+
 }
 
 MainWindow::~MainWindow()
