@@ -486,12 +486,12 @@ if (not $useSoftwareRasterizer)
           // Force "Radeon 7?00" match to avoid matching "Radeon HD 7?00"
           stream << R"EOF(
       # GraphicRulesMaker Tweak: Radeon HD 7000 series recognition
-      if (match("${cardName}", "*Radeon?VE*") or match(\"${cardName}\", \"*Radeon?7?00*\") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
+      if (match("${cardName}", "*Radeon?VE*") or match("${cardName}", "*Radeon?7?00*") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
       }
       else {
           // Original value
           stream << R"EOF(
-      if (match("${cardName}", "*Radeon?VE*") or match(\"${cardName}\", \"*7?00*\") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
+      if (match("${cardName}", "*Radeon?VE*") or match("${cardName}", "*7?00*") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
       }
 
       stream << R"EOF(
@@ -1018,7 +1018,7 @@ option ScreenModeResolution
       if (options.defaultResolution.width() != 1024 || options.defaultResolution.height() != 768) {
           // Custom default resolution applied
           stream << "\
-      # GraphicRulesMaker Tweak: Custom maximum resolution\n\
+      # GraphicRulesMaker Tweak: Custom default resolution\n\
       uintProp defaultResWidth      " << options.defaultResolution.width() << "\n\
       uintProp defaultResHeight     " << options.defaultResolution.height() << "\n";
       }
