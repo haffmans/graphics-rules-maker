@@ -251,6 +251,11 @@
         </item>
         <item row="0" column="0" colspan="2">
          <widget class="QPlainTextEdit" name="graphicsRulesText">
+          <property name="font">
+           <font>
+            <family>Courier</family>
+           </font>
+          </property>
           <property name="undoRedoEnabled">
            <bool>false</bool>
           </property>
@@ -268,6 +273,11 @@
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="0" colspan="2">
          <widget class="QPlainTextEdit" name="videoCardsText">
+          <property name="font">
+           <font>
+            <family>Courier</family>
+           </font>
+          </property>
           <property name="undoRedoEnabled">
            <bool>false</bool>
           </property>
