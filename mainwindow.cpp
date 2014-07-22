@@ -24,6 +24,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->deviceSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectCard(int)));
     connect(ui->mainTabs, SIGNAL(currentChanged(int)), SLOT(tabOpen(int)));
     connect(ui->gameSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectGame(int)));
+    connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
 
     ui->deviceSelect->setModel(m_model);
     ui->videoCardsView->setModel(m_videoCardDatabase);
@@ -74,6 +75,59 @@ void MainWindow::selectGame(int row)
         // game every time.
         ui->gamePath->setText(m_currentPlugin->findGameDirectory().absolutePath());
     }
+}
+
+void MainWindow::locateGameFiles(const QString& directory)
+{
+    if (!m_currentPlugin) {
+        setStatus(tr("No game selected"), false);
+        return;
+    }
+
+    QDir gameDirectory(directory);
+    if (!gameDirectory.exists()) {
+        setStatus(tr("Directory does not exist."), false);
+        return;
+    }
+
+    QFileInfo gameExeFile = m_currentPlugin->gameExecutable(gameDirectory);
+    if (!gameExeFile.exists()) {
+        setStatus(tr("Cannot find game application."), false);
+        return;
+    }
+    if (!gameExeFile.isFile() || !gameExeFile.isReadable()) {
+        setStatus(tr("Game application file is not an executable file."), false);
+        return;
+    }
+
+    QFileInfo graphicsRulesFile = m_currentPlugin->rulesFileName(gameDirectory);
+    if (!graphicsRulesFile.exists()) {
+        setStatus(tr("Cannot find Graphics Rules files."), false);
+        return;
+    }
+    if (!graphicsRulesFile.isFile() || !graphicsRulesFile.isReadable()) {
+        setStatus(tr("Graphics Rules file is not a readable file."), false);
+        return;
+    }
+
+    QFileInfo videoCardsFile = m_currentPlugin->databaseFileName(gameDirectory);
+    if (!videoCardsFile.exists()) {
+        setStatus(tr("Cannot find Video Cards database."), false);
+        return;
+    }
+    if (!videoCardsFile.isFile() || !videoCardsFile.isReadable()) {
+        setStatus(tr("Video Cards database file is not a readable file."), false);
+        return;
+    }
+
+    m_videoCardDatabase->loadFrom(videoCardsFile.absoluteFilePath());
+    setStatus(tr("Game found, video cards database loaded."), true);
+}
+
+void MainWindow::setStatus(const QString& text, bool allok)
+{
+    QString color = (allok) ? "green" : "red";
+    ui->status->setText("<font style=\"color: " + color + "\">" + text + "</font>");
 }
 
 void MainWindow::tabOpen(int tabIndex)

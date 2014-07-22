@@ -24,6 +24,8 @@ private slots:
     void selectCard(int row = 0);
     void selectGame(int row = 0);
     void tabOpen(int tabIndex = 0);
+    void locateGameFiles(const QString &directory);
+    void setStatus(const QString &text, bool allok);
 
 private:
     Ui::MainWindow *ui;
