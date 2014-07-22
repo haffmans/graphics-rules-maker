@@ -18,7 +18,8 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     m_model = model;
     m_videoCardDatabase = videoCardDatabase;
     m_gamePlugins = gamePlugins;
-    m_currentGameSettingsWidget = 0;
+    m_currentPlugin = nullptr;
+    m_currentGameSettingsWidget = nullptr;
 
     ui->setupUi(this);
 
@@ -64,6 +65,12 @@ void MainWindow::browseGame()
 
 void MainWindow::selectGame(int row)
 {
+    // Save path of current selection first
+    QSettings s;
+    if (m_currentPlugin) {
+        s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
+    }
+
     // Load plugin
     QString id = ui->gameSelect->currentData().toString();
     m_currentPlugin = m_gamePlugins->plugin(id);
@@ -81,7 +88,6 @@ void MainWindow::selectGame(int row)
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
 
     // Determine game path - use previous setting if possible
-    QSettings s;
     if (s.contains(m_currentPlugin->id() + "/path")) {
         ui->gamePath->setText(s.value(m_currentPlugin->id() + "/path").toString());
     }

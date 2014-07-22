@@ -20,15 +20,58 @@
 #include "sims2settings.h"
 #include "ui_sims2settings.h"
 
+#include <QtCore/QSettings>
+
 Sims2Settings::Sims2Settings(QWidget* parent)
 {
     ui = new Ui::Sims2Settings;
     ui->setupUi(this);
+
+    // Load available resolutions
+
+    // Load Settings
+    QSettings s;
+    s.beginGroup("sims2");
+
+    ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
+    ui->disableSimShadows->setChecked(s.value("disableSimShadows", false).toBool());
+    ui->defaultResolution->setCurrentText(s.value("defaultResolution", "1024x768").toString());
+    ui->maxResolution->setCurrentText(s.value("maximumResolution", "1600x1200").toString());
+
+    s.endGroup();
 }
 
+Sims2Variables Sims2Settings::current() const
+{
+    QRegExp resolutionString("^(\\d+)x(\\d+)$");
+    Sims2Variables result;
+    result.forceMemory = ui->forceMem->value();
+    result.disableSimShadows = ui->disableSimShadows->isChecked();
+
+    if (resolutionString.exactMatch(ui->defaultResolution->currentText())) {
+        result.defaultResolution.setWidth(resolutionString.cap(1).toInt());
+        result.defaultResolution.setHeight(resolutionString.cap(2).toInt());
+    }
+
+    if (resolutionString.exactMatch(ui->maxResolution->currentText())) {
+        result.maximumResolution.setWidth(resolutionString.cap(1).toInt());
+        result.maximumResolution.setHeight(resolutionString.cap(2).toInt());
+    }
+}
 
 
 Sims2Settings::~Sims2Settings()
 {
+    // Write settings
+    QSettings s;
+    Sims2Variables vars = current();
+
+    s.beginGroup("sims2");
+    s.setValue("forceMemory", ui->forceMem->value());
+    s.setValue("disableSimShadows", ui->disableSimShadows->isChecked());
+    s.setValue("defaultResolution", ui->defaultResolution->currentText());
+    s.setValue("maximumResolution", ui->maxResolution->currentText());
+    s.endGroup();
+
     delete ui;
 }

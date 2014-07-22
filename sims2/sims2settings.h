@@ -20,12 +20,24 @@
 #ifndef SIMS2SETTINGS_H
 #define SIMS2SETTINGS_H
 
-#include <qt/QtWidgets/QWidget>
+#include <QtWidgets/QWidget>
 
 namespace Ui
 {
 class Sims2Settings;
 }
+
+class DeviceModel;
+class VideoCardDatabase;
+
+struct Sims2Variables
+{
+    quint16 forceMemory;
+    bool disableSimShadows;
+
+    QSize defaultResolution;
+    QSize maximumResolution;
+};
 
 class Sims2Settings : public QWidget
 {
@@ -33,6 +45,8 @@ class Sims2Settings : public QWidget
 public:
     Sims2Settings(QWidget* parent);
     ~Sims2Settings();
+
+    Sims2Variables current() const;
 
 private:
     Ui::Sims2Settings* ui;
