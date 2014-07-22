@@ -51,6 +51,9 @@ public:
 
     Sims2Variables current() const;
 
+public slots:
+    void reset();
+
 private:
     Ui::Sims2Settings* ui;
 };

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>498</width>
-    <height>182</height>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -109,8 +109,28 @@
      </property>
     </widget>
    </item>
+   <item row="7" column="1">
+    <widget class="QPushButton" name="resetDefaults">
+     <property name="toolTip">
+      <string>Disable all tweaks and restore default values.</string>
+     </property>
+     <property name="text">
+      <string>&amp;Default Settings</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>forceMem</tabstop>
+  <tabstop>disableSimShadows</tabstop>
+  <tabstop>radeonHd7000Fix</tabstop>
+  <tabstop>intelHigh</tabstop>
+  <tabstop>intelVsync</tabstop>
+  <tabstop>defaultResolution</tabstop>
+  <tabstop>maxResolution</tabstop>
+  <tabstop>resetDefaults</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

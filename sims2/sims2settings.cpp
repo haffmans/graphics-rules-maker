@@ -30,6 +30,8 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
     ui = new Ui::Sims2Settings;
     ui->setupUi(this);
 
+    connect(ui->resetDefaults, SIGNAL(clicked(bool)), SLOT(reset()));
+
     // Load available resolutions
     QStringList resolutions;
     int previousWidth = -1;
@@ -52,8 +54,8 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
 
     ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
     ui->disableSimShadows->setChecked(s.value("disableSimShadows", false).toBool());
-    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", true).toBool());
-    ui->intelHigh->setChecked(s.value("intelHigh", true).toBool());
+    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
+    ui->intelHigh->setChecked(s.value("intelHigh", false).toBool());
     ui->intelVsync->setChecked(s.value("intelVsync", false).toBool());
     ui->defaultResolution->setCurrentText(s.value("defaultResolution", "1024x768").toString());
     ui->maxResolution->setCurrentText(s.value("maximumResolution", "1600x1200").toString());
@@ -82,6 +84,18 @@ Sims2Variables Sims2Settings::current() const
     }
 
     return result;
+}
+
+void Sims2Settings::reset()
+{
+    // Restore all defaults
+    ui->forceMem->setValue(0);
+    ui->disableSimShadows->setChecked(false);
+    ui->radeonHd7000Fix->setChecked(false);
+    ui->intelHigh->setChecked(false);
+    ui->intelVsync->setChecked(false);
+    ui->defaultResolution->setCurrentText("1024x768");
+    ui->maxResolution->setCurrentText("1600x1200");
 }
 
 Sims2Settings::~Sims2Settings()
