@@ -43,7 +43,7 @@ class Sims2Settings : public QWidget
 {
     Q_OBJECT
 public:
-    Sims2Settings(QWidget* parent);
+    Sims2Settings(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent = 0);
     ~Sims2Settings();
 
     Sims2Variables current() const;

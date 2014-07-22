@@ -24,6 +24,8 @@
 #include "../gamewriterinterface.h"
 
 class Sims2Settings;
+class DeviceModel;
+class VideoCardDatabase;
 
 class Sims2GameWriter : public QObject, public GameWriterInterface
 {
@@ -42,7 +44,7 @@ public:
         return tr("The Sims 2");
     }
 
-    virtual QWidget* settingsWidget(QWidget* parent);
+    virtual QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0);
 
     virtual QDir findGameDirectory() const;
 

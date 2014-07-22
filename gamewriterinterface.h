@@ -26,6 +26,8 @@
 
 class QIODevice;
 class QWidget;
+class DeviceModel;
+class VideoCardDatabase;
 
 class GameWriterInterface
 {
@@ -47,7 +49,7 @@ public:
      *
      * You should use the widget to load/store settings of previous runs.
      */
-    virtual QWidget *settingsWidget(QWidget *parent) = 0;
+    virtual QWidget *settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget *parent = 0) = 0;
 
         /**
      * Find the game's default directory.

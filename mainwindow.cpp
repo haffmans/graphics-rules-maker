@@ -84,7 +84,7 @@ void MainWindow::selectGame(int row)
         m_currentGameSettingsWidget->deleteLater();
     }
 
-    m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(ui->settingsBox);
+    m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
 
     // Determine game path - use previous setting if possible

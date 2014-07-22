@@ -22,7 +22,10 @@
 
 #include <QtCore/QSettings>
 
-Sims2Settings::Sims2Settings(QWidget* parent)
+#include "../devicemodel.h"
+#include "../videocarddatabase.h"
+
+Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
 {
     ui = new Ui::Sims2Settings;
     ui->setupUi(this);

@@ -31,9 +31,9 @@ Sims2GameWriter::Sims2GameWriter(QObject* parent)
 {
 }
 
-QWidget* Sims2GameWriter::settingsWidget(QWidget* parent)
+QWidget* Sims2GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
-    return new Sims2Settings(parent);
+    return new Sims2Settings(devices, database, parent);
 }
 
 QDir Sims2GameWriter::findGameDirectory() const
