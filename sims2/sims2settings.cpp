@@ -31,6 +31,20 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
     ui->setupUi(this);
 
     // Load available resolutions
+    QStringList resolutions;
+    int previousWidth = -1;
+    int previousHeight = -1;
+    foreach(const GraphicsMode &mode, devices->allModes()) {
+        // We don't care about refresh rates - i.e. avoid duplicates from the list
+        if (mode.width != previousWidth || mode.height != previousHeight) {
+            resolutions << QString::number(mode.width) + "x" + QString::number(mode.height);
+            previousWidth = mode.width;
+            previousHeight = mode.height;
+        }
+    }
+
+    ui->defaultResolution->addItems(resolutions);
+    ui->maxResolution->addItems(resolutions);
 
     // Load Settings
     QSettings s;

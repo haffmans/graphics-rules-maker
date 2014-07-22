@@ -18,11 +18,11 @@ int main(int argc, char *argv[])
     VideoCardDatabase *database = new VideoCardDatabase();
     GameWriterFactory *pluginFactory = new GameWriterFactory();
 
+    model->load();
     pluginFactory->loadPlugins();
 
     MainWindow window(model, database, pluginFactory);
 
-    model->load();
     window.show();
 
     int result = app.exec();

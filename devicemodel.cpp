@@ -9,6 +9,26 @@
 #define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=nullptr; } }
 #endif
 
+uint qHash(GraphicsMode key, uint seed) {
+    quint32 otherKey = (quint32)(
+        (((key.width ^ key.refreshRate) << 16)
+        | (key.height ^ key.refreshRate)) & 0xFFFFFFFF
+    );
+    return qHash(otherKey, seed);
+}
+
+bool GraphicsMode::operator==(const GraphicsMode& other) const
+{
+    return width == other.width && height == other.height && refreshRate == other.refreshRate;
+}
+
+bool GraphicsMode::operator<(const GraphicsMode& other) const
+{
+    return (width < other.width) ||
+           (width == other.width && height < other.height) ||
+           (width == other.width && height == other.height && refreshRate < other.refreshRate);
+}
+
 DeviceModel::DeviceModel(QObject *parent) :
     QAbstractTableModel(parent)
 {
@@ -26,6 +46,16 @@ void DeviceModel::load()
         return;
     }
 
+    int formatCount = 6;
+    D3DFORMAT modeFormats[formatCount] = {
+        D3DFMT_A1R5G5B5,
+        D3DFMT_A2R10G10B10,
+        D3DFMT_A8R8G8B8,
+        D3DFMT_R5G6B5,
+        D3DFMT_X1R5G5B5,
+        D3DFMT_X8R8G8B8
+    };
+
     UINT adapterCount = d3d->GetAdapterCount();
     for (UINT iAdapter = 0; iAdapter < adapterCount; iAdapter++ )
     {
@@ -39,7 +69,9 @@ void DeviceModel::load()
         }
 
         dev.name = QString(deviceInfo.Description);
-        dev.driver = QString(deviceInfo.Driver);
+        QString driverVersion = QString::number(deviceInfo.DriverVersionLowPart) + "." + QString::number(DriverVersionHighPart);
+        dev.driver = QString(deviceInfo.Driver) + driverVersion;
+        dev.display = QString(deviceInfo.Name);
         dev.deviceId = deviceInfo.DeviceId;
         dev.vendorId = deviceInfo.VendorId;
 
@@ -68,12 +100,33 @@ void DeviceModel::load()
         if (SUCCEEDED(hr)) {
             UINT availableTextureMem  = d3dDevice->GetAvailableTextureMem();
             dev.memory = availableTextureMem;
+
+
+            // TODO Fixup code - can't test this in Linux yet :)
+            for (int iFormat = 0; iFormat < formatCount; ++iFormat) {
+                D3DFORMAT format = modeFormats[iFormat];
+                int modeCount = d3d->GetAdapterModeCount(iAdapter, format);
+
+                for (int iMode = 0; iMode < modeCount; ++iMode) {
+                    D3DDISPLAYMODE mode;
+                    hr = d3d->EnumAdapterModes(iAdapter, format, iMode, &mode);
+                    if (SUCCEEDED(hr)) {
+                        GraphicsMode gMode;
+                        gMode.width = mode.Width;
+                        gMode.height = mode.Height;
+                        gMode.refreshRate = mode.RefreshRate;
+                        dev.modes.append(gMode);
+                    }
+                }
+            }
+
             SAFE_RELEASE( d3dDevice );
 
             beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
             m_devices.append(dev);
             endInsertRows();
         }
+
 
         SAFE_RELEASE(d3dDevice);
     }
@@ -82,35 +135,91 @@ void DeviceModel::load()
     emit(loaded());
 #else
     // Insert bogus devices for testing
+
+    // First some modes
+    GraphicsMode mode800_600_60;
+    mode800_600_60.width = 800;
+    mode800_600_60.height = 600;
+    mode800_600_60.refreshRate = 60;
+
+    GraphicsMode mode1024_768_50;
+    mode1024_768_50.width = 1024;
+    mode1024_768_50.height = 768;
+    mode1024_768_50.refreshRate = 50;
+
+    GraphicsMode mode1280_1024_75;
+    mode1280_1024_75.width = 1280;
+    mode1280_1024_75.height = 1024;
+    mode1280_1024_75.refreshRate = 75;
+
+    GraphicsMode mode1600_1200_59;
+    mode1600_1200_59.width = 1600;
+    mode1600_1200_59.height = 1200;
+    mode1600_1200_59.refreshRate = 59;
+
+    GraphicsMode mode1680_1050_60;
+    mode1680_1050_60.width = 1680;
+    mode1680_1050_60.height = 1050;
+    mode1680_1050_60.refreshRate = 60;
+
+    GraphicsMode mode1920_1080_59;
+    mode1920_1080_59.width = 1920;
+    mode1920_1080_59.height = 1080;
+    mode1920_1080_59.refreshRate = 59;
+
+    GraphicsMode mode1920_1080_60;
+    mode1920_1080_60.width = 1920;
+    mode1920_1080_60.height = 1080;
+    mode1920_1080_60.refreshRate = 60;
+
+    GraphicsMode mode1920_1200_60;
+    mode1920_1200_60.width = 1920;
+    mode1920_1200_60.height = 1200;
+    mode1920_1200_60.refreshRate = 60;
+
+    GraphicsMode mode2560_1440_60;
+    mode2560_1440_60.width = 2560;
+    mode2560_1440_60.height = 1440;
+    mode2560_1440_60.refreshRate = 60;
+
     GraphicsDevice dev1;
     dev1.name = "NVidia Debugging Device 1";
-    dev1.driver = "nvd3dum.dll";
+    dev1.driver = "nvd3dum.dll 1.0";
+    dev1.display = "\\\\.\\DISPLAY1";
     dev1.vendorId = 0x10b4;
     dev1.deviceId = 0xFFFF;
     dev1.memory = 1024*1048576;
+    dev1.modes << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1080_59 << mode1920_1080_60;
 
     GraphicsDevice dev2;
     dev2.name = "NVIDIA GeForce GTX 770";
-    dev2.driver = "nvd3dum.dll";
+    dev2.driver = "nvd3dum.dll 39.48";
+    dev2.display = "\\\\.\\DISPLAY2";
     dev2.vendorId = 0x10de;
     dev2.deviceId = 0x1184;
     dev2.memory = (quint64)4096 * (quint64)1048576;
+    dev2.modes << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1200_60;
 
     GraphicsDevice dev3;
     dev3.name = "AMD Radeon HD 6800 Series";
-    dev3.driver = "aticfx32.dll";
+    dev3.driver = "aticfx32.dll 14.04";
+    dev3.display = "\\\\.\\DISPLAY3";
     dev3.vendorId = 0x1002;
     dev3.deviceId = 0x6738;
     dev3.memory = 64*1048576;
+    dev3.modes << mode800_600_60 << mode1024_768_50 << mode1280_1024_75 << mode1600_1200_59;
 
     GraphicsDevice dev4;
     dev4.name = "Intel(R) HD Graphics";
-    dev4.driver = "igdumdim32.dll";
+    dev4.driver = "igdumdim32.dll 13.37";
+    dev4.display = "\\\\.\\DISPLAY4";
     dev4.vendorId = 0x8086;
     dev4.deviceId = 0x0F31;
     dev4.memory = 32*1048576;
+    dev4.modes << mode1680_1050_60 << mode1920_1080_59 << mode1920_1080_60 << mode1920_1200_60 << mode2560_1440_60;
 
-    beginInsertRows(QModelIndex(), 0, 3);
+    // Note: last parameter is "last row" (i.e. inclusive, hence +3 == 4-1)
+    beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count() + 3);
     m_devices.append(dev1);
     m_devices.append(dev2);
     m_devices.append(dev3);
@@ -120,6 +229,19 @@ void DeviceModel::load()
     emit(loaded());
 
 #endif
+}
+
+QList< GraphicsMode > DeviceModel::allModes()
+{
+    QSet<GraphicsMode> modes;
+    foreach(const GraphicsDevice &dev, m_devices) {
+        modes.unite(dev.modes.toSet());
+    }
+
+    QList<GraphicsMode> result = modes.toList();
+    std::sort(result.begin(), result.end());
+
+    return result;
 }
 
 QVariant DeviceModel::data(const QModelIndex &index, int role) const
@@ -137,9 +259,18 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
     case 2:
         return dev.deviceId;
     case 3:
-        return dev.driver;
+        return dev.display;
     case 4:
+        return dev.driver;
+    case 5:
         return dev.memory;
+    case 6: {
+        QStringList modes;
+        foreach(const GraphicsMode &mode, dev.modes) {
+            modes << QString::number(mode.width) + "x" + QString::number(mode.height) + "@" + QString::number(mode.refreshRate);
+        }
+        return modes.join(";");
+    }
     }
     return QVariant();
 }

@@ -4,14 +4,27 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QList>
 
+struct GraphicsMode
+{
+    quint16 width;
+    quint16 height;
+    quint16 refreshRate;
+    bool operator ==(const GraphicsMode &other) const;
+    bool operator <(const GraphicsMode &other) const;
+};
+
 struct GraphicsDevice
 {
     QString name;
     QString driver;
+    QString display;
     quint64 memory;
     quint16 vendorId;
     quint16 deviceId;
+    QList<GraphicsMode> modes;
 };
+
+uint qHash(GraphicsMode key, uint seed = 0);
 
 class DeviceModel : public QAbstractTableModel
 {
@@ -31,13 +44,14 @@ public:
     }
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const {
         Q_UNUSED(parent);
-        return 5;
+        return 7;
     }
 
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
     GraphicsDevice device(int row) const { return m_devices.at(row); }
+    QList<GraphicsMode> allModes();
 
 signals:
     void loaded();
