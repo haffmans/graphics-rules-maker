@@ -2,6 +2,7 @@
 
 #include "devicemodel.h"
 #include "videocarddatabase.h"
+#include "gamewriterfactory.h"
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
@@ -15,12 +16,20 @@ int main(int argc, char *argv[])
 
     DeviceModel *model = new DeviceModel();
     VideoCardDatabase *database = new VideoCardDatabase();
-    database->loadFrom("/mnt/apps/Electronic Arts/The Sims 2 Ultimate Collection/Fun with Pets/SP9/TSData/Res/Config/Video Cards.sgr");
+    GameWriterFactory *pluginFactory = new GameWriterFactory();
+
+    pluginFactory->loadPlugins();
 
     MainWindow window(model, database);
 
     model->load();
     window.show();
 
-    return app.exec();
+    int result = app.exec();
+
+    delete model;
+    delete database;
+    delete pluginFactory;
+
+    return result;
 }
