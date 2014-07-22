@@ -18,7 +18,6 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase)
     ui->deviceSelect->setModel(m_model);
 
     ui->videoCardsView->setModel(videoCardDatabase);
-    ui->videoCardsTable->setModel(videoCardDatabase);
 
     connect(ui->deviceSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectCard(int)));
 
