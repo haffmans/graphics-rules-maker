@@ -140,11 +140,15 @@ void Sims2GameWriter::write(QWidget* settingsWidget, QIODevice* target)
 {
     // Load settings
     Sims2Settings *widget = dynamic_cast<Sims2Settings*>(settingsWidget);
+    if (!widget) {
+        return;
+    }
+
+    Sims2Variables options = widget->current();
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);
-    stream << R"EOF(
-#############################################################################
+    stream << R"EOF(#############################################################################
 #
 # Logging settings
 #
@@ -209,7 +213,16 @@ include "Video Cards.sgr"
 if (not $isCardFound)
    set cardName $cardNameText
 endif
+)EOF";
 
+    if (options.forceMemory > 0) {
+        stream << R"EOF(
+
+# GraphicRulesMaker Tweak: Force memory size
+seti textureMemory )EOF" << options.forceMemory << "\n";
+    }
+
+    stream << R"EOF(
 #############################################################################
 #
 # Configuration override controlled by command line option -cardConfig.
@@ -467,8 +480,21 @@ if (not $useSoftwareRasterizer)
 
       # avoid a race condition with color copies and ui
       boolProp presentWorkaround  true
+)EOF";
 
-      if (match("${cardName}", "*Radeon?VE*") or match("${cardName}", "*7?00*") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*"))
+      if (options.radeonHd7000Fix) {
+          // Force "Radeon 7?00" match to avoid matching "Radeon HD 7?00"
+          stream << R"EOF(
+      # GraphicRulesMaker Tweak: Radeon HD 7000 series recognition
+      if (match("${cardName}", "*Radeon?VE*") or match(\"${cardName}\", \"*Radeon?7?00*\") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
+      }
+      else {
+          // Original value
+          stream << R"EOF(
+      if (match("${cardName}", "*Radeon?VE*") or match(\"${cardName}\", \"*7?00*\") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
+      }
+
+      stream << R"EOF(
          log $logGroup $logLevelInfo "Forcing turbo rects off"
          setb supportsTurboRect   false
 
@@ -546,6 +572,12 @@ if (not $useSoftwareRasterizer)
 
 
   elseif (match("${cardVendor}", "Intel"))
+)EOF";
+
+    // Intel tweaks coming in:
+    if (!options.intelHigh && !options.intelVsync) {
+        // Disable VSync, low settings: i.e. the default (no tweaks)
+        stream << R"EOF(
       if (match("${cardName}", "*X3000*"))
          boolProp disableVSyncSupport        true    # work around flickering UI
       else
@@ -554,7 +586,28 @@ if (not $useSoftwareRasterizer)
          boolProp disableVSyncSupport        true    # work around flickering UI
          boolProp useShaders                 false   # (EP2 change) mostly for performance, but driver issues showed up in v14.14
       endif
+)EOF";
+    }
+    else  {
+        if (options.intelVsync) {
+            stream << R"EOF(
+      # GraphicRulesMaker Tweak: Allow VSync on Intel Graphics - may cause flickering UI
+      boolProp disableVSyncSupport           false
+)EOF";
+        }
+        if (options.intelHigh) {
+            stream << R"EOF(
+      # GraphicRulesMaker Tweak: High Quality on Intel Graphics
+      # This tweak keeps the following settings (original value is as it was set in the original script):
+      #   boolProp simpleTerrain (original: true)
+      #   boolProp enumerateMultisampleLevels (original: false)
+      #   boolProp disableVSyncSupport (original: true)
+      #   boolProp useShaders (original: false)
+)EOF";
+        }
+    }
 
+    stream << R"EOF(
       # the Intel minspec driver doesn't misreport available texture memory, so it's not
       # necessary to adjust the texture memory estimate it returns. This may also fix
       # a Windows "device failure" message that occurs sometimes on this device.
@@ -724,7 +777,18 @@ option Shadows
       boolProp heightMapShadows true
 
    setting $High
-      boolProp simShadows       true
+)EOF";
+
+    if (options.disableSimShadows) {
+        stream << "      # GraphicRulesMaker Tweak: Always disable Sim shadows\n\
+      boolProp simShadows       false";
+    }
+    else {
+        // Keep original
+        stream << "      boolProp simShadows       true";
+    }
+
+    stream << R"EOF(
       boolProp objectShadows    true
       boolProp guob             true
       boolProp heightMapShadows true
@@ -937,11 +1001,34 @@ option ScreenModeResolution
       uintProp defaultResHeight 768
 
    setting $High
-      uintProp maxResWidth      1920
-      uintProp maxResHeight     1080
-      uintProp defaultResWidth  1024
-      uintProp defaultResHeight 768
-end
+)EOF";
+      if (options.maximumResolution.width() != 1600 || options.maximumResolution.height() != 1200) {
+          // Custom maximum resolution applied
+          stream << "\
+      # GraphicRulesMaker Tweak: Custom maximum resolution\n\
+      uintProp maxResWidth      " << options.maximumResolution.width() << "\n\
+      uintProp maxResHeight     " << options.maximumResolution.height() << "\n";
+      }
+      else {
+          stream << "\
+      uintProp maxResWidth      1600\n\
+      uintProp maxResHeight     1200\n";
+      }
+
+      if (options.defaultResolution.width() != 1024 || options.defaultResolution.height() != 768) {
+          // Custom default resolution applied
+          stream << "\
+      # GraphicRulesMaker Tweak: Custom maximum resolution\n\
+      uintProp defaultResWidth      " << options.defaultResolution.width() << "\n\
+      uintProp defaultResHeight     " << options.defaultResolution.height() << "\n";
+      }
+      else {
+          stream << "\
+      uintProp defaultResWidth      1024\n\
+      uintProp defaultResHeight     768\n";
+      }
+
+      stream << R"EOF(end
 
 option SubjectTracking
    setting $Low
@@ -1191,7 +1278,6 @@ intProp configParserErrorCode 0
 uintProp hwMajorPSVersion $maxPixelProgramVersionMajor
 
 log $logGroup $logLevelInfo "Finished Config File"
-
 )EOF";
 
 }

@@ -53,7 +53,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="5" column="0">
     <widget class="QLabel" name="defaultResolutionLabel">
      <property name="text">
       <string>Default resolution:</string>
@@ -63,10 +63,10 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="5" column="1">
     <widget class="QComboBox" name="defaultResolution"/>
    </item>
-   <item row="3" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="maxResolutionLabel">
      <property name="text">
       <string>Maximum resolution:</string>
@@ -76,8 +76,38 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="1">
+   <item row="6" column="1">
     <widget class="QComboBox" name="maxResolution"/>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="radeonHd7000Fix">
+     <property name="text">
+      <string>Fix AMD Radeon HD 7000 series recognition</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="intelHigh">
+     <property name="text">
+      <string>High Quality on Intel Graphics</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="intelVsync">
+     <property name="text">
+      <string>Support VSync on Intel</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

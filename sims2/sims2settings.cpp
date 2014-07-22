@@ -52,6 +52,9 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
 
     ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
     ui->disableSimShadows->setChecked(s.value("disableSimShadows", false).toBool());
+    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", true).toBool());
+    ui->intelHigh->setChecked(s.value("intelHigh", true).toBool());
+    ui->intelVsync->setChecked(s.value("intelVsync", false).toBool());
     ui->defaultResolution->setCurrentText(s.value("defaultResolution", "1024x768").toString());
     ui->maxResolution->setCurrentText(s.value("maximumResolution", "1600x1200").toString());
 
@@ -64,6 +67,9 @@ Sims2Variables Sims2Settings::current() const
     Sims2Variables result;
     result.forceMemory = ui->forceMem->value();
     result.disableSimShadows = ui->disableSimShadows->isChecked();
+    result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
+    result.intelHigh = ui->intelHigh->isChecked();
+    result.intelVsync = ui->intelVsync->isChecked();
 
     if (resolutionString.exactMatch(ui->defaultResolution->currentText())) {
         result.defaultResolution.setWidth(resolutionString.cap(1).toInt());
@@ -74,8 +80,9 @@ Sims2Variables Sims2Settings::current() const
         result.maximumResolution.setWidth(resolutionString.cap(1).toInt());
         result.maximumResolution.setHeight(resolutionString.cap(2).toInt());
     }
-}
 
+    return result;
+}
 
 Sims2Settings::~Sims2Settings()
 {
@@ -86,6 +93,9 @@ Sims2Settings::~Sims2Settings()
     s.beginGroup("sims2");
     s.setValue("forceMemory", ui->forceMem->value());
     s.setValue("disableSimShadows", ui->disableSimShadows->isChecked());
+    s.setValue("radeonHd7000Fix", ui->radeonHd7000Fix->isChecked());
+    s.setValue("intelHigh", ui->intelHigh->isChecked());
+    s.setValue("intelVsync", ui->intelVsync->isChecked());
     s.setValue("defaultResolution", ui->defaultResolution->currentText());
     s.setValue("maximumResolution", ui->maxResolution->currentText());
     s.endGroup();

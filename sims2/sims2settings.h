@@ -34,6 +34,9 @@ struct Sims2Variables
 {
     quint16 forceMemory;
     bool disableSimShadows;
+    bool radeonHd7000Fix;
+    bool intelHigh;
+    bool intelVsync;
 
     QSize defaultResolution;
     QSize maximumResolution;
