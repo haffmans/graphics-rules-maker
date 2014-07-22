@@ -42,23 +42,22 @@ public:
         return tr("The Sims 2");
     }
 
-    virtual QString rulesFileName() const {
-        return "Graphic Rules.sgr";
-    }
-
-    virtual QString databaseFileName() const {
-        return "Video Cards.sgr";
-    }
-
     virtual QWidget* settingsWidget(QWidget* parent);
 
     virtual QDir findGameDirectory() const;
 
     virtual QFileInfo gameExecutable(const QDir& gameDirectory) const;
 
+    virtual QFileInfo rulesFileName(const QDir& gameDirectory) const;
+
+    virtual QFileInfo databaseFileName(const QDir& gameDirectory) const;
+
     virtual void write(QWidget *settingsWidget, QIODevice* target);
 
     virtual ~Sims2GameWriter();
+
+private:
+    virtual QFileInfo findFile(QDir baseDir, QStringList options) const;
 };
 
 #endif // SIMS2GAMEWRITER_H

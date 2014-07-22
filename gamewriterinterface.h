@@ -49,22 +49,22 @@ public:
      */
     virtual QWidget *settingsWidget(QWidget *parent) = 0;
 
-    /**
-     * The file name of the Graphic Rules.sgr file.
-     */
-    virtual QString rulesFileName() const = 0;
-
-    /**
-     * The file name of the Video Cards.sgr file.
-     */
-    virtual QString databaseFileName() const = 0;
-
-    /**
+        /**
      * Find the game's default directory.
      *
      * This will be used if no path was set by the user in an earlier session.
      */
     virtual QDir findGameDirectory() const = 0;
+
+    /**
+     * The file name of the Graphic Rules.sgr file.
+     */
+    virtual QFileInfo rulesFileName(const QDir& gameDirectory) const = 0;
+
+    /**
+     * The file name of the Video Cards.sgr file.
+     */
+    virtual QFileInfo databaseFileName(const QDir& gameDirectory) const = 0;
 
     /**
      * The game's executable file.
