@@ -59,14 +59,29 @@ public:
     virtual QDir findGameDirectory() const = 0;
 
     /**
+     * The default file name of the Graphic Rules.sgr file.
+     */
+    virtual QString rulesFileName() const = 0;
+
+    /**
      * The file name of the Graphic Rules.sgr file.
      */
     virtual QFileInfo rulesFileName(const QDir& gameDirectory) const = 0;
 
     /**
+     * The default file name of the Video Cards.sgr file.
+     */
+    virtual QString databaseFileName() const = 0;
+
+    /**
      * The file name of the Video Cards.sgr file.
      */
     virtual QFileInfo databaseFileName(const QDir& gameDirectory) const = 0;
+
+    /**
+     * The game's default executable file.
+     */
+    virtual QString gameExecutable() const = 0;
 
     /**
      * The game's executable file.

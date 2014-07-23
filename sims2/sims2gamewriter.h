@@ -48,10 +48,13 @@ public:
 
     virtual QDir findGameDirectory() const;
 
+    virtual QString gameExecutable() const { return "Sims2.exe"; }
     virtual QFileInfo gameExecutable(const QDir& gameDirectory) const;
 
+    virtual QString rulesFileName() const { return "Graphics Rules.sgr"; }
     virtual QFileInfo rulesFileName(const QDir& gameDirectory) const;
 
+    virtual QString databaseFileName() const { return "Video Cards.sgr"; }
     virtual QFileInfo databaseFileName(const QDir& gameDirectory) const;
 
     virtual void write(QWidget *settingsWidget, QIODevice* target);

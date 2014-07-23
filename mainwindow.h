@@ -30,6 +30,8 @@ private slots:
     void setStatus(const QString &text, bool allok);
     void browseGame();
     void save();
+    void saveGraphicRules();
+    void saveVideoCards();
 
     void askAddDevices();
     void addDeviceLink(const QString &link);
@@ -47,6 +49,8 @@ private:
     QWidget *m_currentGameSettingsWidget;
 
     QString formatId(quint16 id) const;
+
+    QString browseWritableFile() const;
 };
 
 #endif // MAINWINDOW_H

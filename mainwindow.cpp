@@ -33,6 +33,8 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
     connect(ui->browseFilesButton, SIGNAL(clicked(bool)), SLOT(browseGame()));
     connect(ui->saveAll, SIGNAL(clicked(bool)), SLOT(save()));
+    connect(ui->graphicsRulesSave, SIGNAL(clicked(bool)), SLOT(saveGraphicRules()));
+    connect(ui->videoCardsSave, SIGNAL(clicked(bool)), SLOT(saveVideoCards()));
     connect(ui->cardInDb, SIGNAL(linkActivated(QString)), SLOT(addDeviceLink(QString)));
     connect(videoCardDatabase, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
     connect(videoCardDatabase, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
@@ -138,6 +140,12 @@ void MainWindow::selectGame(int row)
         // game every time.
         ui->gamePath->setText(m_currentPlugin->findGameDirectory().absolutePath());
     }
+
+    // Set preview tab names
+    int index = ui->mainTabs->indexOf(ui->graphicsRulesTab);
+    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->rulesFileName()));
+    index = ui->mainTabs->indexOf(ui->videoCardsTab);
+    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->databaseFileName()));
 }
 
 void MainWindow::locateGameFiles(const QString& directory)
@@ -334,6 +342,76 @@ void MainWindow::save()
         connect(confirmation, SIGNAL(openTemporaryDirectory()), SLOT(openTemporaryDirectory()));
         confirmation->open();
     }
+}
+
+void MainWindow::saveGraphicRules()
+{
+    QDir gameDirectory(ui->gamePath->text());
+    QFileInfo gameFile = m_currentPlugin->rulesFileName(gameDirectory);
+    QString startDir = gameFile.absoluteFilePath();
+    QString defaultName = m_currentPlugin->rulesFileName();
+    if (gameFile.exists()) {
+        defaultName = gameFile.fileName();
+    }
+    else { // Not found -> use current path + default filename
+        startDir = gameDirectory.absoluteFilePath(defaultName);
+    }
+
+    QString destination = QFileDialog::getSaveFileName(this, tr("Save %1").arg(defaultName),
+                                 startDir,
+                                 tr("SimCity Graphic Rules files (*.sgr);;All files (*.*)")
+    );
+
+    if (destination.isEmpty()) {
+        // No file was chosen
+        return;
+    }
+
+    QFile dst(destination);
+    if (!dst.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(destination));
+        return;
+    }
+
+    m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
+    dst.close();
+
+    QMessageBox::information(this, tr("File saved"), tr("Graphics rules saved to '%1'.").arg(destination));
+}
+
+void MainWindow::saveVideoCards()
+{
+    QDir gameDirectory(ui->gamePath->text());
+    QFileInfo gameFile = m_currentPlugin->databaseFileName(gameDirectory);
+    QString startDir = gameFile.absoluteFilePath();
+    QString defaultName = m_currentPlugin->databaseFileName();
+    if (gameFile.exists()) {
+        defaultName = gameFile.fileName();
+    }
+    else { // Not found -> use current path + default filename
+        startDir = gameDirectory.absoluteFilePath(defaultName);
+    }
+
+    QString destination = QFileDialog::getSaveFileName(this, tr("Save %1").arg(defaultName),
+                                 gameFile.absoluteFilePath(),
+                                 tr("SimCity Graphic Rules files (*.sgr);;All files (*.*)")
+    );
+
+    if (destination.isEmpty()) {
+        // No file was chosen
+        return;
+    }
+
+    QFile dst(destination);
+    if (!dst.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(destination));
+        return;
+    }
+
+    m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
+    dst.close();
+
+    QMessageBox::information(this, tr("File saved"), tr("Video cards database saved to '%1'.").arg(destination));
 }
 
 void MainWindow::openDestinationDirectory()
