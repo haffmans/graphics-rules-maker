@@ -69,7 +69,7 @@ void DeviceModel::load()
         }
 
         dev.name = QString(deviceInfo.Description);
-        QString driverVersion = QString::number(deviceInfo.DriverVersionLowPart) + "." + QString::number(DriverVersionHighPart);
+        QString driverVersion = QString("%1.%2").arg(deviceInfo.DriverVersionLowPart).arg(DriverVersionHighPart);
         dev.driver = QString(deviceInfo.Driver) + driverVersion;
         dev.display = QString(deviceInfo.Name);
         dev.deviceId = deviceInfo.DeviceId;
@@ -267,7 +267,7 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
     case 6: {
         QStringList modes;
         foreach(const GraphicsMode &mode, dev.modes) {
-            modes << QString::number(mode.width) + "x" + QString::number(mode.height) + "@" + QString::number(mode.refreshRate);
+            modes << QString("%1x%2@%3").arg(mode.width).arg(mode.height).arg(mode.refreshRate);
         }
         return modes.join(";");
     }

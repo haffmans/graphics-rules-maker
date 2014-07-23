@@ -43,6 +43,8 @@ private:
     GameWriterFactory *m_gamePlugins;
     GameWriterInterface *m_currentPlugin;
     QWidget *m_currentGameSettingsWidget;
+
+    QString formatId(quint16 id) const;
 };
 
 #endif // MAINWINDOW_H

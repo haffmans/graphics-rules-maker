@@ -33,6 +33,8 @@ private:
 
     int indexOfVendor(quint16 vendorId) const;
 
+    QString formatId(quint16 id) const;
+
 public:
     explicit VideoCardDatabase(QObject *parent = 0);
 

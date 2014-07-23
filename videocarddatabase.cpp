@@ -165,14 +165,14 @@ QVariant VideoCardDatabase::data(const QModelIndex& index, int role) const
         case 1: {
             QStringList vendorIds;
             foreach(quint16 id, vendor.vendorIds) {
-                vendorIds << "0x" + QString::number(id, 16);
+                vendorIds << formatId(id);
             }
             return vendorIds.join(", ");
         }
         case 2:
             return (deviceId) ? card.name : QVariant();
         case 3:
-            return (deviceId) ? "0x" + QString::number(deviceId, 16) : QVariant();
+            return (deviceId) ? formatId(deviceId) : QVariant();
     }
 
     return QVariant();
@@ -344,12 +344,12 @@ void VideoCardDatabase::write(QIODevice* target) const
         stream << "#############################################################################\n";
         stream << "vendor \"" << vendor.name << "\"";
         foreach(quint16 vendorId, vendor.vendorIds) {
-            stream << " 0x" << QString::number(vendorId, 16);
+            stream << " " << formatId(vendorId);
         }
         stream << '\n';
 
         foreach(const VideoCard &card, vendor.cards) {
-            stream << "  card 0x" << QString::number(card.deviceId, 16) <<
+            stream << "  card " << formatId(card.deviceId) <<
                 " \"" << card.name << "\"\n";
         }
 
@@ -359,6 +359,11 @@ void VideoCardDatabase::write(QIODevice* target) const
     if (!wasOpen) {
         target->close();
     }
+}
+
+QString VideoCardDatabase::formatId(quint16 id) const
+{
+    return QString("0x%1").arg(id, 4, 16, QChar('0')).toUpper();
 }
 
 VideoCardDatabase::~VideoCardDatabase()
