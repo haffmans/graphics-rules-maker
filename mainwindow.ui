@@ -278,22 +278,7 @@
         <string>VideoCards.sgr</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="1" column="0" colspan="2">
-         <widget class="QPlainTextEdit" name="videoCardsText">
-          <property name="font">
-           <font>
-            <family>Courier</family>
-           </font>
-          </property>
-          <property name="undoRedoEnabled">
-           <bool>false</bool>
-          </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
+        <item row="1" column="0">
          <spacer name="videoCardsSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -306,7 +291,7 @@
           </property>
          </spacer>
         </item>
-        <item row="2" column="1">
+        <item row="1" column="1">
          <widget class="QPushButton" name="videoCardsSave">
           <property name="text">
            <string>&amp;Save As...</string>
@@ -320,7 +305,47 @@
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QTreeView" name="videoCardsView"/>
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QSplitter" name="videoCardsSplitter">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="childrenCollapsible">
+              <bool>false</bool>
+             </property>
+             <widget class="QTreeView" name="videoCardsView">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+             </widget>
+             <widget class="QPlainTextEdit" name="videoCardsText">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>Courier</family>
+               </font>
+              </property>
+              <property name="undoRedoEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </widget>

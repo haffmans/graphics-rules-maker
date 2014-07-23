@@ -7,6 +7,8 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QDirModel>
+#include <QtWidgets/QCompleter>
 #include <QtGui/QDesktopServices>
 
 #include "devicemodel.h"
@@ -46,7 +48,40 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
         ui->gameSelect->addItem(plugin->displayName(), plugin->id());
     }
 
-    selectGame(0);
+    QDirModel *dirModel = new QDirModel(this);
+    dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    QCompleter *completer = new QCompleter(dirModel, this);
+    completer->setCaseSensitivity(Qt::CaseInsensitive);
+    ui->gamePath->setCompleter(completer);
+
+    // Restore state
+    QSettings s;
+    s.beginGroup("ui");
+    restoreGeometry(s.value("window/geometry").toByteArray());
+    restoreState(s.value("window/state").toByteArray());
+    ui->videoCardsSplitter->restoreState(s.value("videocards/splitterstate").toByteArray());
+    if (s.contains("videocards/treeviewheaderstate")) {
+        ui->videoCardsView->header()->restoreState(s.value("videocards/treeviewheaderstate").toByteArray());
+    }
+    else {
+        // Custom defaults not available in designer
+        ui->videoCardsView->header()->resizeSection(0, 150);
+        ui->videoCardsView->header()->resizeSection(1, 100);
+        ui->videoCardsView->header()->resizeSection(2, 250);
+        ui->videoCardsView->header()->resizeSection(3, 100);
+    }
+    int gameRow = 0;
+    if (s.contains("game/id")) {
+        QString gameId = s.value("game/id").toString();
+        // Find index of previously selected game
+        for (int i = 0; i < ui->gameSelect->count(); ++i) {
+            if (ui->gameSelect->itemData(i).toString() == gameId) {
+                gameRow = i;
+                break;
+            }
+        }
+    }
+    selectGame(gameRow);
 }
 
 void MainWindow::selectCard(int row)
@@ -467,5 +502,13 @@ QString MainWindow::formatId(quint16 id) const
 
 MainWindow::~MainWindow()
 {
+    // Save state
+    QSettings s;
+    s.beginGroup("ui");
+    s.setValue("window/geometry", saveGeometry());
+    s.setValue("window/state", saveState());
+    s.setValue("videocards/splitterstate", ui->videoCardsSplitter->saveState());
+    s.setValue("videocards/treeviewheaderstate", ui->videoCardsView->header()->saveState());
+    s.setValue("game/id", m_currentPlugin->id());
     delete ui;
 }

@@ -124,9 +124,38 @@ int VideoCardDatabase::columnCount(const QModelIndex& parent) const
     }
 }
 
+QVariant VideoCardDatabase::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        switch(section) {
+            case 0:
+                return tr("Vendor Name");
+            case 1:
+                return tr("Vendor Id");
+            case 2:
+                return tr("Card Name");
+            case 3:
+                return tr("Card Id");
+        }
+    }
+
+    if (orientation == Qt::Horizontal && role == Qt::SizeHintRole) {
+        switch(section) {
+            case 0:
+            case 2:
+                return QSize(200, 20);
+            case 1:
+            case 3:
+                return QSize(30, 20);
+        }
+    }
+
+    return QAbstractItemModel::headerData(section, orientation, role);
+}
+
 QVariant VideoCardDatabase::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole) {
+    if (!index.isValid() || (role != Qt::DisplayRole && role != Qt::ToolTipRole)) {
         return QVariant();
     }
 
