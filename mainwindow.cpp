@@ -33,6 +33,10 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
     connect(ui->browseFilesButton, SIGNAL(clicked(bool)), SLOT(browseGame()));
     connect(ui->saveAll, SIGNAL(clicked(bool)), SLOT(save()));
+    connect(ui->cardInDb, SIGNAL(linkActivated(QString)), SLOT(addDeviceLink(QString)));
+    connect(videoCardDatabase, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
+    connect(videoCardDatabase, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
+    connect(videoCardDatabase, SIGNAL(modelReset()), SLOT(updateDeviceStatus()));
 
     ui->deviceSelect->setModel(m_model);
     ui->videoCardsView->setModel(m_videoCardDatabase);
@@ -52,8 +56,41 @@ void MainWindow::selectCard(int row)
         ui->deviceId->setText(formatId(dev.deviceId));
         ui->driver->setText(dev.driver);
         ui->memory->setText(tr("%1 Mb").arg(dev.memory / (1024*1024)));
+        updateDeviceStatus();
     }
 }
+
+void MainWindow::addDeviceLink(const QString& link)
+{
+    QRegExp linkCheck("addcard\\?row=(\\d+)", Qt::CaseSensitive);
+    if (linkCheck.exactMatch(link)) {
+        // Row id is in cap(1) - we can convert because it's a \d+ match.
+        int row = linkCheck.cap(1).toInt();
+        GraphicsDevice dev = m_model->device(row);
+        if (!m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
+            m_videoCardDatabase->addDevice(dev.vendorId, dev.deviceId, dev.name);
+        }
+    }
+
+    // Update UI again
+    updateDeviceStatus();
+}
+
+void MainWindow::updateDeviceStatus()
+{
+    int row = ui->deviceSelect->currentIndex();
+    GraphicsDevice dev = m_model->device(row);
+    if (m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
+        ui->cardInDb->setText("<font style=\"color: green\">" + tr("Yes") + "</font>");
+    }
+    else {
+        ui->cardInDb->setText("<font style=\"color: red\">" + tr("No") + "</font> "
+            "<a href=\"addcard?row=" + QString::number(row) + "\">" +
+            tr("Add now...") + "</a>"
+        );
+    }
+}
+
 
 void MainWindow::browseGame()
 {

@@ -32,6 +32,8 @@ private slots:
     void save();
 
     void askAddDevices();
+    void addDeviceLink(const QString &link);
+    void updateDeviceStatus();
 
     void openTemporaryDirectory();
     void openDestinationDirectory();
