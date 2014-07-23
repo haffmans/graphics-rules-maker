@@ -7,11 +7,13 @@
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
+#include <QtGui/QDesktopServices>
 
 #include "devicemodel.h"
 #include "videocarddatabase.h"
 #include "gamewriterfactory.h"
 #include "gamewriterinterface.h"
+#include "manualsaveconfirmationbox.h"
 
 MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins) :
     QMainWindow(),
@@ -199,6 +201,119 @@ void MainWindow::save()
     if (!graphicsRulesDir.isWritable() || !videoCardsDir.isWritable()) {
         manualSave = true;
     }
+
+    if (!manualSave) {
+        // Create backups if they don't exist yet (we won't overwrite files)
+        // Note: QFile::copy() will not overwrite files, but it does return false
+        //       if the file exists. Hence we check ourselves.
+        bool backupOk = true;
+        if (!graphicsRulesBackup.exists()) {
+            backupOk = backupOk && QFile::copy(graphicsRulesFile.absoluteFilePath(), graphicsRulesBackup.absoluteFilePath());
+        }
+        if (!videoCardsFileBackup.exists()) {
+            backupOk = backupOk && QFile::copy(videoCardsFile.absoluteFilePath(), videoCardsFileBackup.absoluteFilePath());
+        }
+
+        if (!backupOk) {
+            QMessageBox::critical(this, tr("Error"), tr("Could not create back-up files. Aborting."));
+            return;
+        }
+    }
+    else {
+        QMessageBox::StandardButton result = QMessageBox::information(this, tr("Saving files"),
+            tr("The files cannot be saved to the game directory (it is not writable).\n\n"
+               "They will instead be saved to a temporary directory."
+               "You will need to copy them to the game directory manually.\n\n"
+               "Alternatively it may help to restart the Graphic Rules Maker as Administrator."
+            ), QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok
+        );
+        if (result == QMessageBox::Cancel) {
+            return;
+        }
+
+        gameDirectory = QDir::temp();
+        if (!gameDirectory.mkpath("GraphicRulesMaker")) {
+            QMessageBox::critical(this, tr("Error"), tr("Could not create temporary location for files."));
+            return;
+        }
+        QFileInfo tempDirInfo = QFileInfo(gameDirectory.absoluteFilePath("GraphicRulesMaker"));
+        if (!tempDirInfo.isDir() || !tempDirInfo.isWritable()) {
+            QMessageBox::critical(this, tr("Error"), tr("Could not write to temporary location."));
+            return;
+        }
+        gameDirectory = QDir(tempDirInfo.filePath());
+
+        // Make Graphics Rules file backup
+        if (graphicsRulesBackup.exists()) {
+            // Copy original back-up so all files are together
+            QFile::copy(graphicsRulesBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
+        }
+        else {
+            // Copy original file as backup
+            QFile::copy(graphicsRulesFile.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
+        }
+        // We want to write to the temporary directory
+        graphicsRulesFile = QFileInfo(gameDirectory.absoluteFilePath(graphicsRulesFile.fileName()));
+
+        // Make Video Cards file backup
+        if (videoCardsFileBackup.exists()) {
+            // Copy original back-up so all files are together
+            QFile::copy(videoCardsFileBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
+        }
+        else {
+            // Copy original file as backup
+            QFile::copy(videoCardsFile.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
+        }
+        // We want to write to the temporary directory
+        videoCardsFile = QFileInfo(gameDirectory.absoluteFilePath(videoCardsFile.fileName()));
+    }
+
+    // Backup made, file info point to correct path now. Write files.
+    QFile graphicsRulesOut(graphicsRulesFile.absoluteFilePath());
+    if (!graphicsRulesOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"), tr("Could not open Graphic Rules file for writing."));
+        return;
+    }
+    m_currentPlugin->write(m_currentGameSettingsWidget, &graphicsRulesOut);
+    graphicsRulesOut.close();
+
+    QFile videoCardsOut(videoCardsFile.absoluteFilePath());
+    if (!videoCardsOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, tr("Error"), tr("Could not open Video Cards file for writing."));
+        return;
+    }
+    m_videoCardDatabase->write(&videoCardsOut);
+    videoCardsOut.close();
+
+    if (!manualSave) {
+        QMessageBox::information(this, tr("Files Saved"),
+            tr("The files have been saved. You can now run your game using the new settings.")
+        );
+    }
+    else {
+        ManualSaveConfirmationBox *confirmation = new ManualSaveConfirmationBox(this);
+        connect(confirmation, SIGNAL(finished(int)), confirmation, SLOT(deleteLater()));
+        connect(confirmation, SIGNAL(openDestinationDirectory()), SLOT(openDestinationDirectory()));
+        connect(confirmation, SIGNAL(openTemporaryDirectory()), SLOT(openTemporaryDirectory()));
+        confirmation->open();
+    }
+}
+
+void MainWindow::openDestinationDirectory()
+{
+    // Game dir
+    QDir gameDirectory(ui->gamePath->text());
+    QFileInfo graphicsRulesFile(m_currentPlugin->rulesFileName(gameDirectory));
+    // Use "path()" here for the directory containing the file
+    QUrl fileUrl = QUrl::fromLocalFile(graphicsRulesFile.path());
+    QDesktopServices::openUrl(fileUrl);
+}
+
+void MainWindow::openTemporaryDirectory()
+{
+    QFileInfo tempDirInfo = QFileInfo(QDir::temp().absoluteFilePath("GraphicRulesMaker"));
+    QUrl tempDirUrl = QUrl::fromLocalFile(tempDirInfo.absoluteFilePath());
+    QDesktopServices::openUrl(tempDirUrl);
 }
 
 void MainWindow::askAddDevices()

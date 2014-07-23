@@ -11,6 +11,8 @@ class DeviceModel;
 class GameWriterFactory;
 class GameWriterInterface;
 class VideoCardDatabase;
+class QAbstractButton;
+class QMessageBox;
 
 class MainWindow : public QMainWindow
 {
@@ -30,6 +32,9 @@ private slots:
     void save();
 
     void askAddDevices();
+
+    void openTemporaryDirectory();
+    void openDestinationDirectory();
 
 private:
     Ui::MainWindow *ui;

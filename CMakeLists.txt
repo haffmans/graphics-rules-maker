@@ -26,7 +26,7 @@ set(GraphicRulesMaker_PLUGIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTAL
 
 configure_file(graphicrulesmaker_config.h.cmake  ${PROJECT_BINARY_DIR}/graphicrulesmaker_config.h)
 
-qt5_wrap_ui(GraphicRulesMaker_UIS mainwindow.ui)
+qt5_wrap_ui(GraphicRulesMaker_UIS mainwindow.ui manualsaveconfirmationbox.ui)
 
 SET(GraphicRulesMaker_SRCS
     main.cpp
@@ -34,6 +34,7 @@ SET(GraphicRulesMaker_SRCS
     videocarddatabase.cpp
     devicemodel.cpp
     gamewriterfactory.cpp
+    manualsaveconfirmationbox.cpp
     ${GraphicRulesMaker_UIS}
 )
 
