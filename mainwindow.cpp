@@ -3,8 +3,10 @@
 
 #include <QtWidgets/QListView>
 #include <QtCore/QBuffer>
+#include <QtCore/QDateTime>
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 #include "devicemodel.h"
 #include "videocarddatabase.h"
@@ -28,6 +30,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->gameSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectGame(int)));
     connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
     connect(ui->browseFilesButton, SIGNAL(clicked(bool)), SLOT(browseGame()));
+    connect(ui->saveAll, SIGNAL(clicked(bool)), SLOT(save()));
 
     ui->deviceSelect->setModel(m_model);
     ui->videoCardsView->setModel(m_videoCardDatabase);
@@ -149,6 +152,7 @@ void MainWindow::setStatus(const QString& text, bool allok)
 {
     QString color = (allok) ? "green" : "red";
     ui->status->setText("<font style=\"color: " + color + "\">" + text + "</font>");
+    ui->saveAll->setEnabled(allok);
 }
 
 void MainWindow::tabOpen(int tabIndex)
@@ -173,7 +177,57 @@ void MainWindow::tabOpen(int tabIndex)
 
         ui->videoCardsText->setPlainText(plainText);
     }
+}
 
+void MainWindow::save()
+{
+    // First make sure devices are in database
+    askAddDevices();
+
+    // TODO: Date/timestamp in suffix?
+    QString bakSuffix = ".bak";
+    bool manualSave = false;
+
+    QDir gameDirectory(ui->gamePath->text());
+    QFileInfo graphicsRulesFile(m_currentPlugin->rulesFileName(gameDirectory));
+    QFileInfo graphicsRulesBackup = graphicsRulesFile.absoluteFilePath() + bakSuffix;
+    QFileInfo graphicsRulesDir(graphicsRulesFile.absolutePath());
+    QFileInfo videoCardsFile = m_currentPlugin->databaseFileName(gameDirectory);
+    QFileInfo videoCardsFileBackup = videoCardsFile.absoluteFilePath() + bakSuffix;
+    QFileInfo videoCardsDir(videoCardsFile.absolutePath());
+
+    if (!graphicsRulesDir.isWritable() || !videoCardsDir.isWritable()) {
+        manualSave = true;
+    }
+}
+
+void MainWindow::askAddDevices()
+{
+    QList<GraphicsDevice> missingDevices;
+    QStringList missingDeviceNames;
+    for (int i = 0; i < m_model->rowCount(); ++i) {
+        GraphicsDevice device = m_model->device(i);
+        if (!m_videoCardDatabase->contains(device.vendorId, device.deviceId)) {
+            missingDevices.append(device);
+            missingDeviceNames.append(device.name);
+        }
+    }
+
+    if (missingDevices.isEmpty()) {
+        // Nothing to do
+        return;
+    }
+    QString question = tr("The following devices are still missing in the video card database. Do you want to add them?")
+        + "\n\n"
+        + missingDeviceNames.join("\n");
+
+    QMessageBox::StandardButton result = QMessageBox::question(this, tr("Add devices?"), question, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+    if (result == QMessageBox::Yes) {
+        foreach(const GraphicsDevice &device, missingDevices) {
+            m_videoCardDatabase->addDevice(device.vendorId, device.deviceId, device.name);
+        }
+    }
 }
 
 MainWindow::~MainWindow()

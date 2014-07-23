@@ -27,6 +27,9 @@ private slots:
     void locateGameFiles(const QString &directory);
     void setStatus(const QString &text, bool allok);
     void browseGame();
+    void save();
+
+    void askAddDevices();
 
 private:
     Ui::MainWindow *ui;

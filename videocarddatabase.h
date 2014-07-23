@@ -48,9 +48,16 @@ public:
 
     virtual void write(QIODevice *target) const;
 
+    virtual QModelIndex findDevice(quint16 vendorId, quint16 deviceId) const;
+    virtual bool contains(quint16 vendorId, quint16 deviceId) const;
+
 public slots:
     void loadFrom(QString fileName);
     void loadFrom(QIODevice *file);
+
+    void addVendor(const QString &name, quint16 vendorId);
+    virtual void addVendor(const QString &name, const QList<quint16> &vendorIds);
+    virtual void addDevice(quint16 vendorId, quint16 deviceId, const QString &name);
 };
 
 #endif // VIDEOCARDDATABASE_H
