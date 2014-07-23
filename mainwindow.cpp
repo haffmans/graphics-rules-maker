@@ -497,7 +497,7 @@ void MainWindow::askAddDevices()
 
 QString MainWindow::formatId(quint16 id) const
 {
-    return QString("0x%1").arg(id, 4, 16, QChar('0')).toUpper();
+    return QString("0x%1").arg(id, 4, 16, QChar('0'));
 }
 
 MainWindow::~MainWindow()
