@@ -73,6 +73,8 @@ void DeviceModel::load()
         dev.driver = QString(deviceInfo.Driver) + driverVersion;
         dev.display = QString(deviceInfo.Name);
         dev.deviceId = deviceInfo.DeviceId;
+        // TODO read vendor name from device
+        dev.vendorName = tr("Unknown [TODO]");
         dev.vendorId = deviceInfo.VendorId;
 
         IDirect3DDevice9* d3dDevice = nullptr;
@@ -100,7 +102,6 @@ void DeviceModel::load()
         if (SUCCEEDED(hr)) {
             UINT availableTextureMem  = d3dDevice->GetAvailableTextureMem();
             dev.memory = availableTextureMem;
-
 
             // TODO Fixup code - can't test this in Linux yet :)
             for (int iFormat = 0; iFormat < formatCount; ++iFormat) {
@@ -184,6 +185,7 @@ void DeviceModel::load()
 
     GraphicsDevice dev1;
     dev1.name = "NVidia Debugging Device 1";
+    dev1.vendorName = "NVidia";
     dev1.driver = "nvd3dum.dll 1.0";
     dev1.display = "\\\\.\\DISPLAY1";
     dev1.vendorId = 0x10b4;
@@ -193,6 +195,7 @@ void DeviceModel::load()
 
     GraphicsDevice dev2;
     dev2.name = "NVIDIA GeForce GTX 770";
+    dev2.vendorName = "NVidia";
     dev2.driver = "nvd3dum.dll 39.48";
     dev2.display = "\\\\.\\DISPLAY2";
     dev2.vendorId = 0x10de;
@@ -202,6 +205,7 @@ void DeviceModel::load()
 
     GraphicsDevice dev3;
     dev3.name = "AMD Radeon HD 6800 Series";
+    dev3.vendorName = "Advanced Micro Devices";
     dev3.driver = "aticfx32.dll 14.04";
     dev3.display = "\\\\.\\DISPLAY3";
     dev3.vendorId = 0x1002;
@@ -211,6 +215,7 @@ void DeviceModel::load()
 
     GraphicsDevice dev4;
     dev4.name = "Intel(R) HD Graphics";
+    dev4.vendorName = "Intel Corporation";
     dev4.driver = "igdumdim32.dll 13.37";
     dev4.display = "\\\\.\\DISPLAY4";
     dev4.vendorId = 0x8086;
@@ -255,16 +260,18 @@ QVariant DeviceModel::data(const QModelIndex &index, int role) const
     case 0:
         return dev.name;
     case 1:
-        return dev.vendorId;
+        return dev.vendorName;
     case 2:
-        return dev.deviceId;
+        return dev.vendorId;
     case 3:
-        return dev.display;
+        return dev.deviceId;
     case 4:
-        return dev.driver;
+        return dev.display;
     case 5:
+        return dev.driver;
+    case 6:
         return dev.memory;
-    case 6: {
+    case 7: {
         QStringList modes;
         foreach(const GraphicsMode &mode, dev.modes) {
             modes << QString("%1x%2@%3").arg(mode.width).arg(mode.height).arg(mode.refreshRate);
@@ -283,15 +290,21 @@ QVariant DeviceModel::headerData(int section, Qt::Orientation orientation, int r
 
     switch(section) {
     case 0:
-        return "Name";
+        return tr("Name");
     case 1:
-        return "Vendor ID";
+        return tr("Vendor Name");
     case 2:
-        return "Device ID";
+        return tr("Vendor ID");
     case 3:
-        return "Driver name";
+        return tr("Device ID");
     case 4:
-        return "Texture Memory (bytes)";
+        return tr("Display");
+    case 5:
+        return tr("Driver name");
+    case 6:
+        return tr("Texture Memory (bytes)");
+    case 7:
+        return tr("Available Modes");
     }
     return QVariant();
 }

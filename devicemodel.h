@@ -16,6 +16,7 @@ struct GraphicsMode
 struct GraphicsDevice
 {
     QString name;
+    QString vendorName;
     QString driver;
     QString display;
     quint64 memory;
@@ -44,7 +45,7 @@ public:
     }
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const {
         Q_UNUSED(parent);
-        return 7;
+        return 8;
     }
 
     virtual QVariant data(const QModelIndex &index, int role) const;
