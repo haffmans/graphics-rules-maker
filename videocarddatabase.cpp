@@ -201,6 +201,8 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
 
     beginResetModel();
 
+    m_vendors.clear();
+
     // Read file line by line
     QTextStream stream(file);
     QMutableListIterator<VideoCardVendor> vendor(m_vendors);
