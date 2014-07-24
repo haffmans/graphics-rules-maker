@@ -8,7 +8,7 @@ SET(GraphicRulesMaker_Sims2_SRCS
 )
 
 add_library(Sims2GameWriter MODULE ${GraphicRulesMaker_Sims2_SRCS})
-target_link_libraries(Sims2GameWriter Qt5::Widgets)
+target_link_libraries(Sims2GameWriter Qt5::Widgets GraphicRulesMaker)
 
 install(TARGETS Sims2GameWriter
     RUNTIME DESTINATION ${GraphicRulesMaker_PLUGIN_INSTALL_DIR}

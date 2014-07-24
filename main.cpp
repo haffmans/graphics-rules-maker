@@ -1,5 +1,7 @@
 #include <QApplication>
 
+#include <QMessageBox>
+
 #include "devicemodel.h"
 #include "videocarddatabase.h"
 #include "gamewriterfactory.h"
@@ -20,6 +22,11 @@ int main(int argc, char *argv[])
 
     model->load();
     pluginFactory->loadPlugins();
+
+    if (pluginFactory->plugins().size() == 0) {
+        QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
+        return -1;
+    }
 
     MainWindow window(model, database, pluginFactory);
 

@@ -46,7 +46,7 @@ void DeviceModel::load()
         return;
     }
 
-    int formatCount = 6;
+    const int formatCount = 6;
     D3DFORMAT modeFormats[formatCount] = {
         D3DFMT_A1R5G5B5,
         D3DFMT_A2R10G10B10,

@@ -31,9 +31,9 @@
 GameWriterFactory::GameWriterFactory(QObject* parent)
     : QObject(parent)
 {
-#ifdef Q_OS_WINDOWS
+#ifdef Q_OS_WIN32
     // Scan in directory of self application
-    m_searchDirectories.append(QDir::current().relativeFilePath("gamewriters"));
+    m_searchDirectories.append(QDir::current().absoluteFilePath("gamewriters"));
 #endif
 
     m_searchDirectories.append(QDir(GRAPHICRULESMAKER_PLUGIN_PATH));
@@ -43,7 +43,7 @@ void GameWriterFactory::loadPlugins()
 {
     QMap<QString, QDir> libraries; // filename -> searchdir
     foreach(const QDir &searchDir, m_searchDirectories) {
-        QStringList files = searchDir.entryList(QDir::Files | QDir::Executable);
+        QStringList files = searchDir.entryList(QDir::Files);
         foreach(const QString &pluginFile, files) {
             if (!libraries.contains(pluginFile)) {
                 libraries.insert(pluginFile, searchDir);
