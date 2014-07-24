@@ -38,12 +38,47 @@ QWidget* Sims2GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase
 
 QDir Sims2GameWriter::findGameDirectory() const
 {
-    // Hardcoded for now - TODO use registry
-    auto dir = QDir("/mnt/apps/Electronic Arts/The Sims 2 Ultimate Collection");
-    if (dir.exists()) {
-        return dir;
+#ifdef Q_OS_WIN32
+    // This really only works on Windows...
+    // Order based on "Suppression Exe" contents
+    QStringList exes = QStringList() << "Sims2SC.exe"
+                                     << "Sims2EP9.exe"
+                                     << "Sims2EP8.exe"
+                                     << "Sims2EP7.exe"
+                                     << "Sims2SP7.exe"
+                                     << "Sims2SP6.exe"
+                                     << "Sims2EP6.exe"
+                                     << "Sims2SP5.exe"
+                                     << "Sims2SP4.exe"
+                                     << "Sims2EP5.exe"
+                                     << "Sims2SP8.exe" // Seasons seems to suppresses Kitchen & Bath
+                                     << "Sims2EP4.exe"
+                                     << "Sims2SP2.exe"
+                                     << "Sims2SP1.exe"
+                                     << "Sims2EP3.exe"
+                                     << "Sims2EP2.exe"
+                                     << "Sims2EP1.exe"
+                                     << "Sims2.exe";
+
+    QString result;
+    QSettings s("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths", QSettings::NativeFormat);
+    foreach(const QString &exe, exes) {
+        // Find path
+        s.beginGroup(exe);
+        QFileInfo file(s.value("Default").toString());
+        if (file.exists()) {
+            // Item found and file exists -- use "Path" setting
+            result = s.value("Path").toString();
+            break;
+        }
+        s.endGroup();
     }
+
+    return QDir(result);
+#else
+    // TODO Implement this stuff for Mac?
     return QDir();
+#endif
 }
 
 QFileInfo Sims2GameWriter::gameExecutable(const QDir& gameDirectory) const

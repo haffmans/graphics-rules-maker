@@ -180,7 +180,7 @@ void MainWindow::selectGame(int row)
     else {
         // We don't use this as s.value()'s default, to avoid searching the
         // game every time.
-        ui->gamePath->setText(m_currentPlugin->findGameDirectory().absolutePath());
+        ui->gamePath->setText(QDir::toNativeSeparators(m_currentPlugin->findGameDirectory().absolutePath()));
     }
 
     // Set preview tab names
