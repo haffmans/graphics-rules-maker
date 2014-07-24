@@ -43,6 +43,13 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(videoCardDatabase, SIGNAL(modelReset()), SLOT(updateDeviceStatus()));
 
     ui->deviceSelect->setModel(m_model);
+    if (m_model->rowCount() > 0) {
+        ui->deviceStack->setCurrentWidget(ui->deviceInfo);
+    }
+    else {
+        ui->deviceStack->setCurrentWidget(ui->noDevicesWarning);
+    }
+
     ui->videoCardsView->setModel(m_videoCardDatabase);
     foreach(GameWriterInterface* plugin, m_gamePlugins->plugins()) {
         ui->gameSelect->addItem(plugin->displayName(), plugin->id());
