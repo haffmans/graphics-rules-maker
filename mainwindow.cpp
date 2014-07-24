@@ -89,7 +89,7 @@ void MainWindow::selectCard(int row)
     if (row >= 0) {
         GraphicsDevice dev = m_model->device(row);
         ui->display->setText(dev.display);
-        ui->deviceVendor->setText(QString("%1 (%2)").arg(dev.vendorName, formatId(dev.vendorId)));
+        ui->deviceVendor->setText(formatId(dev.vendorId));
         ui->deviceId->setText(formatId(dev.deviceId));
         ui->driver->setText(dev.driver);
         ui->memory->setText(tr("%1 Mb").arg(dev.memory / (1024*1024)));
