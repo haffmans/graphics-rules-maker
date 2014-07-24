@@ -32,7 +32,11 @@ set(GraphicRulesMaker_PLUGIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTAL
 
 configure_file(graphicrulesmaker_config.h.cmake  ${PROJECT_BINARY_DIR}/graphicrulesmaker_config.h)
 
-qt5_wrap_ui(GraphicRulesMaker_UIS mainwindow.ui manualsaveconfirmationbox.ui)
+qt5_wrap_ui(GraphicRulesMaker_UIS
+    mainwindow.ui
+    manualsaveconfirmationbox.ui
+    aboutdialog.ui
+)
 
 # libGraphicRulesMaker
 set(GraphicRulesMaker_SRCS
@@ -53,6 +57,7 @@ set(GraphicRulesMakerUi_SRCS
     main.cpp
     mainwindow.cpp
     manualsaveconfirmationbox.cpp
+    aboutdialog.cpp
     ${GraphicRulesMaker_UIS}
 )
 

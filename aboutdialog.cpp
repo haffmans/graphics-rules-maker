@@ -16,45 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMS2SETTINGS_H
-#define SIMS2SETTINGS_H
+#include "aboutdialog.h"
+#include "ui_aboutdialog.h"
 
-#include <QtWidgets/QWidget>
-
-namespace Ui
+AboutDialog::AboutDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::AboutDialog)
 {
-class Sims2Settings;
+    ui->setupUi(this);
 }
 
-class DeviceModel;
-class VideoCardDatabase;
-
-struct Sims2Variables
+AboutDialog::~AboutDialog()
 {
-    quint16 forceMemory;
-    bool disableSimShadows;
-    bool radeonHd7000Fix;
-    bool intelHigh;
-    bool intelVsync;
-
-    QSize defaultResolution;
-    QSize maximumResolution;
-};
-
-class Sims2Settings : public QWidget
-{
-    Q_OBJECT
-public:
-    Sims2Settings(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent = 0);
-    ~Sims2Settings();
-
-    Sims2Variables current() const;
-
-public slots:
-    void reset();
-
-private:
-    Ui::Sims2Settings* ui;
-};
-
-#endif // SIMS2SETTINGS_H
+    delete ui;
+}

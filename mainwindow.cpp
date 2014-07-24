@@ -1,3 +1,21 @@
+/*
+ * Graphic Rules Maker
+ * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -16,6 +34,7 @@
 #include "gamewriterfactory.h"
 #include "gamewriterinterface.h"
 #include "manualsaveconfirmationbox.h"
+#include "aboutdialog.h"
 
 MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins) :
     QMainWindow(),
@@ -41,6 +60,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(videoCardDatabase, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
     connect(videoCardDatabase, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
     connect(videoCardDatabase, SIGNAL(modelReset()), SLOT(updateDeviceStatus()));
+    connect(ui->aboutAction, SIGNAL(triggered()), SLOT(about()));
 
     ui->deviceSelect->setModel(m_model);
     if (m_model->rowCount() > 0) {
@@ -505,6 +525,13 @@ void MainWindow::askAddDevices()
 QString MainWindow::formatId(quint16 id) const
 {
     return QString("0x%1").arg(id, 4, 16, QChar('0'));
+}
+
+void MainWindow::about()
+{
+    AboutDialog *dialog = new AboutDialog(this);
+    connect(dialog, SIGNAL(accepted()), dialog, SLOT(deleteLater()));
+    dialog->show();
 }
 
 MainWindow::~MainWindow()
