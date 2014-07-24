@@ -1,0 +1,9 @@
+*~
+*.bak
+*.ori
+*.rej
+*.diff
+*.patch
+*.user
+*.kdev4
+
