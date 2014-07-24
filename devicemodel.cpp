@@ -69,9 +69,12 @@ void DeviceModel::load()
         }
 
         dev.name = QString(deviceInfo.Description);
-        QString driverVersion = QString("%1.%2").arg(deviceInfo.DriverVersionLowPart).arg(DriverVersionHighPart);
-        dev.driver = QString(deviceInfo.Driver) + driverVersion;
-        dev.display = QString(deviceInfo.Name);
+        quint16 driverMajor = (deviceInfo.DriverVersion.HighPart >> 16);
+        quint16 driverMinor = (deviceInfo.DriverVersion.HighPart & 0xFFFF);
+        quint16 driverBuild = (deviceInfo.DriverVersion.LowPart >> 16);
+        quint16 driverRevision = (deviceInfo.DriverVersion.LowPart & 0xFFFF);
+        QString driverVersion = QString("%1.%2.%3.%4").arg(driverMajor).arg(driverMinor).arg(driverBuild).arg(driverRevision);
+        dev.driver = QString(deviceInfo.Driver) + " " + driverVersion;
         dev.display = QString(deviceInfo.DeviceName);
         dev.deviceId = deviceInfo.DeviceId;
         dev.vendorId = deviceInfo.VendorId;
