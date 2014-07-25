@@ -24,6 +24,9 @@
        <attribute name="title">
         <string>Settings</string>
        </attribute>
+       <attribute name="whatsThis">
+        <string>&lt;p&gt;The Settings tab provides all bells and whistles required to fix support for modern day systems.&lt;/p&gt;</string>
+       </attribute>
        <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0,0,0,1,0">
         <item row="4" column="0" colspan="3">
          <widget class="QGroupBox" name="settingsBox">
@@ -44,7 +47,11 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLineEdit" name="gamePath"/>
+         <widget class="QLineEdit" name="gamePath">
+          <property name="whatsThis">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the installation path of the game here.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
         <item row="1" column="2">
          <widget class="QPushButton" name="browseFilesButton">
@@ -54,7 +61,11 @@
          </widget>
         </item>
         <item row="0" column="1" colspan="2">
-         <widget class="QComboBox" name="gameSelect"/>
+         <widget class="QComboBox" name="gameSelect">
+          <property name="whatsThis">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose a game to edit the settings for here.&lt;/p&gt;&lt;p&gt;Support for more games can be added by installing the appropriate plugins.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="gameLabel">
@@ -85,6 +96,9 @@
       <widget class="QWidget" name="deviceTab">
        <attribute name="title">
         <string>Device Info</string>
+       </attribute>
+       <attribute name="whatsThis">
+        <string>&lt;p&gt;This tab shows information about your graphics card(s).&lt;/p&gt;&lt;p&gt;Advanced users only.&lt;/p&gt;</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
@@ -248,6 +262,9 @@
        <attribute name="title">
         <string>GraphicRules.sgr</string>
        </attribute>
+       <attribute name="whatsThis">
+        <string>&lt;p&gt;This tab shows a preview of the generated graphic rules.&lt;/p&gt;&lt;p&gt;Advanced users only.&lt;/p&gt;</string>
+       </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="2" column="1">
          <widget class="QPushButton" name="graphicsRulesSave">
@@ -295,6 +312,9 @@
       <widget class="QWidget" name="videoCardsTab">
        <attribute name="title">
         <string>VideoCards.sgr</string>
+       </attribute>
+       <attribute name="whatsThis">
+        <string>&lt;p&gt;This tab shows the video card database and a preview of the file.&lt;/p&gt;&lt;p&gt;Advanced users only.&lt;/p&gt;</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="1" column="0">
@@ -373,7 +393,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="copyright">
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright &amp;copy; 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright &amp;copy; 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -391,7 +411,7 @@
      <x>0</x>
      <y>0</y>
      <width>709</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">

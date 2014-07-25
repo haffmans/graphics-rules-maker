@@ -37,7 +37,7 @@
 #include "aboutdialog.h"
 
 MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins) :
-    QMainWindow(),
+    QMainWindow(0, Qt::WindowContextHelpButtonHint),
     ui(new Ui::MainWindow)
 {
     m_model = model;
@@ -529,7 +529,7 @@ QString MainWindow::formatId(quint16 id) const
 
 void MainWindow::about()
 {
-    AboutDialog *dialog = new AboutDialog(this);
+    AboutDialog *dialog = new AboutDialog(this, Qt::Dialog);
     connect(dialog, SIGNAL(accepted()), dialog, SLOT(deleteLater()));
     dialog->show();
 }

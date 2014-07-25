@@ -19,11 +19,18 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
+AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
+    QDialog(parent, flags),
     ui(new Ui::AboutDialog)
 {
+    this->setSizeGripEnabled(false);
     ui->setupUi(this);
+
+    if (!flags.testFlag(Qt::WindowContextHelpButtonHint)) {
+        Qt::WindowFlags newFlags = windowFlags();
+        newFlags = newFlags & ~Qt::WindowContextHelpButtonHint;
+        setWindowFlags(newFlags);
+    }
 }
 
 AboutDialog::~AboutDialog()

@@ -55,7 +55,7 @@
       <string>Disable shadows for Sims and Pets, to work around black rectangles as shadows</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Disable Sim Shadows</string>
@@ -101,7 +101,7 @@
       <string>The maximum available resolution (in high quality graphics mode only).</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum available resolution (width/height) in the game, if the game is in high quality mode. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Change this to make higher resolutions available in the in-game settings.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If this tweak appears to have no effect, the game may not be running in high quality mode. Enabling other tweaks may help.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum available resolution (width/height) in the game, if the game is in high quality mode. &lt;/p&gt;&lt;p&gt;Change this to make higher resolutions available in the in-game settings.&lt;/p&gt;&lt;p&gt;If this tweak appears to have no effect, the game may not be running in high quality mode. Enabling other tweaks may help.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -111,7 +111,7 @@
       <string>Do not force low quality on Radeon HD 7000 series graphics cards (as opposed to the older Radeon 7000 series).</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this if you have a graphics card in the &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; series.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;The detection in the default code overlaps with the older &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; series, and forces the settings to a low quality code. Apply this tweak to make sure the detection only picks out the old graphics cards, but not the newer &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; ones.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If you do not have an ATI/AMD graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this if you have a graphics card in the &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; series.&lt;/p&gt;&lt;p&gt;The detection in the default code overlaps with the older &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; series, and forces the settings to a low quality code. Apply this tweak to make sure the detection only picks out the old graphics cards, but not the newer &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; ones.&lt;/p&gt;&lt;p&gt;If you do not have an ATI/AMD graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Fix AMD Radeon HD 7000 series recognition</string>
@@ -127,7 +127,7 @@
       <string>Allow high quality graphics for most recent Intel Graphics cards.</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable high quality graphics for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. If you have a fairly recent Intel graphics card, you may enable this tweak to increase graphics quality (at the cost of performance).&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If your game runs choppy or slow after applying this tweak, disable it again.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable high quality graphics for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. If you have a fairly recent Intel graphics card, you may enable this tweak to increase graphics quality (at the cost of performance).&lt;/p&gt;&lt;p&gt;If your game runs choppy or slow after applying this tweak, disable it again.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>High Quality on Intel Graphics</string>
@@ -143,7 +143,7 @@
       <string>Enable VSync for Intel Graphics cards. May cause (or solve) flickering graphics and/or UI.</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable VSync for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. VSync is disabled by default, because with some driver versions and some cards this caused a flickering UI.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If you experience flickering graphics or UI in the Sims 2, enabling or disabling this tweak may help.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable VSync for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. VSync is disabled by default, because with some driver versions and some cards this caused a flickering UI.&lt;/p&gt;&lt;p&gt;If you experience flickering graphics or UI in the Sims 2, enabling or disabling this tweak may help.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Support VSync on Intel</string>
@@ -157,6 +157,9 @@
     <widget class="QPushButton" name="resetDefaults">
      <property name="toolTip">
       <string>Disable all tweaks and restore default values.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>&amp;Default Settings</string>
