@@ -418,3 +418,5 @@ QString VideoCardDatabase::formatId(quint16 id) const
 VideoCardDatabase::~VideoCardDatabase()
 {
 }
+
+#include "videocarddatabase.moc"

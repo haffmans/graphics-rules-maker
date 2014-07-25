@@ -1,29 +1,20 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(GraphicRulesMaker)
+project(GraphicRulesMakerBundle)
 
-# We need C++11
-include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-elseif(COMPILER_SUPPORTS_CXX0X)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-else()
-    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
-endif()
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}")
 
-find_package(Qt5Widgets)
+# Tell subprojects we're doing a full build (including library)
+set(GraphicRulesMaker_FULL_BUILD 1)
 
-if(WIN32)
-    find_package(DirectX REQUIRED)
-    include_directories(${DirectX_INCLUDE_DIR})
-endif(WIN32)
+# Required to get "graphicrulesmaker/*" includes working for the UI/plugins,
+# as with the split builds
+include_directories(
+  "${PROJECT_SOURCE_DIR}/src"
+  "${PROJECT_BINARY_DIR}/src"
+)
 
+# Determine plugin installation directory
 if(WIN32)
     set(PLUGIN_INSTALL_DIR bin/gamewriters/)
 else(WIN32)
@@ -31,16 +22,12 @@ else(WIN32)
     set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
     set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicrulesmaker/)
 endif(WIN32)
-set(GraphicRulesMaker_PLUGIN_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
+set(GraphicRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
 
-configure_file(graphicrulesmaker_config.h.cmake  ${PROJECT_BINARY_DIR}/graphicrulesmaker_config.h)
-
-include_directories(
-  "${PROJECT_SOURCE_DIR}/src"
-  "${PROJECT_BINARY_DIR}"
-)
-
-add_subdirectory(src)
+# Add modules
+add_subdirectory(src/graphicrulesmaker)
+add_subdirectory(src/graphicrulesmakerui)
+add_subdirectory(src/plugins)
 
 # Copy required Qt5 DLLs for Windows
 if(WIN32)

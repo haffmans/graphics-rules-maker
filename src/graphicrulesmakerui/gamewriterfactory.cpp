@@ -23,7 +23,7 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QtDebug>
 
-#include "graphicrulesmaker_config.h"
+#include "graphicrulesmaker/graphicrulesmaker_config.h"
 #include "graphicrulesmaker/gamewriterinterface.h"
 
 
@@ -42,6 +42,7 @@ void GameWriterFactory::loadPlugins()
 {
     QMap<QString, QDir> libraries; // filename -> searchdir
     foreach(const QDir &searchDir, m_searchDirectories) {
+        qDebug() << "Scanning directory " << searchDir.absolutePath() << " for plugins...";
         QStringList files = searchDir.entryList(QDir::Files);
         foreach(const QString &pluginFile, files) {
             if (!libraries.contains(pluginFile)) {
