@@ -21,6 +21,7 @@ find_package(Qt5Widgets REQUIRED)
 if (NOT GraphicRulesMaker_FULL_BUILD)
     find_package(GraphicRulesMaker REQUIRED)
 endif (NOT GraphicRulesMaker_FULL_BUILD)
+find_package(ImageMagick REQUIRED COMPONENTS convert)
 
 include_directories(${GraphicRulesMaker_INCLUDE_DIRS})
 
@@ -30,6 +31,36 @@ qt5_wrap_ui(GraphicRulesMaker_UIS
     aboutdialog.ui
 )
 
+qt5_add_resources(GraphicRulesMakerUi_RCCS
+    icon.qrc
+)
+
+# Create icon from icon.png
+add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 48x48 "${PROJECT_BINARY_DIR}/icon-48.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 32x32 "${PROJECT_BINARY_DIR}/icon-32.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 16x16 "${PROJECT_BINARY_DIR}/icon-16.png"
+    COMMENT "Resizing icon"
+    MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
+)
+
+add_custom_command(OUTPUT "icon.ico"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE}
+        "${PROJECT_SOURCE_DIR}/icon.png"
+        "icon-48.png"
+        "icon-32.png"
+        "icon-16.png"
+        "icon.ico"
+    COMMENT "Resizing icon"
+    MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
+    DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
+)
+
+set(GraphicRulesMakerUi_Ico "${PROJECT_BINARY_DIR}/icon.ico")
+
+configure_file(graphicrulesmakerui.rc.in
+    ${PROJECT_BINARY_DIR}/graphicrulesmakerui.rc)
+
 # GraphicRulesMaker UI
 set(GraphicRulesMakerUi_SRCS
     main.cpp
@@ -38,6 +69,9 @@ set(GraphicRulesMakerUi_SRCS
     aboutdialog.cpp
     gamewriterfactory.cpp
     ${GraphicRulesMaker_UIS}
+    ${GraphicRulesMakerUi_RCCS}
+    ${GraphicRulesMakerUi_Ico}
+    ${PROJECT_BINARY_DIR}/graphicrulesmakerui.rc
 )
 
 # Set some Win32 Specific Settings

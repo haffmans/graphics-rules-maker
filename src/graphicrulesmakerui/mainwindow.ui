@@ -10,6 +10,10 @@
     <height>408</height>
    </rect>
   </property>
+  <property name="windowIcon">
+   <iconset resource="icon.qrc">
+    <normaloff>:/icon.png</normaloff>:/icon.png</iconset>
+  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
@@ -456,7 +460,9 @@
   <tabstop>videoCardsText</tabstop>
   <tabstop>videoCardsSave</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="icon.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>quitAction</sender>

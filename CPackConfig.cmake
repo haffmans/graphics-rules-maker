@@ -45,8 +45,8 @@ if(WIN32 AND NOT UNIX)
 
     # There is a bug in NSI that does not handle full unix paths properly. Make
     # sure there is at least one set of four (4) backslashes.
-    # set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}\\\\InstallIcon.bmp")
-    # set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\GraphicRulesMakerUI.exe")
+    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}\\\\src\\\\graphicrulesmakerui\\\\icon.png")
+    set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\GraphicRulesMakerUI.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
     set(CPACK_NSIS_HELP_LINK "http://www.simsnetwork.com")
     set(CPACK_NSIS_URL_INFO_ABOUT "http://www.simsnetwork.com")
