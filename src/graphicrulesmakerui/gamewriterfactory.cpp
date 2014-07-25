@@ -24,7 +24,7 @@
 #include <QtCore/QtDebug>
 
 #include "graphicrulesmaker_config.h"
-#include "gamewriterinterface.h"
+#include "graphicrulesmaker/gamewriterinterface.h"
 
 
 GameWriterFactory::GameWriterFactory(QObject* parent)

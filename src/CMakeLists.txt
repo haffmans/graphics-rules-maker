@@ -1,0 +1,3 @@
+add_subdirectory(graphicrulesmaker)
+add_subdirectory(graphicrulesmakerui)
+add_subdirectory(plugins)

@@ -29,10 +29,11 @@
 #include <QtWidgets/QCompleter>
 #include <QtGui/QDesktopServices>
 
-#include "devicemodel.h"
-#include "videocarddatabase.h"
+#include "graphicrulesmaker/devicemodel.h"
+#include "graphicrulesmaker/videocarddatabase.h"
+#include "graphicrulesmaker/gamewriterinterface.h"
+
 #include "gamewriterfactory.h"
-#include "gamewriterinterface.h"
 #include "manualsaveconfirmationbox.h"
 #include "aboutdialog.h"
 

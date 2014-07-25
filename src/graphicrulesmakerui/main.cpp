@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMessageBox>
 
-#include <QMessageBox>
+#include "graphicrulesmaker/devicemodel.h"
+#include "graphicrulesmaker/videocarddatabase.h"
 
-#include "devicemodel.h"
-#include "videocarddatabase.h"
 #include "gamewriterfactory.h"
 #include "mainwindow.h"
 

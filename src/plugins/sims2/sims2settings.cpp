@@ -21,8 +21,8 @@
 
 #include <QtCore/QSettings>
 
-#include "../devicemodel.h"
-#include "../videocarddatabase.h"
+#include "graphicrulesmaker/devicemodel.h"
+#include "graphicrulesmaker/videocarddatabase.h"
 
 Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
 {

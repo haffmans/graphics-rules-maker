@@ -20,7 +20,7 @@
 #define SIMS2GAMEWRITER_H
 
 #include <QtCore/QObject>
-#include "../gamewriterinterface.h"
+#include "graphicrulesmaker/gamewriterinterface.h"
 
 class Sims2Settings;
 class DeviceModel;
