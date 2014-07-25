@@ -109,7 +109,7 @@ install(FILES
         "${PROJECT_SOURCE_DIR}/devicemodel.h"
         "${PROJECT_SOURCE_DIR}/videocarddatabase.h"
         "${PROJECT_SOURCE_DIR}/gamewriterinterface.h"
-    DESTINATION include
+    DESTINATION include/graphicrulesmaker/
     COMPONENT dev
 )
 
