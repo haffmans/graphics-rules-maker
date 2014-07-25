@@ -81,15 +81,30 @@ if(WIN32)
 endif(WIN32)
 
 # Common install
-install(TARGETS GraphicRulesMaker GraphicRulesMakerUi
+install(TARGETS GraphicRulesMakerUi
     RUNTIME DESTINATION bin
     COMPONENT application
 )
-install(TARGETS GraphicRulesMaker
-    LIBRARY DESTINATION lib${LIB_SUFFIX}
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    COMPONENT dev
-)
+
+if(WIN32)
+    install(TARGETS GraphicRulesMaker
+        RUNTIME DESTINATION bin
+        COMPONENT application
+    )
+    # Different component
+    install(TARGETS GraphicRulesMaker
+        LIBRARY DESTINATION lib${LIB_SUFFIX}
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        COMPONENT dev
+    )
+else(WIN32)
+    install(TARGETS GraphicRulesMaker
+        LIBRARY DESTINATION lib${LIB_SUFFIX}
+        ARCHIVE DESTINATION lib${LIB_SUFFIX}
+        COMPONENT application
+    )
+endif(WIN32)
+
 install(FILES
         "${PROJECT_SOURCE_DIR}/devicemodel.h"
         "${PROJECT_SOURCE_DIR}/videocarddatabase.h"
@@ -156,7 +171,7 @@ endif(MINGW AND WIN32)
 # CPack stuff
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Graphic Rules Maker")
 set(CPACK_PACKAGE_VENDOR "SimsNetwork.com")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/ReadMe.txt")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.txt")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.txt")
 set(CPACK_PACKAGE_VERSION_MAJOR "1")
 set(CPACK_PACKAGE_VERSION_MINOR "0")
