@@ -77,7 +77,9 @@ if(WIN32)
     if(MINGW)
         # Yep, this could be cleaner, using find_library and whatnot. Can't be bothered for now.
         SET(Qt5Core_Dependencies
-                ${Qt5Core_BinDir}/icudt52.dll
+                # ${Qt5Core_BinDir}/icudt52.dll
+                # Use a minimal version from http://qt-project.org/forums/viewthread/38489
+                ${PROJECT_SOURCE_DIR}/lib/icudt52.dll
                 ${Qt5Core_BinDir}/icuin52.dll
                 ${Qt5Core_BinDir}/icuuc52.dll
                 ${Qt5Core_BinDir}/libgcc_s_dw2-1.dll
