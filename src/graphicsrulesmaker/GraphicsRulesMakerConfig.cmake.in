@@ -31,7 +31,7 @@ if(NOT TARGET GraphicsRulesMaker AND NOT GraphicsRulesMaker_BINARY_DIR)
   include("${GraphicsRulesMaker_CMAKE_DIR}/GraphicsRulesMakerTargets.cmake")
 endif()
 
-set(GraphicsRulesMaker_PLUGIN_PATH "@PLUGIN_INSTALL_DIR@")
+set(GraphicsRulesMaker_PLUGIN_PATH "@GraphicsRulesMaker_EXPORT_PLUGIN_PATH@")
 
 # These are IMPORTED targets created by GraphicsRulesMakerTargets.cmake
 set(GraphicsRulesMaker_LIBRARIES GraphicsRulesMaker)

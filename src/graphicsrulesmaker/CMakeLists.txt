@@ -103,8 +103,15 @@ install(
 # Write out CMake files (for developers)
 export(TARGETS GraphicsRulesMaker
     FILE "${PROJECT_BINARY_DIR}/GraphicsRulesMakerTargets.cmake")
-# For installation (using absolute path)
-set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
+# For installation (using absolute path on non-windows)
+if(WIN32 AND NOT CYGWIN)
+    set(CONF_INCLUDE_DIRS "\${GraphicsRulesMaker_CMAKE_DIR}/../include")
+    set(GraphicsRulesMaker_EXPORT_PLUGIN_PATH "\${GraphicsRulesMaker_CMAKE_DIR}/../${PLUGIN_INSTALL_DIR}")
+else(WIN32 AND NOT CYGWIN)
+    set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
+    set(GraphicsRulesMaker_EXPORT_PLUGIN_PATH "${GraphicsRulesMaker_PLUGIN_PATH}")
+endif(WIN32 AND NOT CYGWIN)
+
 configure_file(GraphicsRulesMakerConfig.cmake.in
   "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/GraphicsRulesMakerConfig.cmake" @ONLY)
 # Version info
