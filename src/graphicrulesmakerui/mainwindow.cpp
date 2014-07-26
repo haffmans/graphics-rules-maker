@@ -38,7 +38,7 @@
 #include "aboutdialog.h"
 
 MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins) :
-    QMainWindow(0, Qt::WindowContextHelpButtonHint),
+    QMainWindow(0, Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint),
     ui(new Ui::MainWindow)
 {
     m_model = model;
