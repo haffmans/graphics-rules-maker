@@ -19,6 +19,8 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+
 AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
     QDialog(parent, flags),
     ui(new Ui::AboutDialog)
@@ -31,6 +33,8 @@ AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
         newFlags = newFlags & ~Qt::WindowContextHelpButtonHint;
         setWindowFlags(newFlags);
     }
+
+    ui->label->setText(ui->label->text().replace("GRAPHICSRULESMAKER_VERSION", GRAPHICSRULESMAKER_VERSION));
 }
 
 AboutDialog::~AboutDialog()
