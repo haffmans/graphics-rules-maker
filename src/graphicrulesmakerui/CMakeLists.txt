@@ -51,7 +51,7 @@ add_custom_command(OUTPUT "icon.ico"
         "icon-32.png"
         "icon-16.png"
         "icon.ico"
-    COMMENT "Resizing icon"
+    COMMENT "Creating final icon"
     MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
     DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
 )

@@ -1,3 +1,4 @@
+set(CPACK_PACKAGE_NAME "GraphicRulesMaker")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Graphic Rules Maker")
 set(CPACK_PACKAGE_VENDOR "SimsNetwork.com")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.txt")
@@ -41,11 +42,12 @@ set(CPACK_INSTALL_TYPE_DEFAULT_DISPLAY_NAME "Default Installation")
 set(CPACK_INSTALL_TYPE_DEV_DISPLAY_NAME "Developers")
 
 if(WIN32 AND NOT UNIX)
-    set(CPACK_GENERATOR "NSIS")
+    set(CPACK_GENERATOR "NSIS;ZIP")
 
     # There is a bug in NSI that does not handle full unix paths properly. Make
     # sure there is at least one set of four (4) backslashes.
-    set(CPACK_PACKAGE_ICON "${CMake_SOURCE_DIR}\\\\src\\\\graphicrulesmakerui\\\\icon.png")
+    set(CPACK_PACKAGE_ICON "${PROJECT_BINARY_DIR}\\\\header.bmp")
+    set(CPACK_NSIS_MUI_ICON "${PROJECT_BINARY_DIR}\\\\src\\\\graphicrulesmakerui\\\\icon.ico")
     set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\GraphicRulesMakerUI.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
     set(CPACK_NSIS_HELP_LINK "http://www.simsnetwork.com")

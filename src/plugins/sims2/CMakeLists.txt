@@ -36,8 +36,11 @@ add_library(Sims2GameWriter MODULE ${GraphicRulesMaker_Sims2_SRCS})
 set_target_properties(Sims2GameWriter PROPERTIES PREFIX "")
 target_link_libraries(Sims2GameWriter Qt5::Widgets GraphicRulesMaker)
 
+# Determine relative plugin path for CPACK
+file(RELATIVE_PATH PluginInstallDir "${CMAKE_INSTALL_PREFIX}" ${GraphicRulesMaker_PLUGIN_PATH})
+
 install(TARGETS Sims2GameWriter
-    RUNTIME DESTINATION ${GraphicRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${PluginInstallDir}
+    LIBRARY DESTINATION ${PluginInstallDir}
     COMPONENT sims2
 )

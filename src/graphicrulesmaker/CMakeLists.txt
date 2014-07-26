@@ -81,7 +81,6 @@ if(WIN32)
     )
     # Different component for installer
     install(TARGETS GraphicRulesMaker
-        EXPORT GraphicRulesMakerTargets
         LIBRARY DESTINATION lib${LIB_SUFFIX}
         ARCHIVE DESTINATION lib${LIB_SUFFIX}
         COMPONENT dev
