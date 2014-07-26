@@ -33,6 +33,7 @@ GameWriterFactory::GameWriterFactory(QObject* parent)
 #ifdef Q_OS_WIN32
     // Scan in directory of self application
     m_searchDirectories.append(QDir::current().absoluteFilePath("gamewriters"));
+    m_searchDirectories.append(QDir::current().absoluteFilePath("bin/gamewriters"));
 #endif
 
     m_searchDirectories.append(QDir(GRAPHICRULESMAKER_PLUGIN_PATH));
