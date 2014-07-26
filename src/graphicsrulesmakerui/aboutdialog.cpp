@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIRMATIONBOX_H
-#define CONFIRMATIONBOX_H
+#include "aboutdialog.h"
+#include "ui_aboutdialog.h"
 
-#include <QtWidgets/QDialog>
-
-namespace Ui
+AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
+    QDialog(parent, flags),
+    ui(new Ui::AboutDialog)
 {
-class ManualSaveConfirmationBox;
+    this->setSizeGripEnabled(false);
+    ui->setupUi(this);
+
+    if (!flags.testFlag(Qt::WindowContextHelpButtonHint)) {
+        Qt::WindowFlags newFlags = windowFlags();
+        newFlags = newFlags & ~Qt::WindowContextHelpButtonHint;
+        setWindowFlags(newFlags);
+    }
 }
 
-class ManualSaveConfirmationBox : public QDialog
+AboutDialog::~AboutDialog()
 {
-    Q_OBJECT
-public:
-    ~ManualSaveConfirmationBox();
-    ManualSaveConfirmationBox(QWidget* parent = 0, Qt::WindowFlags f = 0);
-
-signals:
-    void openTemporaryDirectory();
-    void openDestinationDirectory();
-
-private:
-    Ui::ManualSaveConfirmationBox* ui;
-};
-
-#endif // CONFIRMATIONBOX_H
+    delete ui;
+}

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(GraphicRulesMakerUi)
+project(GraphicsRulesMakerUi)
 
 # We need C++11
 include(CheckCXXCompilerFlag)
@@ -18,20 +18,20 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets REQUIRED)
-if (NOT GraphicRulesMaker_FULL_BUILD)
-    find_package(GraphicRulesMaker REQUIRED)
-endif (NOT GraphicRulesMaker_FULL_BUILD)
+if (NOT GraphicsRulesMaker_FULL_BUILD)
+    find_package(GraphicsRulesMaker REQUIRED)
+endif (NOT GraphicsRulesMaker_FULL_BUILD)
 find_package(ImageMagick REQUIRED COMPONENTS convert)
 
-include_directories(${GraphicRulesMaker_INCLUDE_DIRS})
+include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
-qt5_wrap_ui(GraphicRulesMaker_UIS
+qt5_wrap_ui(GraphicsRulesMaker_UIS
     mainwindow.ui
     manualsaveconfirmationbox.ui
     aboutdialog.ui
 )
 
-qt5_add_resources(GraphicRulesMakerUi_RCCS
+qt5_add_resources(GraphicsRulesMakerUi_RCCS
     icon.qrc
 )
 
@@ -56,22 +56,22 @@ add_custom_command(OUTPUT "icon.ico"
     DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
 )
 
-set(GraphicRulesMakerUi_Ico "${PROJECT_BINARY_DIR}/icon.ico")
+set(GraphicsRulesMakerUi_Ico "${PROJECT_BINARY_DIR}/icon.ico")
 
-configure_file(graphicrulesmakerui.rc.in
-    ${PROJECT_BINARY_DIR}/graphicrulesmakerui.rc)
+configure_file(graphicsrulesmakerui.rc.in
+    ${PROJECT_BINARY_DIR}/graphicsrulesmakerui.rc)
 
-# GraphicRulesMaker UI
-set(GraphicRulesMakerUi_SRCS
+# GraphicsRulesMaker UI
+set(GraphicsRulesMakerUi_SRCS
     main.cpp
     mainwindow.cpp
     manualsaveconfirmationbox.cpp
     aboutdialog.cpp
     gamewriterfactory.cpp
-    ${GraphicRulesMaker_UIS}
-    ${GraphicRulesMakerUi_RCCS}
-    ${GraphicRulesMakerUi_Ico}
-    ${PROJECT_BINARY_DIR}/graphicrulesmakerui.rc
+    ${GraphicsRulesMaker_UIS}
+    ${GraphicsRulesMakerUi_RCCS}
+    ${GraphicsRulesMakerUi_Ico}
+    ${PROJECT_BINARY_DIR}/graphicsrulesmakerui.rc
 )
 
 # Set some Win32 Specific Settings
@@ -83,14 +83,14 @@ IF (APPLE)
     SET(GUI_TYPE MACOSX_BUNDLE)
 ENDIF (APPLE)
 
-add_executable(GraphicRulesMakerUi ${GUI_TYPE} ${GraphicRulesMakerUi_SRCS})
-target_link_libraries(GraphicRulesMakerUi GraphicRulesMaker Qt5::Widgets)
+add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS})
+target_link_libraries(GraphicsRulesMakerUi GraphicsRulesMaker Qt5::Widgets)
 
 if(WIN32)
-    target_link_libraries(GraphicRulesMakerUi ${DirectX_LIBRARIES})
+    target_link_libraries(GraphicsRulesMakerUi ${DirectX_LIBRARIES})
 endif(WIN32)
 
-install(TARGETS GraphicRulesMakerUi
+install(TARGETS GraphicsRulesMakerUi
     RUNTIME DESTINATION bin
     COMPONENT application
 )

@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -252,7 +252,7 @@ endif
     if (options.forceMemory > 0) {
         stream << R"EOF(
 
-# GraphicRulesMaker Tweak: Force memory size
+# GraphicsRulesMaker Tweak: Force memory size
 seti textureMemory )EOF" << options.forceMemory << "\n";
     }
 
@@ -519,7 +519,7 @@ if (not $useSoftwareRasterizer)
       if (options.radeonHd7000Fix) {
           // Force "Radeon 7?00" match to avoid matching "Radeon HD 7?00"
           stream << R"EOF(
-      # GraphicRulesMaker Tweak: Radeon HD 7000 series recognition
+      # GraphicsRulesMaker Tweak: Radeon HD 7000 series recognition
       if (match("${cardName}", "*Radeon?VE*") or match("${cardName}", "*Radeon?7?00*") or match("${cardName}", "*R100*") or match("${cardName}", "*IGP 3?0*") or match("${cardName}", "*9100 IGP*")))EOF";
       }
       else {
@@ -625,13 +625,13 @@ if (not $useSoftwareRasterizer)
     else  {
         if (options.intelVsync) {
             stream << R"EOF(
-      # GraphicRulesMaker Tweak: Allow VSync on Intel Graphics - may cause flickering UI
+      # GraphicsRulesMaker Tweak: Allow VSync on Intel Graphics - may cause flickering UI
       boolProp disableVSyncSupport           false
 )EOF";
         }
         if (options.intelHigh) {
             stream << R"EOF(
-      # GraphicRulesMaker Tweak: High Quality on Intel Graphics
+      # GraphicsRulesMaker Tweak: High Quality on Intel Graphics
       # This tweak keeps the following settings (original value is as it was set in the original script):
       #   boolProp simpleTerrain (original: true)
       #   boolProp enumerateMultisampleLevels (original: false)
@@ -814,7 +814,7 @@ option Shadows
 )EOF";
 
     if (options.disableSimShadows) {
-        stream << "      # GraphicRulesMaker Tweak: Always disable Sim shadows\n\
+        stream << "      # GraphicsRulesMaker Tweak: Always disable Sim shadows\n\
       boolProp simShadows       false";
     }
     else {
@@ -1039,7 +1039,7 @@ option ScreenModeResolution
       if (options.maximumResolution.width() != 1600 || options.maximumResolution.height() != 1200) {
           // Custom maximum resolution applied
           stream << "\
-      # GraphicRulesMaker Tweak: Custom maximum resolution\n\
+      # GraphicsRulesMaker Tweak: Custom maximum resolution\n\
       uintProp maxResWidth      " << options.maximumResolution.width() << "\n\
       uintProp maxResHeight     " << options.maximumResolution.height() << "\n";
       }
@@ -1052,7 +1052,7 @@ option ScreenModeResolution
       if (options.defaultResolution.width() != 1024 || options.defaultResolution.height() != 768) {
           // Custom default resolution applied
           stream << "\
-      # GraphicRulesMaker Tweak: Custom default resolution\n\
+      # GraphicsRulesMaker Tweak: Custom default resolution\n\
       uintProp defaultResWidth      " << options.defaultResolution.width() << "\n\
       uintProp defaultResHeight     " << options.defaultResolution.height() << "\n";
       }

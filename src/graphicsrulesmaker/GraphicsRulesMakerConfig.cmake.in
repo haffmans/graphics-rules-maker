@@ -1,0 +1,38 @@
+# - Config file for the Graphics Rules Maker package
+#
+# Once done, this will define:
+#   GraphicsRulesMaker_FOUND - system has Graphics Rules Maker
+#   GraphicsRulesMaker_INCLUDE_DIRS - the Graphics Rules Maker include directory
+#   GraphicsRulesMaker_LIBRARY - Graphics Rules Maker library
+#   GraphicsRulesMaker_PLUGIN_PATH - Plugin installation path
+#
+# Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Compute paths
+get_filename_component(GraphicsRulesMaker_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(GraphicsRulesMaker_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+if(NOT TARGET GraphicsRulesMaker AND NOT GraphicsRulesMaker_BINARY_DIR)
+  include("${GraphicsRulesMaker_CMAKE_DIR}/GraphicsRulesMakerTargets.cmake")
+endif()
+
+set(GraphicsRulesMaker_PLUGIN_PATH "@PLUGIN_INSTALL_DIR@")
+
+# These are IMPORTED targets created by GraphicsRulesMakerTargets.cmake
+set(GraphicsRulesMaker_LIBRARIES GraphicsRulesMaker)
+set(GraphicsRulesMaker_EXECUTABLE GraphicsRulesMakerUI)

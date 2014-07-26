@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,24 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "aboutdialog.h"
-#include "ui_aboutdialog.h"
+#ifndef GAMEWRITERFACTORY_H
+#define GAMEWRITERFACTORY_H
 
-AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
-    QDialog(parent, flags),
-    ui(new Ui::AboutDialog)
+#include <QtCore/QObject>
+#include <QtCore/QStringList>
+#include <QtCore/QDir>
+
+class GameWriterInterface;
+
+class GameWriterFactory : public QObject
 {
-    this->setSizeGripEnabled(false);
-    ui->setupUi(this);
+    Q_OBJECT
 
-    if (!flags.testFlag(Qt::WindowContextHelpButtonHint)) {
-        Qt::WindowFlags newFlags = windowFlags();
-        newFlags = newFlags & ~Qt::WindowContextHelpButtonHint;
-        setWindowFlags(newFlags);
-    }
-}
+public:
+    GameWriterFactory(QObject* parent = 0);
 
-AboutDialog::~AboutDialog()
-{
-    delete ui;
-}
+    QList<GameWriterInterface*> plugins() const;
+    QStringList pluginNames() const;
+
+    GameWriterInterface* plugin(const QString &id) const;
+
+    ~GameWriterFactory();
+
+public slots:
+    void loadPlugins();
+
+private:
+    QList<QDir> m_searchDirectories;
+    QList<GameWriterInterface*> m_plugins;
+
+};
+
+#endif // GAMEWRITERFACTORY_H

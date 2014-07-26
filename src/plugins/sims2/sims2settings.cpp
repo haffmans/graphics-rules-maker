@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,8 +21,8 @@
 
 #include <QtCore/QSettings>
 
-#include "graphicrulesmaker/devicemodel.h"
-#include "graphicrulesmaker/videocarddatabase.h"
+#include "graphicsrulesmaker/devicemodel.h"
+#include "graphicsrulesmaker/videocarddatabase.h"
 
 Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
 {

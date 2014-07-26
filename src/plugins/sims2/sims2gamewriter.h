@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 #define SIMS2GAMEWRITER_H
 
 #include <QtCore/QObject>
-#include "graphicrulesmaker/gamewriterinterface.h"
+#include "graphicsrulesmaker/gamewriterinterface.h"
 
 class Sims2Settings;
 class DeviceModel;

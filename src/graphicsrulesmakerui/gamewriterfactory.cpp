@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,8 +23,8 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QtDebug>
 
-#include "graphicrulesmaker/graphicrulesmaker_config.h"
-#include "graphicrulesmaker/gamewriterinterface.h"
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker/gamewriterinterface.h"
 
 
 GameWriterFactory::GameWriterFactory(QObject* parent)
@@ -36,7 +36,7 @@ GameWriterFactory::GameWriterFactory(QObject* parent)
     m_searchDirectories.append(QDir::current().absoluteFilePath("bin/gamewriters"));
 #endif
 
-    m_searchDirectories.append(QDir(GRAPHICRULESMAKER_PLUGIN_PATH));
+    m_searchDirectories.append(QDir(GRAPHICsRULESMAKER_PLUGIN_PATH));
 }
 
 void GameWriterFactory::loadPlugins()

@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABOUTDIALOG_H
-#define ABOUTDIALOG_H
+#ifndef CONFIRMATIONBOX_H
+#define CONFIRMATIONBOX_H
 
-#include <QDialog>
+#include <QtWidgets/QDialog>
 
-namespace Ui {
-class AboutDialog;
+namespace Ui
+{
+class ManualSaveConfirmationBox;
 }
 
-class AboutDialog : public QDialog
+class ManualSaveConfirmationBox : public QDialog
 {
     Q_OBJECT
-
 public:
-    explicit AboutDialog(QWidget *parent = 0, Qt::WindowFlags flags = Qt::Dialog);
-    ~AboutDialog();
+    ~ManualSaveConfirmationBox();
+    ManualSaveConfirmationBox(QWidget* parent = 0, Qt::WindowFlags f = 0);
+
+signals:
+    void openTemporaryDirectory();
+    void openDestinationDirectory();
 
 private:
-    Ui::AboutDialog *ui;
+    Ui::ManualSaveConfirmationBox* ui;
 };
 
-#endif // ABOUTDIALOG_H
+#endif // CONFIRMATIONBOX_H

@@ -1,5 +1,5 @@
 /*
- * Graphic Rules Maker
+ * Graphics Rules Maker
  * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,36 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAMEWRITERFACTORY_H
-#define GAMEWRITERFACTORY_H
+#ifndef ABOUTDIALOG_H
+#define ABOUTDIALOG_H
 
-#include <QtCore/QObject>
-#include <QtCore/QStringList>
-#include <QtCore/QDir>
+#include <QDialog>
 
-class GameWriterInterface;
+namespace Ui {
+class AboutDialog;
+}
 
-class GameWriterFactory : public QObject
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    GameWriterFactory(QObject* parent = 0);
-
-    QList<GameWriterInterface*> plugins() const;
-    QStringList pluginNames() const;
-
-    GameWriterInterface* plugin(const QString &id) const;
-
-    ~GameWriterFactory();
-
-public slots:
-    void loadPlugins();
+    explicit AboutDialog(QWidget *parent = 0, Qt::WindowFlags flags = Qt::Dialog);
+    ~AboutDialog();
 
 private:
-    QList<QDir> m_searchDirectories;
-    QList<GameWriterInterface*> m_plugins;
-
+    Ui::AboutDialog *ui;
 };
 
-#endif // GAMEWRITERFACTORY_H
+#endif // ABOUTDIALOG_H

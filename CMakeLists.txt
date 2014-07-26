@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(GraphicRulesMakerBundle)
+project(GraphicsRulesMakerBundle)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}")
 
 # Tell subprojects we're doing a full build (including library)
-set(GraphicRulesMaker_FULL_BUILD 1)
+set(GraphicsRulesMaker_FULL_BUILD 1)
 
-# Required to get "graphicrulesmaker/*" includes working for the UI/plugins,
+# Required to get "graphicsrulesmaker/*" includes working for the UI/plugins,
 # as with the split builds
 include_directories(
   "${PROJECT_SOURCE_DIR}/src"
@@ -20,13 +20,13 @@ if(WIN32)
 else(WIN32)
     set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (eg. '64')")
     set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
-    set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicrulesmaker/)
+    set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmakerr/)
 endif(WIN32)
-set(GraphicRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
+set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
 
 # Add modules
-add_subdirectory(src/graphicrulesmaker)
-add_subdirectory(src/graphicrulesmakerui)
+add_subdirectory(src/graphicsrulesmaker)
+add_subdirectory(src/graphicsrulesmakerui)
 add_subdirectory(src/plugins)
 
 # Copy required Qt5 DLLs for Windows
@@ -36,7 +36,7 @@ if(WIN32)
 
     # Generate NSIS Header
     install(CODE "message(STATUS \"Creating NSIS Header: \\\"${PROJECT_BINARY_DIR}/header.bmp\\\" \")
-              execute_process(COMMAND \"${IMAGEMAGICK_CONVERT_EXECUTABLE}\" \"${PROJECT_SOURCE_DIR}/src/graphicrulesmakerui/icon.png\" -resize x48 -gravity EAST -extent 150x57 \"BMP3:${PROJECT_BINARY_DIR}/header.bmp\" )"
+              execute_process(COMMAND \"${IMAGEMAGICK_CONVERT_EXECUTABLE}\" \"${PROJECT_SOURCE_DIR}/src/graphicsrulesmakerui/icon.png\" -resize x48 -gravity EAST -extent 150x57 \"BMP3:${PROJECT_BINARY_DIR}/header.bmp\" )"
         COMPONENT application)
 
     # Generate SimsNetwork.com icon
@@ -61,7 +61,7 @@ if(WIN32)
         MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/simsnetwork-128.png"
         DEPENDS "simsnetwork-64.png" "simsnetwork-48.png" "simsnetwork-32.png" "${PROJECT_SOURCE_DIR}/simsnetwork-16.ico"
     )
-    add_custom_target(GraphicRulesMakerIcons ALL
+    add_custom_target(GraphicsRulesMakerIcons ALL
         DEPENDS "simsnetwork.ico"
         SOURCES "simsnetwork-16.ico" "simsnetwork-128.png")
 
