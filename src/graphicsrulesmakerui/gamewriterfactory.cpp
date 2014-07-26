@@ -36,7 +36,7 @@ GameWriterFactory::GameWriterFactory(QObject* parent)
     m_searchDirectories.append(QDir::current().absoluteFilePath("bin/gamewriters"));
 #endif
 
-    m_searchDirectories.append(QDir(GRAPHICsRULESMAKER_PLUGIN_PATH));
+    m_searchDirectories.append(QDir(GRAPHICSRULESMAKER_PLUGIN_PATH));
 }
 
 void GameWriterFactory::loadPlugins()

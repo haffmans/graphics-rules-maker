@@ -1,15 +1,15 @@
-#ifndef GRAPHICsRULESMAKER_CONFIG_H
-#define GRAPHICsRULESMAKER_CONFIG_H
+#ifndef GRAPHICSRULESMAKER_CONFIG_H
+#define GRAPHICSRULESMAKER_CONFIG_H
 
 /**
  * The installation directory for the default plugins
  */
-#define GRAPHICsRULESMAKER_PLUGIN_PATH "@GraphicsRulesMaker_PLUGIN_PATH@"
+#define GRAPHICSRULESMAKER_PLUGIN_PATH "@GraphicsRulesMaker_PLUGIN_PATH@"
 
 /**
  * The library version
  */
-#define GRAPHICsRULESMAKER_VERSION "@GraphicsRulesMaker_VERSION@"
+#define GRAPHICSRULESMAKER_VERSION "@GraphicsRulesMaker_VERSION@"
 
-#endif // GRAPHICsRULESMAKER_CONFIG_H
+#endif // GRAPHICSRULESMAKER_CONFIG_H
 
