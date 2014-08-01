@@ -50,6 +50,13 @@ class DeviceModel : public QAbstractTableModel
 
 private:
     QList<GraphicsDevice> m_devices;
+#ifdef Q_OS_WIN32
+    bool loadD3d9();
+#ifdef DXGI
+    bool loadDxDgi();
+    bool hasWddmDriver() const;
+#endif
+#endif
 
 public:
     explicit DeviceModel(QObject *parent = 0);

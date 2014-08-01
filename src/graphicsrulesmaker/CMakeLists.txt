@@ -22,6 +22,11 @@ find_package(Qt5Widgets REQUIRED)
 if(WIN32)
     find_package(DirectX REQUIRED)
     include_directories(${DirectX_INCLUDE_DIR})
+
+    if(DEFINED DirectX_DXGI_LIBRARY)
+        message(STATUS "DXGI Library found at " ${DirectX_DXGI_LIBRARY})
+        add_definitions(-DDXGI)
+    endif(DEFINED DirectX_DXGI_LIBRARY)
 endif(WIN32)
 
 set(GraphicsRulesMaker_SRCS
@@ -70,7 +75,7 @@ configure_file(graphicsrulesmaker_config.h.cmake
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
 target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
 if(WIN32)
-    target_link_libraries(GraphicsRulesMaker ${DirectX_LIBRARIES})
+    target_link_libraries(GraphicsRulesMaker ${DirectX_LIBRARIES} ${DirectX_DXGI_LIBRARY})
 endif(WIN32)
 
 if(WIN32)

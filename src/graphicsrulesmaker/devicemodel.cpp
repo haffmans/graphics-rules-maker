@@ -20,7 +20,11 @@
 #include <QtCore/QtDebug>
 
 #ifdef Q_OS_WIN32
+#ifdef DXGI
+#include <dxgi.h>
+#endif
 #include <d3d9.h>
+#include <d3dx9.h>
 #endif
 
 #ifndef SAFE_RELEASE
@@ -52,16 +56,30 @@ DeviceModel::DeviceModel(QObject *parent) :
 {
 }
 
+#ifdef Q_OS_WIN32
 void DeviceModel::load()
 {
-#ifdef Q_OS_WIN32
+    bool isLoaded = false;
+#ifdef DXGI
+    isLoaded = isLoaded || loadDxDgi();
+#endif
+    isLoaded = isLoaded || loadD3d9();
+
+    if (isLoaded) {
+        emit(loaded());
+    }
+    else {
+        emit(loadFailed());
+    }
+}
+
+bool DeviceModel::loadD3d9() {
     HRESULT hr;
     IDirect3D9 *d3d = Direct3DCreate9(D3D_SDK_VERSION);
     D3DADAPTER_IDENTIFIER9 deviceInfo;
 
     if (!d3d) {
-        emit(loadFailed());
-        return;
+        return false;
     }
 
     const int formatCount = 6;
@@ -82,8 +100,7 @@ void DeviceModel::load()
         hr = d3d->GetAdapterIdentifier(iAdapter, 0, &deviceInfo);
         if (!SUCCEEDED(hr)) {
             SAFE_RELEASE(d3d);
-            emit(loadFailed());
-            return;
+            return false;
         }
 
         dev.name = QString(deviceInfo.Description);
@@ -117,13 +134,12 @@ void DeviceModel::load()
         pp.FullScreen_RefreshRateInHz = 0;
         pp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
 
-        hr = d3d->CreateDevice( iAdapter, D3DDEVTYPE_HAL, hWnd,
+        hr = d3d->CreateDevice( iAdapter, D3DDEVTYPE_REF, hWnd,
                                   D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &d3dDevice );
         if (SUCCEEDED(hr)) {
             UINT availableTextureMem  = d3dDevice->GetAvailableTextureMem();
             dev.memory = availableTextureMem;
 
-            // TODO Fixup code - can't test this in Linux yet :)
             for (int iFormat = 0; iFormat < formatCount; ++iFormat) {
                 D3DFORMAT format = modeFormats[iFormat];
                 int modeCount = d3d->GetAdapterModeCount(iAdapter, format);
@@ -153,8 +169,129 @@ void DeviceModel::load()
     }
 
     SAFE_RELEASE(d3d);
-    emit(loaded());
+    return true;
+}
+
+#ifdef DXGI
+bool DeviceModel::hasWddmDriver() const
+{
+    typedef HRESULT (WINAPI *LPDIRECT3DCREATE9EX)( UINT, void **);
+    LPDIRECT3DCREATE9EX d3d9Create9Ex = NULL;
+    HMODULE             d3d9          = NULL;
+
+    d3d9 = LoadLibrary("d3d9.dll");
+
+    if (d3d9 == NULL) {
+        return false;
+    }
+
+    // Try to create IDirect3D9Ex interface (also known as a DX9L interface). This interface can only be created if the driver is a WDDM driver.
+    d3d9Create9Ex = (LPDIRECT3DCREATE9EX)GetProcAddress(d3d9, "Direct3DCreate9Ex");
+
+    bool result = d3d9Create9Ex != NULL;
+    FreeLibrary(d3d9);
+
+    return result;
+}
+
+bool DeviceModel::loadDxDgi()
+{
+    if (!hasWddmDriver()) {
+        return false;
+    }
+
+    IDXGIFactory *factory;
+    HRESULT hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&factory) );
+
+    if (!SUCCEEDED(hr)) {
+        return false;
+    }
+
+    UINT i = 0;
+    IDXGIAdapter *adapter;
+    while(factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND) {
+        DXGI_ADAPTER_DESC description;
+
+        if (adapter->GetDesc(&description) == S_OK) {
+            // Skip the "Microsoft Basic Render Driver" in Windows 8
+            if (description.VendorId == 0x1414 && description.DeviceId == 0x8c) {
+                SAFE_RELEASE(adapter);
+                ++i;
+                continue;
+            }
+
+            GraphicsDevice dev;
+
+            // Get essential info
+            dev.name = QString::fromWCharArray(description.Description, 128);
+            dev.deviceId = description.DeviceId;
+            dev.vendorId = description.VendorId;
+            dev.memory = description.DedicatedVideoMemory + description.DedicatedSystemMemory + description.SharedSystemMemory;
+
+            dev.driver = "WDDM Driver";
+
+            // Get displays
+            QStringList displays;
+            UINT j = 0;
+            IDXGIOutput *output;
+            while(adapter->EnumOutputs(j, &output) != DXGI_ERROR_NOT_FOUND) {
+                DXGI_OUTPUT_DESC outputDescription;
+
+                if (output->GetDesc(&outputDescription) == S_OK) {
+                    displays << QString::fromWCharArray(outputDescription.DeviceName, 32);
+                }
+
+                for (DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN; format <= DXGI_FORMAT_B4G4R4A4_UNORM; format = DXGI_FORMAT(format + 1)) {
+                    UINT modeCount;
+                    output->GetDisplayModeList(format, DXGI_ENUM_MODES_INTERLACED, &modeCount, NULL);
+                    DXGI_MODE_DESC *modeDescriptions = new DXGI_MODE_DESC[modeCount];
+                    output->GetDisplayModeList(format, DXGI_ENUM_MODES_INTERLACED, &modeCount, modeDescriptions);
+
+                    for (int m = 0; m < modeCount; ++m) {
+                        DXGI_MODE_DESC modeDescription = modeDescriptions[m];
+                        output->GetDisplayModeList(format, DXGI_ENUM_MODES_INTERLACED, NULL, &modeDescription);
+
+                        GraphicsMode gMode;
+                        gMode.width = modeDescription.Width;
+                        gMode.height = modeDescription.Height;
+                        gMode.refreshRate = modeDescription.RefreshRate.Numerator / modeDescription.RefreshRate.Denominator;
+                        dev.modes.append(gMode);
+                    }
+                }
+
+                SAFE_RELEASE(output);
+                j++;
+            }
+
+            // Make the set of modes unique again
+            std::sort(dev.modes.begin(), dev.modes.end());
+            QList<GraphicsMode>::Iterator modesEnd = std::unique(dev.modes.begin(), dev.modes.end());
+            dev.modes.erase(modesEnd, dev.modes.end());
+
+            if (!displays.isEmpty()) {
+                dev.display = displays.join(", ");
+            }
+            else {
+                dev.display = tr("[Disconnected]");
+            }
+
+            beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
+            m_devices.append(dev);
+            endInsertRows();
+        }
+        SAFE_RELEASE(adapter);
+
+        ++i;
+    }
+
+    SAFE_RELEASE(factory);
+    return true;
+}
+#endif
+
 #else
+bool load()
+{
     // Insert bogus devices for testing
 
     // First some modes
@@ -249,8 +386,8 @@ void DeviceModel::load()
 
     emit(loaded());
 
-#endif
 }
+#endif
 
 QList<GraphicsMode> DeviceModel::allModes()
 {
