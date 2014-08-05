@@ -22,6 +22,8 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QList>
 
+class IDXGIFactory1;
+
 struct GraphicsMode
 {
     quint16 width;
@@ -54,7 +56,6 @@ private:
     bool loadD3d9();
 #ifdef DXGI
     bool loadDxDgi();
-    bool hasWddmDriver() const;
 #endif
 #endif
 
