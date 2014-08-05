@@ -75,7 +75,8 @@ configure_file(graphicsrulesmaker_config.h.cmake
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
 target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
 if(WIN32)
-    target_link_libraries(GraphicsRulesMaker ${DirectX_LIBRARIES} ${DirectX_DXGI_LIBRARY})
+    # NOTE: ${DirectX_DXGI_LIBRARY} is removed; we load it dynamically at runtime
+    target_link_libraries(GraphicsRulesMaker ${DirectX_LIBRARY} )
 endif(WIN32)
 
 if(WIN32)

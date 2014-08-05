@@ -24,7 +24,6 @@
 #include <dxgi.h>
 #endif
 #include <d3d9.h>
-#include <d3dx9.h>
 #endif
 
 #ifndef SAFE_RELEASE
@@ -74,11 +73,13 @@ void DeviceModel::load()
 }
 
 bool DeviceModel::loadD3d9() {
+    qDebug() << "Attempting D3D9...";
     HRESULT hr;
     IDirect3D9 *d3d = Direct3DCreate9(D3D_SDK_VERSION);
     D3DADAPTER_IDENTIFIER9 deviceInfo;
 
     if (!d3d) {
+        qDebug() << "Failed creating D3D9 (SDK " << D3D_SDK_VERSION << ")";
         return false;
     }
 
@@ -93,6 +94,7 @@ bool DeviceModel::loadD3d9() {
     };
 
     UINT adapterCount = d3d->GetAdapterCount();
+    qDebug() << "Adapter count:" << adapterCount;
     for (UINT iAdapter = 0; iAdapter < adapterCount; iAdapter++ )
     {
         GraphicsDevice dev;
@@ -169,41 +171,36 @@ bool DeviceModel::loadD3d9() {
     }
 
     SAFE_RELEASE(d3d);
+    qDebug() << "D3D9 Completed";
     return true;
 }
 
 #ifdef DXGI
-bool DeviceModel::hasWddmDriver() const
-{
-    typedef HRESULT (WINAPI *LPDIRECT3DCREATE9EX)( UINT, void **);
-    LPDIRECT3DCREATE9EX d3d9Create9Ex = NULL;
-    HMODULE             d3d9          = NULL;
-
-    d3d9 = LoadLibrary("d3d9.dll");
-
-    if (d3d9 == NULL) {
-        return false;
-    }
-
-    // Try to create IDirect3D9Ex interface (also known as a DX9L interface). This interface can only be created if the driver is a WDDM driver.
-    d3d9Create9Ex = (LPDIRECT3DCREATE9EX)GetProcAddress(d3d9, "Direct3DCreate9Ex");
-
-    bool result = d3d9Create9Ex != NULL;
-    FreeLibrary(d3d9);
-
-    return result;
-}
-
 bool DeviceModel::loadDxDgi()
 {
-    if (!hasWddmDriver()) {
+    // Attempt to load dxgi.dll - this won't exist on Windows XP!
+    HMODULE dxgi = LoadLibrary("dxgi.dll");
+
+    if (dxgi == NULL) {
+        qDebug() << "DXGI module not found...";
         return false;
     }
 
+    // Locate CreateDXGIFactory function
+    typedef HRESULT (WINAPI * CREATEDXGIFACTORY)(REFIID, void**);
+    CREATEDXGIFACTORY createDxgiFactory = (CREATEDXGIFACTORY)GetProcAddress(dxgi, "CreateDXGIFactory");
+
+    if (createDxgiFactory == NULL) {
+        qDebug() << "DXGI factory function not found...";
+        return false;
+    }
+
+    // And use it
     IDXGIFactory *factory;
-    HRESULT hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)(&factory) );
+    HRESULT hr = createDxgiFactory(__uuidof(IDXGIFactory), (void**)(&factory) );
 
     if (!SUCCEEDED(hr)) {
+        qDebug() << "DXGI factory not created...";
         return false;
     }
 
@@ -211,6 +208,7 @@ bool DeviceModel::loadDxDgi()
     IDXGIAdapter *adapter;
     while(factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND) {
         DXGI_ADAPTER_DESC description;
+        ZeroMemory(&description, sizeof(DXGI_ADAPTER_DESC));
 
         if (adapter->GetDesc(&description) == S_OK) {
             // Skip the "Microsoft Basic Render Driver" in Windows 8
@@ -285,12 +283,15 @@ bool DeviceModel::loadDxDgi()
     }
 
     SAFE_RELEASE(factory);
+
+    FreeLibrary(dxgi);
+    qDebug() << "DXGI devices loaded...";
     return true;
 }
 #endif
 
 #else
-bool load()
+void DeviceModel::load()
 {
     // Insert bogus devices for testing
 
