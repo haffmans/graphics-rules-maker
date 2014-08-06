@@ -102,10 +102,12 @@ bool DeviceModel::loadD3d9() {
         hr = d3d->GetAdapterIdentifier(iAdapter, 0, &deviceInfo);
         if (!SUCCEEDED(hr)) {
             SAFE_RELEASE(d3d);
+            qDebug() << "Failed getting adapter info";
             return false;
         }
 
         dev.name = QString(deviceInfo.Description);
+        qDebug() << "Got device" << dev.name;
         quint16 driverMajor = (deviceInfo.DriverVersion.HighPart >> 16);
         quint16 driverMinor = (deviceInfo.DriverVersion.HighPart & 0xFFFF);
         quint16 driverBuild = (deviceInfo.DriverVersion.LowPart >> 16);
@@ -136,9 +138,10 @@ bool DeviceModel::loadD3d9() {
         pp.FullScreen_RefreshRateInHz = 0;
         pp.PresentationInterval = D3DPRESENT_INTERVAL_DEFAULT;
 
-        hr = d3d->CreateDevice( iAdapter, D3DDEVTYPE_REF, hWnd,
+        hr = d3d->CreateDevice( iAdapter, D3DDEVTYPE_HAL, hWnd,
                                   D3DCREATE_SOFTWARE_VERTEXPROCESSING, &pp, &d3dDevice );
         if (SUCCEEDED(hr)) {
+            qDebug() << "Device created";
             UINT availableTextureMem  = d3dDevice->GetAvailableTextureMem();
             dev.memory = availableTextureMem;
 
@@ -146,6 +149,7 @@ bool DeviceModel::loadD3d9() {
                 D3DFORMAT format = modeFormats[iFormat];
                 int modeCount = d3d->GetAdapterModeCount(iAdapter, format);
 
+                qDebug() << "Mode count" << modeCount;
                 for (int iMode = 0; iMode < modeCount; ++iMode) {
                     D3DDISPLAYMODE mode;
                     hr = d3d->EnumAdapterModes(iAdapter, format, iMode, &mode);
@@ -155,6 +159,7 @@ bool DeviceModel::loadD3d9() {
                         gMode.height = mode.Height;
                         gMode.refreshRate = mode.RefreshRate;
                         dev.modes.append(gMode);
+                        qDebug() << "Got mode " << gMode.width << "x" << gMode.height << "@" << gMode.refreshRate;
                     }
                 }
             }
@@ -165,7 +170,9 @@ bool DeviceModel::loadD3d9() {
             m_devices.append(dev);
             endInsertRows();
         }
-
+        else {
+            qDebug() << "Device not created";
+        }
 
         SAFE_RELEASE(d3dDevice);
     }
