@@ -16,7 +16,7 @@
 
 &lt;p&gt;Copyright © 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;/p&gt;
+&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way.&lt;/p&gt;
 
 &lt;p&gt;This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -30,6 +30,49 @@ the terms of the GNU General Public License as published by the Free Software
   this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
 &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
+&lt;h3&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
+
+&lt;p&gt;Auteursrecht © 2014 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama en iedereen die dit programma heeft getest, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;
+
+&lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder
+de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd
+door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw
+keuze) elke latere versie.&lt;/p&gt;
+
+ &lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER
+ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK
+ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL.
+Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;
+
+ &lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben
+ontvangen samen met dit programma. Als dat niet het geval is, zie 
+&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
+&lt;h3&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
+
+&lt;p&gt;Copyright © 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;/p&gt;
+
+&lt;p&gt;This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+ Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
+
+ &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT
+ ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/p&gt;
+
+ &lt;p&gt;You should have received a copy of the GNU General Public License along with
+  this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
+&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;
 &lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
 &lt;h3&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
 
