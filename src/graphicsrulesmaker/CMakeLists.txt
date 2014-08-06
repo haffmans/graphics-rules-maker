@@ -18,6 +18,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5LinguistTools)
 
 if(WIN32)
     find_package(DirectX REQUIRED)
@@ -28,6 +29,11 @@ if(WIN32)
         add_definitions(-DDXGI)
     endif(DEFINED DirectX_DXGI_LIBRARY)
 endif(WIN32)
+
+if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
+    # This will put only this subproject's translations in a subdir within this project
+    set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
+endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
 set(GraphicsRulesMaker_SRCS
     videocarddatabase.cpp
@@ -41,6 +47,17 @@ set(GraphicsRulesMaker_HDRS
     "${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h"
 )
 
+# Translations
+if(${Qt5LinguistTools_FOUND})
+    message(STATUS "Qt Linguist found - will set up translations")
+    qt5_create_translation(GraphicsRulesMaker_QMS
+        ${GraphicsRulesMaker_SRCS}
+        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
+        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_pl.ts"
+        OPTIONS -source-language "en-US"
+    )
+endif(${Qt5LinguistTools_FOUND})
+
 # Determine installation path for CMake files
 if(WIN32 AND NOT CYGWIN)
     set(INSTALL_CMAKE_DIR CMake)
@@ -50,16 +67,25 @@ endif()
 
 # Determine plugin installation path
 # A bit of duplicate code (shared with the main project) to support split builds
-if(NOT GraphicsRulesMaker_PLUGIN_PATH)
-    if(WIN32)
+if(NOT DEFINED GraphicsRulesMaker_PLUGIN_PATH)
+    if(WIN32 AND NOT CYGWIN)
         set(PLUGIN_INSTALL_DIR bin/gamewriters/)
-    else(WIN32)
+    else(WIN32 AND NOT CYGWIN)
         set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (eg. '64')")
         set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
         set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmaker/)
-    endif(WIN32)
+    endif(WIN32 AND NOT CYGWIN)
     set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
-endif(NOT GraphicsRulesMaker_PLUGIN_PATH)
+endif(NOT DEFINED GraphicsRulesMaker_PLUGIN_PATH)
+# And for .qm files
+if(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
+    if(WIN32 AND NOT CYGWIN)
+        set(TRANSLATIONS_INSTALL_DIR share/)
+    else(WIN32 AND NOT CYGWIN)
+        set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
+    endif(WIN32 AND NOT CYGWIN)
+    set(GraphicsRulesMaker_TRANSLATIONS_PATH ${CMAKE_INSTALL_PREFIX}/${TRANSLATIONS_INSTALL_DIR} )
+endif(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
 
 # Version information
 set(GraphicsRulesMaker_MAJOR_VERSION 1)
@@ -72,7 +98,7 @@ set(GraphicsRulesMaker_VERSION
 configure_file(graphicsrulesmaker_config.h.cmake
     ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
 
-add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
+add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
 target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
 if(WIN32)
     # NOTE: ${DirectX_DXGI_LIBRARY} is removed; we load it dynamically at runtime
@@ -104,6 +130,11 @@ install(
     FILES ${GraphicsRulesMaker_HDRS}
     DESTINATION include/graphicsrulesmaker
     COMPONENT dev
+)
+install(
+    FILES ${GraphicsRulesMaker_QMS}
+    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
+    COMPONENT application
 )
 
 # Write out CMake files (for developers)

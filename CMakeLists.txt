@@ -24,6 +24,9 @@ else(WIN32)
 endif(WIN32)
 set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
 
+# Put all translations together for more convenience
+set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
+
 # Add modules
 add_subdirectory(src/graphicsrulesmaker)
 add_subdirectory(src/graphicsrulesmakerui)

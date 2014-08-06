@@ -6,4 +6,5 @@
 *.patch
 *.user
 *.kdev4
-
+*.ts
+!translations/*.ts
