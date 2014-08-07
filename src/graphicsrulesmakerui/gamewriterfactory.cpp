@@ -60,11 +60,12 @@ void GameWriterFactory::loadPlugins()
         if (instance) {
             qDebug() << "Found plugin for game " << instance->displayName() << " [" << instance->id() << "] in " << fullPath;
             m_plugins.append(instance);
+            m_pluginPaths.insert(instance->id(), fullPath);
         }
     }
 }
 
-QList< GameWriterInterface* > GameWriterFactory::plugins() const
+QList<GameWriterInterface*> GameWriterFactory::plugins() const
 {
     return m_plugins;
 }
@@ -90,6 +91,24 @@ QStringList GameWriterFactory::pluginNames() const
     }
 
     return result;
+}
+
+QString GameWriterFactory::translationDirectory(const QString & id) const
+{
+    if (!m_pluginPaths.contains(id)) {
+        return QString();
+    }
+    QFileInfo info(m_pluginPaths.value(id));
+    return info.absolutePath();
+}
+
+QString GameWriterFactory::translationFilename(const QString& id) const
+{
+    if (!m_pluginPaths.contains(id)) {
+        return QString();
+    }
+    QFileInfo info(m_pluginPaths.value(id));
+    return info.baseName();
 }
 
 GameWriterFactory::~GameWriterFactory()

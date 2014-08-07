@@ -430,7 +430,19 @@
     </property>
     <addaction name="aboutAction"/>
    </widget>
+   <widget class="QMenu" name="viewMenu">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <widget class="QMenu" name="languageMenu">
+     <property name="title">
+      <string>&amp;Language</string>
+     </property>
+    </widget>
+    <addaction name="languageMenu"/>
+   </widget>
    <addaction name="fileMenu"/>
+   <addaction name="viewMenu"/>
    <addaction name="helpMenu"/>
   </widget>
   <action name="quitAction">
@@ -444,6 +456,16 @@
   <action name="aboutAction">
    <property name="text">
     <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="action_English_Default">
+   <property name="text">
+    <string>&amp;English (Default)</string>
+   </property>
+  </action>
+  <action name="action_Dutch_Nederlands">
+   <property name="text">
+    <string>&amp;Dutch (Nederlands)</string>
    </property>
   </action>
  </widget>

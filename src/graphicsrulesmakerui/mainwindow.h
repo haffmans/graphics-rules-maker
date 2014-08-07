@@ -20,6 +20,8 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QtCore/QLocale>
+#include <QtCore/QTranslator>
 
 namespace Ui {
 class MainWindow;
@@ -58,7 +60,12 @@ private slots:
     void openTemporaryDirectory();
     void openDestinationDirectory();
 
+    void switchLocale();
+    void setLocale(const QLocale &locale);
+
     void about();
+
+    void replaceWidget();
 
 private:
     Ui::MainWindow *ui;
@@ -68,9 +75,17 @@ private:
     GameWriterInterface *m_currentPlugin;
     QWidget *m_currentGameSettingsWidget;
 
+    QTranslator m_libraryTranslator;
+    QTranslator m_uiTranslator;
+    QTranslator m_pluginTranslator;
+
     QString formatId(quint16 id) const;
 
-    QString browseWritableFile() const;
+    QStringList translationDirectories() const;
+    QList<QLocale> appLocales() const;
+
+    void setLocale(const QLocale &locale, const QString &prefix, QTranslator *translator);
+    QLocale m_locale;
 };
 
 #endif // MAINWINDOW_H

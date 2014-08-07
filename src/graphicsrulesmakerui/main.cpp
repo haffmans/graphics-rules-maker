@@ -18,6 +18,9 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
+#include <QtCore/QDebug>
+
+#include <iostream>
 
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"

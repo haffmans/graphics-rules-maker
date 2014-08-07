@@ -21,6 +21,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
+#include <QtCore/QMap>
 #include <QtCore/QDir>
 
 class GameWriterInterface;
@@ -37,6 +38,15 @@ public:
 
     GameWriterInterface* plugin(const QString &id) const;
 
+    /**
+     * The directory to search in for translations of the provided plugin.
+     */
+    QString translationDirectory(const QString &id) const;
+    /**
+     * The filename (as base) to search translations files with.
+     */
+    QString translationFilename(const QString &id) const;
+
     ~GameWriterFactory();
 
 public slots:
@@ -45,6 +55,11 @@ public slots:
 private:
     QList<QDir> m_searchDirectories;
     QList<GameWriterInterface*> m_plugins;
+
+    /**
+     * Full filename paths of plugins (id->filename)
+     */
+    QMap<QString, QString> m_pluginPaths;
 
 };
 

@@ -19,10 +19,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtWidgets/QApplication>
 #include <QtWidgets/QListView>
 #include <QtCore/QBuffer>
 #include <QtCore/QDateTime>
 #include <QtCore/QSettings>
+#include <QtCore/QDebug>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDirModel>
@@ -32,6 +34,7 @@
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 #include "graphicsrulesmaker/gamewriterinterface.h"
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 #include "gamewriterfactory.h"
 #include "manualsaveconfirmationbox.h"
@@ -87,6 +90,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     s.beginGroup("ui");
     restoreGeometry(s.value("window/geometry").toByteArray());
     restoreState(s.value("window/state").toByteArray());
+    setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());;
     ui->videoCardsSplitter->restoreState(s.value("videocards/splitterstate").toByteArray());
     if (s.contains("videocards/treeviewheaderstate")) {
         ui->videoCardsView->header()->restoreState(s.value("videocards/treeviewheaderstate").toByteArray());
@@ -110,6 +114,23 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
         }
     }
     selectGame(gameRow);
+
+    foreach(const QLocale &locale, appLocales()) {
+        QString caption = QString("%1 (%2)").arg(
+            QLocale::languageToString(locale.language()),
+            locale.nativeLanguageName()
+        );
+        QAction *switchAction = ui->languageMenu->addAction(caption, this, SLOT(switchLocale()));
+        switchAction->setData(locale);
+    }
+
+    setLocale(m_locale);
+    qApp->installTranslator(&m_libraryTranslator);
+    qApp->installTranslator(&m_uiTranslator);
+    qApp->installTranslator(&m_pluginTranslator);
+
+    // Call this once to set up the initial widget
+    replaceWidget();
 }
 
 void MainWindow::selectCard(int row)
@@ -185,14 +206,11 @@ void MainWindow::selectGame(int row)
         return;
     }
 
-    // Load settings widget
+    // Load settings widget - this will trigger the replaceWidget() slot a bit later
     if (m_currentGameSettingsWidget) {
         ui->settingsBox->layout()->removeWidget(m_currentGameSettingsWidget);
         m_currentGameSettingsWidget->deleteLater();
     }
-
-    m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
-    ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
 
     // Determine game path - use previous setting if possible
     if (s.contains(m_currentPlugin->id() + "/path")) {
@@ -204,11 +222,30 @@ void MainWindow::selectGame(int row)
         ui->gamePath->setText(QDir::toNativeSeparators(m_currentPlugin->findGameDirectory().absolutePath()));
     }
 
+    // Translation
+    QString pluginFile = m_gamePlugins->translationFilename(m_currentPlugin->id());
+    QString pluginDir = m_gamePlugins->translationDirectory(m_currentPlugin->id());
+    if (!m_pluginTranslator.load(m_locale, pluginFile, "_", pluginDir)) {
+        qDebug() << "Plugin translation not loaded :( - " << pluginFile << " in " << pluginDir << " locale " << QLocale::languageToString(m_locale.language());
+    }
+
     // Set preview tab names
     int index = ui->mainTabs->indexOf(ui->graphicsRulesTab);
     ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->rulesFileName()));
     index = ui->mainTabs->indexOf(ui->videoCardsTab);
     ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->databaseFileName()));
+}
+
+void MainWindow::replaceWidget()
+{
+    // We do this after the widget is deleted, to make sure settings are kept if we
+    // replace it with the widget from the same plugin (e.g. because we've just
+    // switched locales). Settings are usually saved on the destruction of the
+    // widget, hence it's in the destroyed() slot.
+    qDebug() << "SETTING WIDGET";
+    m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
+    ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
+    connect(m_currentGameSettingsWidget, SIGNAL(destroyed(QObject*)), SLOT(replaceWidget()));
 }
 
 void MainWindow::locateGameFiles(const QString& directory)
@@ -528,6 +565,85 @@ QString MainWindow::formatId(quint16 id) const
     return QString("0x%1").arg(id, 4, 16, QChar('0'));
 }
 
+QStringList MainWindow::translationDirectories() const
+{
+    QStringList result;
+    result << QString(GRAPHICSRULESMAKER_TRANSLATIONS_PATH);
+
+#ifdef Q_OS_WIN32
+    // Scan in directory of self application
+    QDir appDir(qApp->applicationDirPath());
+    result.append(appDir.absoluteFilePath("../share"));
+    result.append(appDir.absoluteFilePath("../share/graphicsrulesmaker"));
+#endif
+    return result;
+}
+
+QList< QLocale > MainWindow::appLocales() const
+{
+    QList<QLocale> result;
+    result.append(QLocale(QLocale::English, QLocale::UnitedStates));
+
+    foreach(const QString &path, translationDirectories()) {
+        QDir dir(path);
+        QStringList fileNames = dir.entryList(QStringList("*.qm"), QDir::Files, QDir::Name);
+        foreach(QString name, fileNames) {
+            // Keep stripping begin underscores, until we have a proper locale
+            while (!name.isEmpty()) {
+                QLocale testLocale(name);
+                if (testLocale.language() == QLocale::C) {
+                    int split = name.indexOf('_');
+                    if (split == -1) {
+                        break;
+                    }
+                    name = name.mid(split + 1);
+                }
+                else {
+                    if (!result.contains(testLocale)) {
+                        result.append(testLocale);
+                    }
+                    break; // Continue loop
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+void MainWindow::switchLocale()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    QLocale locale = action->data().toLocale();
+    if (locale.language() != QLocale::C) {
+        qDebug() << "Switching to" << QLocale::languageToString(locale.language());
+        setLocale(locale);
+    }
+}
+
+void MainWindow::setLocale(const QLocale& locale)
+{
+    m_locale = locale;
+    setLocale(locale, "GraphicsRulesMaker", &m_libraryTranslator);
+    setLocale(locale, "GraphicsRulesMakerUi", &m_uiTranslator);
+    this->ui->retranslateUi(this);
+
+    // Recreate plugin widget to make sure it's translated
+    selectGame(this->ui->gameSelect->currentIndex());
+}
+
+void MainWindow::setLocale(const QLocale& locale, const QString& prefix, QTranslator* translator)
+{
+    foreach(const QString path, translationDirectories()) {
+        qDebug() << "TRYING translation with prefix " << prefix << " from dir " << path << " for locale " << QLocale::languageToString(locale.language());
+        if (translator->load(locale, prefix, "_", path)) {
+            qDebug() << "LOADED translation with prefix " << prefix << " from dir " << path << " for locale " << QLocale::languageToString(locale.language());
+            return;
+        }
+    }
+    qDebug() << "FAILED loading translation with prefix " << prefix << " for locale " << QLocale::languageToString(locale.language());
+}
+
 void MainWindow::about()
 {
     AboutDialog *dialog = new AboutDialog(this, Qt::Dialog);
@@ -542,6 +658,7 @@ MainWindow::~MainWindow()
     s.beginGroup("ui");
     s.setValue("window/geometry", saveGeometry());
     s.setValue("window/state", saveState());
+    s.setValue("window/locale", m_locale);
     s.setValue("videocards/splitterstate", ui->videoCardsSplitter->saveState());
     s.setValue("videocards/treeviewheaderstate", ui->videoCardsView->header()->saveState());
     s.setValue("game/id", m_currentPlugin->id());

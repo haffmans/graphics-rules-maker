@@ -5,6 +5,7 @@
 #   GraphicsRulesMaker_INCLUDE_DIRS - the Graphics Rules Maker include directory
 #   GraphicsRulesMaker_LIBRARY - Graphics Rules Maker library
 #   GraphicsRulesMaker_PLUGIN_PATH - Plugin installation path
+#   GraphicsRulesMaker_TRANSLATIONS_PATH - Translation files installation path
 #
 # Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
 #
@@ -32,6 +33,7 @@ if(NOT TARGET GraphicsRulesMaker AND NOT GraphicsRulesMaker_BINARY_DIR)
 endif()
 
 set(GraphicsRulesMaker_PLUGIN_PATH "@GraphicsRulesMaker_EXPORT_PLUGIN_PATH@")
+set(GraphicsRulesMaker_TRANSLATIONS_PATH "@GraphicsRulesMaker_EXPORT_TRANSLATIONS_PATH@")
 
 # These are IMPORTED targets created by GraphicsRulesMakerTargets.cmake
 set(GraphicsRulesMaker_LIBRARIES GraphicsRulesMaker)
