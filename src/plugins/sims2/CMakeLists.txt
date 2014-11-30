@@ -44,7 +44,6 @@ if(${Qt5LinguistTools_FOUND})
     qt5_create_translation(GraphicsRulesMaker_Sims2_QMS
         ${GraphicsRulesMaker_Sims2_SRCS}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/Sims2GameWriter_nl.ts"
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/Sims2GameWriter_pl.ts"
         OPTIONS -source-language "en-US"
     )
 endif(${Qt5LinguistTools_FOUND})

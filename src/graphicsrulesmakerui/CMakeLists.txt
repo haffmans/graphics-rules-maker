@@ -92,7 +92,6 @@ if(${Qt5LinguistTools_FOUND})
         ${GraphicsRulesMakerUi_UIS}
         ${GraphicsRulesMakerUi_SRCS}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMakerUi_nl.ts"
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMakerUi_pl.ts"
         OPTIONS -source-language "en-US"
     )
 endif(${Qt5LinguistTools_FOUND})

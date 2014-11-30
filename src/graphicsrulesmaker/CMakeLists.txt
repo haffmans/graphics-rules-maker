@@ -53,7 +53,6 @@ if(${Qt5LinguistTools_FOUND})
     qt5_create_translation(GraphicsRulesMaker_QMS
         ${GraphicsRulesMaker_SRCS}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_pl.ts"
         OPTIONS -source-language "en-US"
     )
 endif(${Qt5LinguistTools_FOUND})
