@@ -83,11 +83,18 @@ if(WIN32)
                 # ${Qt5Core_BinDir}/icudt52.dll
                 # Use a minimal version from http://qt-project.org/forums/viewthread/38489
                 ${PROJECT_SOURCE_DIR}/lib/icudt52.dll
-                ${Qt5Core_BinDir}/icuin52.dll
-                ${Qt5Core_BinDir}/icuuc52.dll
-                ${Qt5Core_BinDir}/libgcc_s_dw2-1.dll
+#                 ${Qt5Core_BinDir}/icuin52.dll
+#                 ${Qt5Core_BinDir}/icuuc52.dll
+#                 ${Qt5Core_BinDir}/libgcc_s_dw2-1.dll
                 ${Qt5Core_BinDir}/libstdc++-6.dll
                 ${Qt5Core_BinDir}/libwinpthread-1.dll
+
+                ${Qt5Core_BinDir}/libgcc_s_sjlj-1.dll
+                ${Qt5Core_BinDir}/libpcre16-0.dll
+                ${Qt5Core_BinDir}/zlib1.dll
+                ${Qt5Core_BinDir}/libEGL.dll
+                ${Qt5Core_BinDir}/libGLESv2.dll
+                ${Qt5Core_BinDir}/libpng16-16.dll
         )
     endif(MINGW)
 
@@ -115,4 +122,3 @@ endif(WIN32)
 include(InstallRequiredSystemLibraries)
 include("${PROJECT_SOURCE_DIR}/CPackConfig.cmake")
 include(CPack)
-
