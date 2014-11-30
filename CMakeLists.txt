@@ -20,7 +20,7 @@ if(WIN32)
 else(WIN32)
     set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (eg. '64')")
     set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
-    set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmakerr/)
+    set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmaker/)
 endif(WIN32)
 set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
 
