@@ -124,10 +124,10 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
         switchAction->setData(locale);
     }
 
-    setLocale(m_locale);
     qApp->installTranslator(&m_libraryTranslator);
     qApp->installTranslator(&m_uiTranslator);
     qApp->installTranslator(&m_pluginTranslator);
+    setLocale(m_locale);
 
     // Call this once to set up the initial widget
     replaceWidget();
@@ -225,8 +225,12 @@ void MainWindow::selectGame(int row)
     // Translation
     QString pluginFile = m_gamePlugins->translationFilename(m_currentPlugin->id());
     QString pluginDir = m_gamePlugins->translationDirectory(m_currentPlugin->id());
-    if (!m_pluginTranslator.load(m_locale, pluginFile, "_", pluginDir)) {
-        qDebug() << "Plugin translation not loaded :( - " << pluginFile << " in " << pluginDir << " locale " << QLocale::languageToString(m_locale.language());
+    QStringList dirs = QStringList() << pluginDir << translationDirectories();
+    foreach(QString dir, dirs) {
+        qDebug() << "Plugin translation loading attempt: " << pluginFile << " in " << dir << " locale " << QLocale::languageToString(m_locale.language());
+        if (m_pluginTranslator.load(m_locale, pluginFile, "_", dir)) {
+            break;
+        }
     }
 
     // Set preview tab names

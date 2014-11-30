@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SimCity4Settings</class>
+ <widget class="QWidget" name="SimCity4Settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>498</width>
+    <height>264</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>SimCity 4 Settings</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::ExpandingFieldsGrow</enum>
+   </property>
+   <item row="0" column="1">
+    <widget class="QCheckBox" name="radeonHd7000Fix">
+     <property name="toolTip">
+      <string>Do not force low quality on Radeon HD 7000 series graphics cards (as opposed to the older Radeon 7000 series).</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this if you have a graphics card in the &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; series.&lt;/p&gt;&lt;p&gt;The detection in the default code overlaps with the older &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; series, and forces the settings to a low quality code. Apply this tweak to make sure the detection only picks out the old graphics cards, but not the newer &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; ones.&lt;/p&gt;&lt;p&gt;If you do not have an ATI/AMD graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Fix AMD Radeon HD 7000 series recognition</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="fastCard">
+     <property name="toolTip">
+      <string>Detect any graphics card as a fast one.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a wildcard match for any graphics card as fast cards, enabling highest quality settings. Only some old GeForce cards are explicitly excluded.&lt;/p&gt;&lt;p&gt;Use this if you do not get all the high quality graphics in your game, such as shadows, fog etc.&lt;/p&gt;&lt;p&gt;Note that your CPU speed and memory may still influence this setting.&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Force card as fast graphics card</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QPushButton" name="resetDefaults">
+     <property name="toolTip">
+      <string>Disable all tweaks and restore default values.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>&amp;Default Settings</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="allHighSettings">
+     <property name="toolTip">
+      <string>Always enable all high quality settings in hardware mode, bypassing graphics card detection.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Forces all settings to be available in hardware rendering mode, regardless of the detected capabilities of your card. In particular, this means you get:&lt;/p&gt;&lt;p&gt;- high cars/sims detail&lt;/p&gt;&lt;p&gt;- high quality shadows&lt;/p&gt;&lt;p&gt;- clouds, fog and waves on&lt;/p&gt;&lt;p&gt;- translucency on&lt;/p&gt;&lt;p&gt;- colored cursor,&lt;/p&gt;&lt;p&gt;- maximum screen size&lt;/p&gt;&lt;p&gt;- 32 bit colors&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;This may cause performance problems, so use with care!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Force high quality settings</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>radeonHd7000Fix</tabstop>
+  <tabstop>fastCard</tabstop>
+  <tabstop>allHighSettings</tabstop>
+  <tabstop>resetDefaults</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>allHighSettings</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fastCard</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>81</x>
+     <y>44</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>allHighSettings</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>radeonHd7000Fix</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>70</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
