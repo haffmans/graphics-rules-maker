@@ -225,8 +225,11 @@ void MainWindow::selectGame(int row)
     // Translation
     QString pluginFile = m_gamePlugins->translationFilename(m_currentPlugin->id());
     QString pluginDir = m_gamePlugins->translationDirectory(m_currentPlugin->id());
-    if (!m_pluginTranslator.load(m_locale, pluginFile, "_", pluginDir)) {
-        qDebug() << "Plugin translation not loaded :( - " << pluginFile << " in " << pluginDir << " locale " << QLocale::languageToString(m_locale.language());
+    QStringList dirs = QStringList() << pluginDir << translationDirectories();
+    foreach(QString dir, dirs) {
+        if (!m_pluginTranslator.load(m_locale, pluginFile, "_", dir)) {
+            qDebug() << "Plugin translation not loaded :( - " << pluginFile << " in " << dir << " locale " << QLocale::languageToString(m_locale.language());
+        }
     }
 
     // Set preview tab names

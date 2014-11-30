@@ -55,6 +55,11 @@ target_link_libraries(Sims2GameWriter Qt5::Widgets GraphicsRulesMaker)
 # Determine relative plugin path for CPACK
 file(RELATIVE_PATH PluginInstallDir "${CMAKE_INSTALL_PREFIX}" ${GraphicsRulesMaker_PLUGIN_PATH})
 
+# Determine *.qm installation path
+if (NOT DEFINED TRANSLATIONS_INSTALL_DIR)
+    set(TRANSLATIONS_INSTALL_DIR ${PluginInstallDir})
+endif(NOT DEFINED TRANSLATIONS_INSTALL_DIR)
+
 install(TARGETS Sims2GameWriter
     RUNTIME DESTINATION ${PluginInstallDir}
     LIBRARY DESTINATION ${PluginInstallDir}
@@ -62,6 +67,6 @@ install(TARGETS Sims2GameWriter
 )
 install(
     FILES ${GraphicsRulesMaker_Sims2_QMS}
-    DESTINATION ${PluginInstallDir}
+    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
     COMPONENT sims2
 )
