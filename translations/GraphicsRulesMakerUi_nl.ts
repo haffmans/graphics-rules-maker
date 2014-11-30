@@ -332,73 +332,73 @@ ontvangen samen met dit programma. Als dat niet het geval is, zie
         <translation>%1 Voorbeeld</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="250"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="254"/>
         <source>No game selected</source>
         <translation>Geen spel geselecteerd</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="256"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="260"/>
         <source>Directory does not exist.</source>
         <translation>Map bestaat niet.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="262"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="266"/>
         <source>Cannot find game application.</source>
         <translation>Kan applicatiebestand van spel niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="266"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="270"/>
         <source>Game application file is not an executable file.</source>
         <translation>Applicatiebestand van spel is geen uitvoerbaar bestand.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="272"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="276"/>
         <source>Cannot find Graphics Rules files.</source>
         <translation>Kan bestanden met grafische regels niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="276"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="280"/>
         <source>Graphics Rules file is not a readable file.</source>
         <translation>Bestand met grafische regels is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="282"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="286"/>
         <source>Cannot find Video Cards database.</source>
         <translation>Kan grafische-kaartendatabase niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="286"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="290"/>
         <source>Video Cards database file is not a readable file.</source>
         <translation>Grafische-kaartendatabase is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="291"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="295"/>
         <source>Game found, video cards database loaded.</source>
         <translation>Spel gevonden, grafische-kaartendatabase ingeladen.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="359"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="377"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="382"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="415"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="423"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="468"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="503"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="363"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="381"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="386"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="419"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="427"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="472"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="507"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="359"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="363"/>
         <source>Could not create back-up files. Aborting.</source>
         <translation>Kon back-upbestanden niet maken. Het proces wordt afgebroken.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="364"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="368"/>
         <source>Saving files</source>
         <translation>Bestanden opslaan</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="365"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="369"/>
         <source>The files cannot be saved to the game directory (it is not writable).
 
 They will instead be saved to a temporary directory.You will need to copy them to the game directory manually.
@@ -411,76 +411,76 @@ In plaats daarvan worden ze in een tijdelijke map geplaatst. Je moet ze daar han
 Het kan ook helpen om de Graphics Rules Maker als beheerder uit te voeren.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="377"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="381"/>
         <source>Could not create temporary location for files.</source>
         <translation>Kan map voor tijdelijke bestanden niet maken.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="382"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="386"/>
         <source>Could not write to temporary location.</source>
         <translation>Kan niet schrijven naar tijdelijke map.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="415"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="419"/>
         <source>Could not open Graphic Rules file for writing.</source>
         <translation>Kan grafische regels bestand niet openen om te schrijven.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="423"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="427"/>
         <source>Could not open Video Cards file for writing.</source>
         <translation>Kan grafische-kaartenbestand niet openen om te schrijven.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="430"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="434"/>
         <source>Files Saved</source>
         <translation>Bestanden Opgeslagen</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="431"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="435"/>
         <source>The files have been saved. You can now run your game using the new settings.</source>
         <translation>De bestanden zijn opgeslagen. Je kunt het spel nu starten met de nieuwe instellingen.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="456"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="491"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="460"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="495"/>
         <source>Save %1</source>
         <translation>%1 Opslaan</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="458"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="493"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="462"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="497"/>
         <source>SimCity Graphic Rules files (*.sgr);;All files (*.*)</source>
         <translation>SimCity Grafische-Regels-bestand (*.sgr);;Alle bestanden (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="468"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="503"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="472"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="507"/>
         <source>File &apos;%1&apos; cannot be written to.</source>
         <translation>Kan niet schrijven naar bestand &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="475"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="510"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="479"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="514"/>
         <source>File saved</source>
         <translation>Bestand opgeslagen</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="475"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="479"/>
         <source>Graphics rules saved to &apos;%1&apos;.</source>
         <translation>Grafische regels opgeslagen in &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="510"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="514"/>
         <source>Video cards database saved to &apos;%1&apos;.</source>
         <translation>Grafischekaarten-database opgeslagen naar &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="546"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="550"/>
         <source>The following devices are still missing in the video card database. Do you want to add them?</source>
         <translation>De volgende apparaten ontbreken nog in de grafischekaarten-database. Wil je deze toevoegen?</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="550"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="554"/>
         <source>Add devices?</source>
         <translation>Apparaten toevoegen?</translation>
     </message>
