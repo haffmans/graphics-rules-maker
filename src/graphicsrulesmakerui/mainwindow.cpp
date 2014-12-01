@@ -213,6 +213,7 @@ void MainWindow::selectGame(int row)
     }
 
     // Determine game path - use previous setting if possible
+    QString oldPath = ui->gamePath->text();
     if (s.contains(m_currentPlugin->id() + "/path")) {
         ui->gamePath->setText(s.value(m_currentPlugin->id() + "/path").toString());
     }
@@ -220,6 +221,12 @@ void MainWindow::selectGame(int row)
         // We don't use this as s.value()'s default, to avoid searching the
         // game every time.
         ui->gamePath->setText(QDir::toNativeSeparators(m_currentPlugin->findGameDirectory().absolutePath()));
+    }
+
+    if (ui->gamePath->text() == oldPath) {
+        // Force update of status text, even though change signal didn't trigger.
+        // This avoids the default "Directory not found" message after changing locales (caused by retranslateUi).
+        locateGameFiles(ui->gamePath->text());
     }
 
     // Translation
@@ -254,6 +261,7 @@ void MainWindow::replaceWidget()
 
 void MainWindow::locateGameFiles(const QString& directory)
 {
+    qDebug() << "LOCATING game in directory " << directory;
     if (!m_currentPlugin) {
         setStatus(tr("No game selected"), false);
         return;
@@ -301,6 +309,7 @@ void MainWindow::locateGameFiles(const QString& directory)
 
 void MainWindow::setStatus(const QString& text, bool allok)
 {
+    qDebug() << "GAME STATUS " << (allok ? "OK: " : "NOT OK: ") << text;
     QString color = (allok) ? "green" : "red";
     ui->status->setText("<font style=\"color: " + color + "\">" + text + "</font>");
     ui->saveAll->setEnabled(allok);
@@ -634,6 +643,8 @@ void MainWindow::setLocale(const QLocale& locale)
 
     // Recreate plugin widget to make sure it's translated
     selectGame(this->ui->gameSelect->currentIndex());
+    // And reload database entry (because retranslateUi messed it up)
+    selectCard(this->ui->deviceSelect->currentIndex());
 }
 
 void MainWindow::setLocale(const QLocale& locale, const QString& prefix, QTranslator* translator)
