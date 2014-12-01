@@ -590,11 +590,10 @@ rule "Standard hardware"
    option $ScreenSize      $Screen_1280x1024  # 1600x1200 may not work on HD screens due to height (1920x1080)
    option $ScreenDepth     $Depth_32
 
-   property useSecondStage       true  # Default, overridden below in most cases.
-   property texBindMaxFree       8   # To stop thrashing, plus a little pad.
-   property dirtyRectMergeFrames 2   # Default, for low-end card.
-   property TextureBits          32  # mostly just for preview -- everything else
-                                     # should be DXT
+   property useSecondStage       true
+   property texBindMaxFree       8
+   property dirtyRectMergeFrames 2
+   property TextureBits          32
 )EOF";
     }
     else {
