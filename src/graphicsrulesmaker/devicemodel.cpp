@@ -228,7 +228,7 @@ bool DeviceModel::loadDxDgi()
             GraphicsDevice dev;
 
             // Get essential info
-            dev.name = QString::fromWCharArray(description.Description, 128);
+            dev.name = QString::fromWCharArray(description.Description);
             dev.deviceId = description.DeviceId;
             dev.vendorId = description.VendorId;
             dev.memory = description.DedicatedVideoMemory + description.DedicatedSystemMemory + description.SharedSystemMemory;
