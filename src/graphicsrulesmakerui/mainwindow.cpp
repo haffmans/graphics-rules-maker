@@ -113,7 +113,8 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
             }
         }
     }
-    selectGame(gameRow);
+    this->ui->gameSelect->setCurrentIndex(gameRow); // Will call selectGame() slot
+    qDebug() << "Selected game on index: " <<  this->ui->gameSelect->currentIndex() << " - id: " << m_currentPlugin->id();
 
     foreach(const QLocale &locale, appLocales()) {
         QString caption = QString("%1 (%2)").arg(
@@ -176,7 +177,6 @@ void MainWindow::updateDeviceStatus()
         );
     }
 }
-
 
 void MainWindow::browseGame()
 {
