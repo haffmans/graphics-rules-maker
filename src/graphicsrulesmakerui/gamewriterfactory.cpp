@@ -36,7 +36,11 @@ GameWriterFactory::GameWriterFactory(QObject* parent)
     m_searchDirectories.append(QDir::current().absoluteFilePath("bin/gamewriters"));
 #endif
 
+#if !defined(Q_OS_WIN32) || !defined(NDEBUG)
+    // Useful on Win32 while debugging, but not suitable for release builds on Win32.
+    // This'll be the installation path on Linux (etc) platforms, so it's alright there.
     m_searchDirectories.append(QDir(GRAPHICSRULESMAKER_PLUGIN_PATH));
+#endif
 }
 
 void GameWriterFactory::loadPlugins()
