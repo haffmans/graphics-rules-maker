@@ -23,6 +23,10 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#endif
+
 #include "simcity4settings.h"
 
 SimCity4GameWriter::SimCity4GameWriter(QObject* parent)
@@ -38,22 +42,16 @@ QWidget* SimCity4GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatab
 QDir SimCity4GameWriter::findGameDirectory() const
 {
 #ifdef Q_OS_WIN32
-    // This really only works on Windows...
-    // Order based on "Suppression Exe" contents
-    QStringList exes = QStringList() << "SimCity 4.exe";
-
     QString result;
-    QSettings s("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths", QSettings::NativeFormat);
-    foreach(const QString &exe, exes) {
-        // Find path
-        s.beginGroup(exe);
-        QFileInfo file(s.value("Default").toString());
-        if (file.exists()) {
-            // Item found and file exists -- use "Path" setting
-            result = s.value("Path").toString();
-            break;
-        }
-        s.endGroup();
+    QSettings s("HKEY_LOCAL_MACHINE\\Software\\Maxis\\SimCity 4", QSettings::NativeFormat);
+    result = s.value("Install Dir").toString();
+    // Name is likely to be short - change into long name (i.e. no "~1" abbreviations)
+    const LPCWSTR resultUtf16 = reinterpret_cast<LPCWSTR>(result.utf16());
+    const DWORD length = GetLongPathNameW(resultUtf16, NULL, 0);
+    if (length != 0) {
+        QScopedArrayPointer<WCHAR> buffer(new WCHAR[length]);
+        GetLongPathNameW(resultUtf16, buffer.data(), length);
+        result = QString::fromUtf16(reinterpret_cast<const ushort *>(buffer.data()), length - 1);
     }
 
     return QDir(result);
