@@ -85,8 +85,8 @@ if(WIN32)
     # Assume MingW/ICU dlls are with QtCore
     get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
 
-    if(MINGW)
-        # Yep, this could be cleaner, using find_library and whatnot. Can't be bothered for now.
+    if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
+        # TODO Not cross compiling: use "windeployqt --list source" to list all dlls
         SET(Qt5Core_Dependencies
                 # ${Qt5Core_BinDir}/icudt52.dll
                 # Use a minimal version from http://qt-project.org/forums/viewthread/38489
@@ -97,7 +97,20 @@ if(WIN32)
                 ${Qt5Core_BinDir}/libstdc++-6.dll
                 ${Qt5Core_BinDir}/libwinpthread-1.dll
         )
-    endif(MINGW)
+    else("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
+        # 'windeployqt' not supported when cross-compiling; these names are accurate for Qt5.4,
+        # in mingw-w64, as of 2015-05-05
+        # libgcc_* might have various names (depending on platform etc)
+        file(GLOB LIBGCC_FILE "${Qt5Core_BinDir}/libgcc_*.dll")
+        SET(Qt5Core_Dependencies
+                ${Qt5Core_BinDir}/libicudt54.dll
+                ${Qt5Core_BinDir}/libicuin54.dll
+                ${Qt5Core_BinDir}/libicuuc54.dll
+                ${Qt5Core_BinDir}/libstdc++-6.dll
+                ${Qt5Core_BinDir}/libwinpthread-1.dll
+                ${LIBGCC_FILE}
+        )
+    endif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
 
     install(FILES ${Qt5Core_Location}
                   ${Qt5Gui_Location}
