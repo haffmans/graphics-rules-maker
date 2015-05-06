@@ -103,11 +103,20 @@ if(WIN32)
         # libgcc_* might have various names (depending on platform etc)
         file(GLOB LIBGCC_FILE "${Qt5Core_BinDir}/libgcc_*.dll")
         SET(Qt5Core_Dependencies
+                ${Qt5Core_BinDir}/libfreetype-6.dll
+                ${Qt5Core_BinDir}/libglib-2.0-0.dll
+                ${Qt5Core_BinDir}/libharfbuzz-0.dll
                 ${Qt5Core_BinDir}/libicudt54.dll
                 ${Qt5Core_BinDir}/libicuin54.dll
                 ${Qt5Core_BinDir}/libicuuc54.dll
+                ${Qt5Core_BinDir}/libiconv-2.dll
+                ${Qt5Core_BinDir}/libintl-8.dll
                 ${Qt5Core_BinDir}/libstdc++-6.dll
+                ${Qt5Core_BinDir}/libpcre-1.dll
+                ${Qt5Core_BinDir}/libpcre16-0.dll
+                ${Qt5Core_BinDir}/libpng16-16.dll
                 ${Qt5Core_BinDir}/libwinpthread-1.dll
+                ${Qt5Core_BinDir}/zlib1.dll
                 ${LIBGCC_FILE}
         )
     endif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
