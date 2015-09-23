@@ -40,7 +40,6 @@ add_subdirectory(src/graphicsrulesmaker)
 add_subdirectory(src/graphicsrulesmakerui)
 add_subdirectory(src/plugins)
 
-# Copy required Qt5 DLLs for Windows
 if(WIN32)
     find_package(Qt5Widgets REQUIRED)
     find_package(ImageMagick REQUIRED COMPONENTS convert)
@@ -75,64 +74,6 @@ if(WIN32)
     add_custom_target(GraphicsRulesMakerIcons ALL
         DEPENDS "simsnetwork.ico"
         SOURCES "simsnetwork-16.ico" "simsnetwork-128.png")
-
-    get_target_property(Qt5Core_Location Qt5::Core LOCATION)
-    get_target_property(Qt5Gui_Location Qt5::Gui LOCATION)
-    get_target_property(Qt5Widgets_Location Qt5::Widgets LOCATION)
-
-    get_target_property(Qt5Gui_WindowsPlugin_Location Qt5::QWindowsIntegrationPlugin LOCATION)
-
-    # Assume MingW/ICU dlls are with QtCore
-    get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
-
-    if("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-        # TODO Not cross compiling: use "windeployqt --list source" to list all dlls
-        SET(Qt5Core_Dependencies
-                # ${Qt5Core_BinDir}/icudt52.dll
-                # Use a minimal version from http://qt-project.org/forums/viewthread/38489
-                ${PROJECT_SOURCE_DIR}/lib/icudt52.dll
-                ${Qt5Core_BinDir}/icuin52.dll
-                ${Qt5Core_BinDir}/icuuc52.dll
-                ${Qt5Core_BinDir}/libgcc_s_dw2-1.dll
-                ${Qt5Core_BinDir}/libstdc++-6.dll
-                ${Qt5Core_BinDir}/libwinpthread-1.dll
-        )
-    else("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-        # 'windeployqt' not supported when cross-compiling; these names are accurate for Qt5.4,
-        # in mingw-w64, as of 2015-05-05
-        # libgcc_* might have various names (depending on platform etc)
-        file(GLOB LIBGCC_FILE "${Qt5Core_BinDir}/libgcc_*.dll")
-        SET(Qt5Core_Dependencies
-                ${Qt5Core_BinDir}/libfreetype-6.dll
-                ${Qt5Core_BinDir}/libglib-2.0-0.dll
-                ${Qt5Core_BinDir}/libharfbuzz-0.dll
-                ${Qt5Core_BinDir}/libicudt54.dll
-                ${Qt5Core_BinDir}/libicuin54.dll
-                ${Qt5Core_BinDir}/libicuuc54.dll
-                ${Qt5Core_BinDir}/libiconv-2.dll
-                ${Qt5Core_BinDir}/libintl-8.dll
-                ${Qt5Core_BinDir}/libstdc++-6.dll
-                ${Qt5Core_BinDir}/libpcre-1.dll
-                ${Qt5Core_BinDir}/libpcre16-0.dll
-                ${Qt5Core_BinDir}/libpng16-16.dll
-                ${Qt5Core_BinDir}/libwinpthread-1.dll
-                ${Qt5Core_BinDir}/zlib1.dll
-                ${LIBGCC_FILE}
-        )
-    endif("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
-
-    install(FILES ${Qt5Core_Location}
-                  ${Qt5Gui_Location}
-                  ${Qt5Widgets_Location}
-                  ${Qt5Core_Dependencies}
-            DESTINATION bin
-            COMPONENT application
-    )
-
-    install(FILES ${Qt5Gui_WindowsPlugin_Location}
-            DESTINATION bin/platforms
-            COMPONENT application
-    )
 
     install(FILES "${PROJECT_BINARY_DIR}/simsnetwork.ico"
                 "${PROJECT_SOURCE_DIR}/LICENSE.txt"
