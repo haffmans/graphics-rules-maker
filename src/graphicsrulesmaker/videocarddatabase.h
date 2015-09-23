@@ -25,6 +25,8 @@
 
 #define MAX_VENDOR_IDS 8
 
+class QIODevice;
+
 struct VideoCard {
     quint16 deviceId;
     QString name;
