@@ -1,0 +1,155 @@
+
+Build Release (Ubuntu):
+  script:
+  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release
+  - cd /cache/builds/${CI_PROJECT_ID}/release
+  - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ${CI_PROJECT_DIR}
+  - make -j4
+  tags:
+  - cmake
+  - qt5
+  - ubuntu
+  type: build
+
+Build Release (Win32):
+  script:
+  - TOOLCHAIN=i686-w64-mingw32
+  - ARCH=win32
+
+  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
+    -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
+    -DCPACK_OUTPUT_FILE_PREFIX=/deploy/${ARCH}
+    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+    ${CI_PROJECT_DIR}
+  - make -j4
+  tags:
+  - cmake-mingw
+  - qt5-mingw
+  type: build
+
+Build Release (Win64):
+  script:
+  - TOOLCHAIN=x86_64-w64-mingw32
+  - ARCH=win64
+
+  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
+    -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
+    -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
+    -DCPACK_OUTPUT_FILE_PREFIX=/deploy/${ARCH}
+    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+    ${CI_PROJECT_DIR}
+  - make -j4
+  tags:
+  - cmake-mingw
+  - qt5-mingw
+  type: build
+
+
+Package ubuntu:14.04:
+  script:
+  # Defaults
+  - TARGET="/deploy/linux/"
+  - PACKNAME="graphicsrulesmaker-${CI_BUILD_REF_NAME}"
+
+  # Determine distribution name + release
+  - if [ -f /etc/lsb-release ]; then
+  -   '. /etc/lsb-release'
+  -   DISTRIB_ID_LC=$(echo "$DISTRIB_ID" | tr "[:upper:]" "[:lower:]")
+  -   TARGET="/deploy/${DISTRIB_ID_LC}/${DISTRIB_CODENAME}/"
+  - fi
+
+  # Install to temporary directory
+  - cd /cache/builds/${CI_PROJECT_ID}/release
+  - mkdir -p "/cache/packages/${CI_PROJECT_ID}/${PACKNAME}"
+  - make DESTDIR="/cache/packages/${CI_PROJECT_ID}/${PACKNAME}" install
+
+  # Prepare target
+  - cd "/cache/packages/${CI_PROJECT_ID}/${PACKNAME}"
+  - mkdir -p "$TARGET"
+
+  # Create tar.gz and tar.bz2
+  - echo "Creating ${TARGET}${PACKNAME}.tar.gz..."
+  - tar -czpf "${TARGET}${PACKNAME}.tar.gz" *
+  - echo "Creating ${TARGET}${PACKNAME}.tar.bz2..."
+  - tar -cjpf "${TARGET}${PACKNAME}.tar.bz2" *
+
+  # Creating checksums
+  - cd "${TARGET}"
+  - md5sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.md5"
+  - sha1sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.sha1"
+  - md5sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.md5"
+  - sha1sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha1"
+  type: deploy
+  tags:
+  - qt5
+  - cmake
+  - qommando
+  - ubuntu:14.04
+
+Package src:
+  script:
+  - TARGET="/deploy/src/"
+  - PACKNAME="graphicsrulesmaker-${CI_BUILD_REF_NAME}"
+  - mkdir -p "$TARGET"
+
+  - echo "Creating ${TARGET}${PACKNAME}.src.tar.gz..."
+  - git archive --prefix=${PACKNAME}/ ${CI_BUILD_REF_NAME} | gzip > "${TARGET}${PACKNAME}.src.tar.gz"
+
+  - echo "Creating ${TARGET}${PACKNAME}.src.tar.bz2..."
+  - git archive --prefix=${PACKNAME}/ ${CI_BUILD_REF_NAME} | bzip2 > "${TARGET}${PACKNAME}.src.tar.bz2"
+
+  # Creating checksums
+  - cd "${TARGET}"
+  - md5sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.md5"
+  - sha1sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.sha1"
+  - md5sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.md5"
+  - sha1sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha1"
+  type: deploy
+  tags:
+
+Package win32:
+  script:
+  - TOOLCHAIN=i686-w64-mingw32
+  - ARCH=win32
+  - TARGET="/deploy/${ARCH}/"
+  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
+
+  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${TARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+
+  # Creating checksums
+  - cd "${TARGET}"
+  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
+  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
+  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
+  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
+  type: deploy
+  tags:
+  - cmake-mingw
+  - qt5-mingw
+
+Package win64:
+  script:
+  - TOOLCHAIN=x86_64-w64-mingw32
+  - ARCH=win64
+  - TARGET="/deploy/${ARCH}/"
+  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
+
+  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${TARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+
+  # Creating checksums
+  - cd "${TARGET}"
+  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
+  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
+  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
+  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
+  type: deploy
+  tags:
+  - cmake-mingw
+  - qt5-mingw
