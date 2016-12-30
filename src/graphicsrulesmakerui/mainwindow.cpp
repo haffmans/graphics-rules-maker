@@ -90,7 +90,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     s.beginGroup("ui");
     restoreGeometry(s.value("window/geometry").toByteArray());
     restoreState(s.value("window/state").toByteArray());
-    setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());;
+    setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());
     ui->videoCardsSplitter->restoreState(s.value("videocards/splitterstate").toByteArray());
     if (s.contains("videocards/treeviewheaderstate")) {
         ui->videoCardsView->header()->restoreState(s.value("videocards/treeviewheaderstate").toByteArray());
