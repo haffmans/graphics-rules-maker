@@ -382,7 +382,7 @@ void MainWindow::save()
         }
     }
     else {
-        QMessageBox::StandardButton result = QMessageBox::information(this, tr("Saving files"),
+        QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Saving files"),
             tr("The files cannot be saved to the game directory (it is not writable).\n\n"
                "They will instead be saved to a temporary directory."
                "You will need to copy them to the game directory manually.\n\n"
