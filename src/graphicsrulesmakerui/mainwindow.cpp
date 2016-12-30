@@ -305,6 +305,10 @@ void MainWindow::locateGameFiles(const QString& directory)
 
     m_videoCardDatabase->loadFrom(videoCardsFile.absoluteFilePath());
     setStatus(tr("Game found, video cards database loaded."), true);
+
+    // Save path to settings
+    QSettings s;
+    s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
 }
 
 void MainWindow::setStatus(const QString& text, bool allok)
