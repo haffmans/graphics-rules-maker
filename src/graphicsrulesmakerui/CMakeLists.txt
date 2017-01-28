@@ -153,7 +153,7 @@ if(WIN32)
                 # Ignore case
                 string(TOLOWER \"\${item}\" lower)
 
-                if (lower MATCHES \".*(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|shell32|user32|ws2_32|d3d9|ole32|msvcrt|mscvrt|winmm).dll\" )
+                if (lower MATCHES \".*(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|opengl32|shell32|user32|ws2_32|d3d9|ole32|msvcrt|mscvrt|winmm).dll\" )
                     set(\${resolved_item_var} \$ENV{SystemRoot}/system/\${lower} PARENT_SCOPE)
                     set(\${resolved_var} 1 PARENT_SCOPE)
                     set(override_resolved 1)
@@ -179,7 +179,7 @@ if(WIN32)
             function(gp_resolved_file_type_override resolved_item type_var)
                 string(TOLOWER \"\${resolved_item}\" lower)
 
-                if (lower MATCHES \"(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|shell32|user32|ws2_32|d3d9|ole32|oleaut32|msvcrt|mscvrt|winmm).dll\" )
+                if (lower MATCHES \"(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|opengl32|shell32|user32|ws2_32|d3d9|ole32|oleaut32|msvcrt|mscvrt|winmm).dll\" )
                     set(\${type_var} \"system\" PARENT_SCOPE)
                 endif ()
 
