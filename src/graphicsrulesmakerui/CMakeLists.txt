@@ -118,7 +118,7 @@ if(WIN32)
     get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
     get_target_property(Qt5Gui_WindowsPlugin_Location Qt5::QWindowsIntegrationPlugin LOCATION)
 
-    install(FILES ${Qt5Gui_WindowsPlugin_Location}
+    install(FILES $<TARGET_PROPERTY:Qt5::QWindowsIntegrationPlugin,LOCATION_$<CONFIG>>
             DESTINATION bin/platforms
             COMPONENT application
     )
@@ -140,6 +140,10 @@ if(WIN32)
 
         # Fake sysroot to make GetPrerequisites find these as system libraries
         set(gp_sysroot "${PROJECT_BINARY_DIR}/fakewin")
+
+        # Lowercase names of Win32 system libraries to ignore, without .dll extension, separated by '|' for the regex usage below
+        set(win32_system_libs "advapi32|crypt32|dnsapi|dwmapi|gdi32|kernel32|mpr|shell32|user32|ws2_32|d3d9|ole32|msvcrt|mscvrt|winmm|netapi32|uxtheme|iphlpapi|version|userenv|opengl32")
+
         set(codeInstallPrepare "
             set(ENV{SystemRoot} ${gp_sysroot})
 
@@ -154,7 +158,7 @@ if(WIN32)
                 # Ignore case
                 string(TOLOWER \"\${item}\" lower)
 
-                if (lower MATCHES \".*(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|opengl32|shell32|user32|ws2_32|d3d9|ole32|msvcrt|mscvrt|winmm).dll\" )
+                if (lower MATCHES \".*(${win32_system_libs}).dll\" )
                     set(\${resolved_item_var} \$ENV{SystemRoot}/system/\${lower} PARENT_SCOPE)
                     set(\${resolved_var} 1 PARENT_SCOPE)
                     set(override_resolved 1)
@@ -180,7 +184,7 @@ if(WIN32)
             function(gp_resolved_file_type_override resolved_item type_var)
                 string(TOLOWER \"\${resolved_item}\" lower)
 
-                if (lower MATCHES \"(advapi32|crypt32|dnsapi|gdi32|kernel32|mpr|opengl32|shell32|user32|ws2_32|d3d9|ole32|oleaut32|msvcrt|mscvrt|winmm).dll\" )
+                if (lower MATCHES \"(${win32_system_libs}).dll\" )
                     set(\${type_var} \"system\" PARENT_SCOPE)
                 endif ()
 
@@ -204,7 +208,6 @@ if(WIN32)
           \"\${CMAKE_INSTALL_PREFIX}/bin/decoders/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
           \"\${CMAKE_INSTALL_PREFIX}/bin/views/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
           \"\${CMAKE_INSTALL_PREFIX}/bin/platform/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
-          \"\${CMAKE_INSTALL_PREFIX}/bin/qml/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
           \"\${CMAKE_INSTALL_PREFIX}/bin/imageformats/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
           \"\${CMAKE_INSTALL_PREFIX}/bin/libEGL.dll\"
         )
