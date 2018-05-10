@@ -115,3 +115,5 @@ Sims2Settings::~Sims2Settings()
 
     delete ui;
 }
+
+#include "moc_sims2settings.cpp"

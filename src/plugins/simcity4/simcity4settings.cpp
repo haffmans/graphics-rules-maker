@@ -86,3 +86,5 @@ SimCity4Settings::~SimCity4Settings()
 
     delete ui;
 }
+
+#include "moc_simcity4settings.cpp"

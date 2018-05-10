@@ -1320,4 +1320,4 @@ Sims2GameWriter::~Sims2GameWriter()
 {
 }
 
-#include "sims2gamewriter.moc"
+#include "moc_sims2gamewriter.cpp"

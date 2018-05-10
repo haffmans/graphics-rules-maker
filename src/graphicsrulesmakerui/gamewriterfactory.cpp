@@ -119,4 +119,4 @@ GameWriterFactory::~GameWriterFactory()
 {
 }
 
-#include "gamewriterfactory.moc"
+#include "moc_gamewriterfactory.cpp"

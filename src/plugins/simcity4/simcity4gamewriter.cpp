@@ -840,4 +840,4 @@ SimCity4GameWriter::~SimCity4GameWriter()
 {
 }
 
-#include "simcity4gamewriter.moc"
+#include "moc_simcity4gamewriter.cpp"
