@@ -1,75 +1,119 @@
+stages:
+- build
+- test
+- deploy
 
-Build Release (Ubuntu):
+build:ubuntu-16.04:debug:
+  image: haffmans/cmake-qt5:latest
+  artifacts:
+    paths:
+    - build/ubuntu-16.04/debug
+    expire_in: 30 days
   script:
-  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release
-  - cd /cache/builds/${CI_PROJECT_ID}/release
+  - mkdir -p build/ubuntu-16.04/debug
+  - cd build/ubuntu-16.04/debug
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr ${CI_PROJECT_DIR}
+  - make -j4
+  tags:
+  - cmake
+  - qt5
+  - ubuntu
+  stage: build
+
+build:ubuntu-16.04:release:
+  image: haffmans/cmake-qt5:latest
+  artifacts:
+    paths:
+    - build/ubuntu-16.04/release
+    expire_in: 30 days
+  script:
+  - mkdir -p build/ubuntu-16.04/release
+  - cd build/ubuntu-16.04/release
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ${CI_PROJECT_DIR}
   - make -j4
   tags:
   - cmake
   - qt5
   - ubuntu
-  type: build
+  stage: build
 
-Build Release (Win32):
+build:win32:release:
+  image: haffmans/mingw-qt5:latest
+  artifacts:
+    paths:
+    - build/win32/release
+    expire_in: 30 days
   script:
   - TOOLCHAIN=i686-w64-mingw32
   - ARCH=win32
+  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
 
-  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
-  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - mkdir -p build/${ARCH}/release
+  - cd build/${ARCH}/release
   - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
     -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
     -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
-    -DCPACK_OUTPUT_FILE_PREFIX=/deploy/${ARCH}
+    -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
     -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
     ${CI_PROJECT_DIR}
   - make -j4
   tags:
   - cmake-mingw
   - qt5-mingw
-  type: build
+  stage: build
 
-Build Release (Win64):
+build:win64:release:
+  image: haffmans/mingw-qt5:latest
+  artifacts:
+    paths:
+    - build/win64/release
+    expire_in: 30 days
   script:
   - TOOLCHAIN=x86_64-w64-mingw32
   - ARCH=win64
+  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
 
-  - mkdir -p /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
-  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
+  - mkdir -p build/${ARCH}/release
+  - cd build/${ARCH}/release
   - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
     -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
     -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
-    -DCPACK_OUTPUT_FILE_PREFIX=/deploy/${ARCH}
+    -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
     -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
     ${CI_PROJECT_DIR}
   - make -j4
   tags:
   - cmake-mingw
   - qt5-mingw
-  type: build
+  stage: build
 
-
-Package ubuntu:14.04:
+package:ubuntu-16.04:
+  image: haffmans/cmake-qt5-qommando:latest
+  artifacts:
+    paths:
+    - images
+    expire_in: 30 days
+  dependencies:
+  - build:ubuntu-16.04:release
   script:
   # Defaults
-  - TARGET="/deploy/linux/"
-  - PACKNAME="graphicsrulesmaker-${CI_BUILD_REF_NAME}"
+  - TARGET="${CI_PROJECT_DIR}/images/linux/"
+  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_NAME}"
 
   # Determine distribution name + release
   - if [ -f /etc/lsb-release ]; then
   -   '. /etc/lsb-release'
   -   DISTRIB_ID_LC=$(echo "$DISTRIB_ID" | tr "[:upper:]" "[:lower:]")
-  -   TARGET="/deploy/${DISTRIB_ID_LC}/${DISTRIB_CODENAME}/"
+  -   TARGET="${CI_PROJECT_DIR}/images/${DISTRIB_ID_LC}/${DISTRIB_CODENAME}/"
   - fi
 
   # Install to temporary directory
-  - cd /cache/builds/${CI_PROJECT_ID}/release
-  - mkdir -p "/cache/packages/${CI_PROJECT_ID}/${PACKNAME}"
-  - make DESTDIR="/cache/packages/${CI_PROJECT_ID}/${PACKNAME}" install
+  - cd build/ubuntu-16.04/release
+  - mkdir -p "${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}"
+  - make DESTDIR="${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}" install
 
   # Prepare target
-  - cd "/cache/packages/${CI_PROJECT_ID}/${PACKNAME}"
+  - cd "${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}"
   - mkdir -p "$TARGET"
 
   # Create tar.gz and tar.bz2
@@ -84,17 +128,20 @@ Package ubuntu:14.04:
   - sha1sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.sha1"
   - md5sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.md5"
   - sha1sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha1"
-  type: deploy
+  stage: deploy
   tags:
   - qt5
   - cmake
-  - qommando
-  - ubuntu:14.04
+  - ubuntu:16.04
 
-Package src:
+package:src:
+  artifacts:
+    paths:
+    - images
+    expire_in: 30 days
   script:
-  - TARGET="/deploy/src/"
-  - PACKNAME="graphicsrulesmaker-${CI_BUILD_REF_NAME}"
+  - TARGET="${CI_PROJECT_DIR}/images/src/"
+  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_NAME}"
   - mkdir -p "$TARGET"
 
   - echo "Creating ${TARGET}${PACKNAME}.src.tar.gz..."
@@ -109,47 +156,62 @@ Package src:
   - sha1sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.sha1"
   - md5sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.md5"
   - sha1sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha1"
-  type: deploy
+  stage: deploy
   tags:
 
-Package win32:
+package:win32:
+  image: haffmans/mingw-qt5:latest
+  artifacts:
+    paths:
+    - images
+    expire_in: 30 days
+  dependencies:
+  - build:win32:release
   script:
   - TOOLCHAIN=i686-w64-mingw32
   - ARCH=win32
-  - TARGET="/deploy/${ARCH}/"
+  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
   - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
 
-  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${TARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+  - cd build/${ARCH}/release
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
 
   # Creating checksums
-  - cd "${TARGET}"
+  - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
   - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
   - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
   - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
-  type: deploy
+  stage: deploy
   tags:
   - cmake-mingw
   - qt5-mingw
 
-Package win64:
+package:win64:
+  image: haffmans/mingw-qt5:latest
+  artifacts:
+    paths:
+    - images
+    expire_in: 30 days
+  dependencies:
+  - build:win64:release
   script:
   - TOOLCHAIN=x86_64-w64-mingw32
   - ARCH=win64
-  - TARGET="/deploy/${ARCH}/"
+  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
   - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
 
-  - cd /cache/builds/${CI_PROJECT_ID}/release-${ARCH}
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${TARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+  - cd build/${ARCH}/release
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
 
   # Creating checksums
-  - cd "${TARGET}"
+  - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
   - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
   - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
   - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
-  type: deploy
+  stage: deploy
   tags:
   - cmake-mingw
   - qt5-mingw
+
