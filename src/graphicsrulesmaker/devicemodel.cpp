@@ -466,4 +466,4 @@ QVariant DeviceModel::headerData(int section, Qt::Orientation orientation, int r
     return QVariant();
 }
 
-#include "devicemodel.moc"
+#include "moc_devicemodel.cpp"

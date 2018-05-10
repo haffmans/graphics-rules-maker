@@ -419,4 +419,4 @@ VideoCardDatabase::~VideoCardDatabase()
 {
 }
 
-#include "videocarddatabase.moc"
+#include "moc_videocarddatabase.cpp"
