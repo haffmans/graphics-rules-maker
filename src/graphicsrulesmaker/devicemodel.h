@@ -22,6 +22,8 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QList>
 
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+
 class IDXGIFactory1;
 
 struct GraphicsMode
@@ -46,7 +48,7 @@ struct GraphicsDevice
 
 uint qHash(GraphicsMode key, uint seed = 0);
 
-class DeviceModel : public QAbstractTableModel
+class GRAPHICSRULESMAKER_EXPORT DeviceModel : public QAbstractTableModel
 {
     Q_OBJECT
 

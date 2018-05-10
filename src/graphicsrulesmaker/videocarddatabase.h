@@ -22,6 +22,7 @@
 #include <QtCore/QAbstractItemModel>
 
 #include <QtCore/QUrl>
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 #define MAX_VENDOR_IDS 8
 
@@ -38,7 +39,7 @@ struct VideoCardVendor {
     QList<VideoCard> cards;
 };
 
-class VideoCardDatabase : public QAbstractItemModel
+class GRAPHICSRULESMAKER_EXPORT VideoCardDatabase : public QAbstractItemModel
 {
     Q_OBJECT
 

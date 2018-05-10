@@ -1,6 +1,12 @@
 #ifndef GRAPHICSRULESMAKER_CONFIG_H
 #define GRAPHICSRULESMAKER_CONFIG_H
 
+#if defined(GRAPHICSRULESMAKER_LIBRARY)
+#  define GRAPHICSRULESMAKER_EXPORT Q_DECL_EXPORT
+#else
+#  define GRAPHICSRULESMAKER_EXPORT Q_DECL_IMPORT
+#endif
+
 /**
  * The installation directory for the default plugins
  */

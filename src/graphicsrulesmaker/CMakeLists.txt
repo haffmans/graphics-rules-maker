@@ -88,6 +88,7 @@ configure_file(graphicsrulesmaker_config.h.cmake
     ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
 
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
+target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
 target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
 if(WIN32)
     # NOTE: ${DirectX_DXGI_LIBRARY} is removed; we load it dynamically at runtime
