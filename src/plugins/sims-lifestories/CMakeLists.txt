@@ -53,10 +53,10 @@ endif(NOT DEFINED TRANSLATIONS_INSTALL_DIR)
 install(TARGETS SimsLifeStoriesGameWriter
     RUNTIME DESTINATION ${PluginInstallDir}
     LIBRARY DESTINATION ${PluginInstallDir}
-    COMPONENT SIMSLIFESTORIES
+    COMPONENT simslifestories
 )
 install(
     FILES ${GraphicsRulesMaker_SimsLifeStories_QMS}
     DESTINATION ${TRANSLATIONS_INSTALL_DIR}
-    COMPONENT SIMSLIFESTORIES
+    COMPONENT simslifestories
 )

@@ -8,8 +8,8 @@ set(CPACK_PACKAGE_VERSION_MINOR "1")
 set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Graphics Rules Maker")
 
-# Components: application, dev, sims2, simcity4
-set(CPACK_COMPONENTS_ALL application dev sims2 simcity4)
+# Components: application, dev, sims2, simcity4, simslifestories
+set(CPACK_COMPONENTS_ALL application dev sims2 simcity4 simslifestories)
 
 set(CPACK_COMPONENT_APPLICATION_DISPLAY_NAME "Graphics Rules Maker Application")
 set(CPACK_COMPONENT_APPLICATION_DESCRIPTION "The application and all required files.")
