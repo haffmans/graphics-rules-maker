@@ -74,7 +74,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="gameLabel">
           <property name="text">
-           <string>Game:</string>
+           <string>&amp;Game:</string>
           </property>
           <property name="buddy">
            <cstring>gameSelect</cstring>
@@ -397,7 +397,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="copyright">
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright &amp;copy; 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -415,7 +415,7 @@
      <x>0</x>
      <y>0</y>
      <width>709</width>
-     <height>19</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">

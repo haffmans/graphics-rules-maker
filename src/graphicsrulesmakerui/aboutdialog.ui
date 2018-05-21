@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>507</width>
-    <height>339</height>
+    <width>638</width>
+    <height>455</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,25 +33,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
-&lt;h3&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
-
-&lt;p&gt;Copyright © 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way.&lt;/p&gt;
-
-&lt;p&gt;This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
- Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
-
- &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT
- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/p&gt;
-
- &lt;p&gt;You should have received a copy of the GNU General Public License along with
-  this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;Graphics Rules Maker&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Report Bugs/Problems&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;wouter@simply-life.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Leefish&lt;/span&gt;&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way. &lt;/p&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. &lt;/p&gt;&lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. &lt;/p&gt;&lt;p&gt;You should have received a copy of the GNU General Public License along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
