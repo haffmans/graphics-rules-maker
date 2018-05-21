@@ -52,9 +52,11 @@ public:
 
 public slots:
     void reset();
+    void autodetect();
 
 private:
     Ui::Sims2Settings* ui;
+    DeviceModel *m_devices;
 };
 
 #endif // SIMS2SETTINGS_H

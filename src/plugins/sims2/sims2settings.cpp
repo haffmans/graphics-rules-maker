@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2014-2018 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,25 @@
 #include "ui_sims2settings.h"
 
 #include <QtCore/QSettings>
+#include <QMessageBox>
+
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#include <versionhelpers.h>
+#endif
 
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 
 Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-	: QWidget(parent)
+    : QWidget(parent)
+    , m_devices(devices)
 {
     ui = new Ui::Sims2Settings;
     ui->setupUi(this);
 
     connect(ui->resetDefaults, SIGNAL(clicked(bool)), SLOT(reset()));
+    connect(ui->autodetect, SIGNAL(clicked(bool)), SLOT(autodetect()));
 
     // Load available resolutions
     QStringList resolutions;
@@ -96,6 +104,67 @@ void Sims2Settings::reset()
     ui->intelVsync->setChecked(false);
     ui->defaultResolution->setCurrentText("1024x768");
     ui->maxResolution->setCurrentText("1600x1200");
+}
+
+void Sims2Settings::autodetect()
+{
+    auto result = QMessageBox::information(this, tr("Auto-detect Settings"),
+        tr("Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click \"Save Files\".\n\nThese settings are not guaranteed to work!\n\nIf the detected settings do not help, you should change the options manually.\n\nDo you want to continue?"),
+        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+
+    if (result != QMessageBox::Ok) {
+        return;
+    }
+
+    int deviceCount = m_devices->rowCount();
+
+    // Force memory
+    int maxMemory = 0;
+    for (int i = 0; i < deviceCount; ++i) {
+        auto device = m_devices->device(i);
+        maxMemory = std::max(maxMemory, static_cast<int>(device.memory));
+    }
+    ui->forceMem->setValue(std::min(ui->forceMem->maximum(), maxMemory));
+
+    // Sim Shadows: Windows 8 and up
+#ifdef Q_OS_WIN32
+    ui->disableSimShadows->setChecked(IsWindows8OrGreater());
+#else
+    ui->disableSimShadows->setChecked(false);
+#endif
+
+    // Radeon HD 7000 tweak
+    bool applyRadeonTweak = false;
+    const QRegularExpression radeon7000HdRegex("Radeon.*HD.*7\\d00");
+    for (int i = 0; i < deviceCount; ++i) {
+        auto device = m_devices->device(i);
+        if (device.name.contains(radeon7000HdRegex)) {
+            applyRadeonTweak = true;
+            break;
+        }
+    }
+    ui->radeonHd7000Fix->setChecked(applyRadeonTweak);
+
+    // Intel High mode enabled for these series:
+    // - "HD Graphics", "UHD Graphics",
+    // - "Iris Graphics", "Iris Plus Graphics", "Iris Pro Graphics"
+    const QRegularExpression intelHdRegex("U?HD Graphics");
+    const QRegularExpression intelIrisRegex("Iris (Plus |Pro )?Graphics");
+    bool intelHigh = false;
+    for (int i = 0; i < deviceCount; ++i) {
+        auto device = m_devices->device(i);
+        if (device.name.contains(intelHdRegex) || device.name.contains(intelIrisRegex)) {
+            intelHigh = true;
+            break;
+        }
+    }
+    // Enable V-sync on these modern cards too
+    ui->intelVsync->setChecked(intelHigh);
+    ui->intelHigh->setChecked(intelHigh);
+
+    // Resolutions: just pick the last item
+    ui->defaultResolution->setCurrentIndex(ui->defaultResolution->count() - 1);
+    ui->maxResolution->setCurrentIndex(ui->maxResolution->count() - 1);
 }
 
 Sims2Settings::~Sims2Settings()
