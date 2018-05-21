@@ -122,9 +122,9 @@ void Sims2Settings::autodetect()
     int maxMemory = 0;
     for (int i = 0; i < deviceCount; ++i) {
         auto device = m_devices->device(i);
-        maxMemory = std::max(maxMemory, static_cast<int>(device.memory));
+        maxMemory = std::max<int>(maxMemory, static_cast<int>(device.memory));
     }
-    ui->forceMem->setValue(std::min(ui->forceMem->maximum(), maxMemory));
+    ui->forceMem->setValue(std::min<int>(ui->forceMem->maximum(), maxMemory));
 
     // Sim Shadows: Windows 8 and up
 #ifdef Q_OS_WIN32
