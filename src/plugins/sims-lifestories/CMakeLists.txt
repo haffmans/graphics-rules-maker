@@ -32,9 +32,9 @@ SET(GraphicsRulesMaker_SimsLifeStories_SRCS
 if(${Qt5LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
     qt5_create_translation(GraphicsRulesMaker_SimsLifeStories_QMS
-        ${GraphicsRulesMaker_SimsLifeStories_SRCS}
+        ${CMAKE_CURRENT_SOURCE_DIR}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/SimsLifeStoriesGameWriter_nl.ts"
-        OPTIONS -source-language "en-US"
+        OPTIONS -source-language "en_US"
     )
 endif(${Qt5LinguistTools_FOUND})
 

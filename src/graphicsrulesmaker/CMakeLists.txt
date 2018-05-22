@@ -41,9 +41,9 @@ set(GraphicsRulesMaker_HDRS
 if(${Qt5LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
     qt5_create_translation(GraphicsRulesMaker_QMS
-        ${GraphicsRulesMaker_SRCS}
+        ${CMAKE_CURRENT_SOURCE_DIR}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
-        OPTIONS -source-language "en-US"
+        OPTIONS -source-language "en_US"
     )
 endif(${Qt5LinguistTools_FOUND})
 
