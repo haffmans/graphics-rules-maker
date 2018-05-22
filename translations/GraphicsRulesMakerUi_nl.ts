@@ -11,93 +11,7 @@
     <message>
         <location filename="../src/graphicsrulesmakerui/aboutdialog.ui" line="36"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;Graphics Rules Maker&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Report Bugs/Problems&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;wouter@simply-life.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Leefish&lt;/span&gt;&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way. &lt;/p&gt;&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. &lt;/p&gt;&lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. &lt;/p&gt;&lt;p&gt;You should have received a copy of the GNU General Public License along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
-&lt;h3&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
-
-&lt;p&gt;Copyright © 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way.&lt;/p&gt;
-
-&lt;p&gt;This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
- Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
-
- &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT
- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/p&gt;
-
- &lt;p&gt;You should have received a copy of the GNU General Public License along with
-  this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
-&lt;h3&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
-
-&lt;p&gt;Auteursrecht © 2014 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama en iedereen die dit programma heeft getest, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;
-
-&lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder
-de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd
-door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw
-keuze) elke latere versie.&lt;/p&gt;
-
- &lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER
-ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK
-ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL.
-Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;
-
- &lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben
-ontvangen samen met dit programma. Als dat niet het geval is, zie 
-&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
-&lt;h3&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
-
-&lt;p&gt;Copyright © 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;/p&gt;
-
-&lt;p&gt;This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
- Foundation, either version 3 of the License, or (at your option) any later version.&lt;/p&gt;
-
- &lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT
- ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.&lt;/p&gt;
-
- &lt;p&gt;You should have received a copy of the GNU General Public License along with
-  this program.  If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;
-&lt;h2&gt;Graphics Rules Maker&lt;/h2&gt;
-&lt;h3&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h3&gt;
-
-&lt;p&gt;Auteursrecht © 2014 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;/p&gt;
-
-&lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder
-de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd
-door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw
-keuze) elke latere versie.&lt;/p&gt;
-
- &lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER
-ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK
-ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL.
-Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;
-
- &lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben
-ontvangen samen met dit programma. Als dat niet het geval is, zie 
-&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;.
-&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:x-large; font-weight:600;&quot;&gt;Graphics Rules Maker&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:large; font-weight:600;&quot;&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwerk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Meld fouten/problemen&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;wouter@simply-life.net&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;Graphics: Rosana Kooymans.&lt;br/&gt;Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;Leefish&lt;/span&gt;&lt;/a&gt;, Ketsu_sama en iedereen die dit programma getest heeft, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;&lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw keuze) elke latere versie.&lt;/p&gt;&lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL. Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;&lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben ontvangen samen met dit programma. Als dat niet het geval is, zie &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -151,10 +65,6 @@ ontvangen samen met dit programma. Als dat niet het geval is, zie
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="70"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Choose a game to edit the settings for here.&lt;/p&gt;&lt;p&gt;Support for more games can be added by installing the appropriate plugins.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kies hier een spel om de instellingen voor aan te passen.&lt;/p&gt;&lt;p&gt;Ondersteuning voor meer spellen kan toegevoegd worden door de plugins ervoor te installeren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>Game:</source>
-        <translation type="vanished">Spel:</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="87"/>
@@ -250,7 +160,7 @@ ontvangen samen met dit programma. Als dat niet het geval is, zie
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="400"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwerk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="102"/>
@@ -287,10 +197,6 @@ ontvangen samen met dit programma. Als dat niet het geval is, zie
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="321"/>
         <source>&lt;p&gt;This tab shows the video card database and a preview of the file.&lt;/p&gt;&lt;p&gt;Advanced users only.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Dit tabblad toont de grafische-kaartendatabase en een voorbeeld van het bestand.&lt;/p&gt;&lt;p&gt;Voor geavanceerde gebruikers.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright &amp;copy; 2014 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright &amp;copy; 2014 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="423"/>

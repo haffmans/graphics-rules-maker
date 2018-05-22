@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/plugins/simcity4/simcity4gamewriter.h" line="43"/>
         <source>SimCity 4</source>
-        <translation type="unfinished"></translation>
+        <translation>SimCity 4</translation>
     </message>
 </context>
 <context>

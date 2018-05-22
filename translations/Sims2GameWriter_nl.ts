@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/plugins/sims2/sims2gamewriter.h" line="43"/>
         <source>The Sims 2</source>
-        <translation type="unfinished"></translation>
+        <translation>The Sims 2</translation>
     </message>
 </context>
 <context>
@@ -15,10 +15,6 @@
         <location filename="../src/plugins/sims2/sims2settings.ui" line="14"/>
         <source>Sims 2 Settings</source>
         <translation>Sims 2 Instellingen</translation>
-    </message>
-    <message>
-        <source>Force texture memory:</source>
-        <translation type="vanished">Forceer textuurgeheugen:</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="30"/>
@@ -56,10 +52,6 @@
         <translation>Geen Sim-schaduw</translation>
     </message>
     <message>
-        <source>Default resolution:</source>
-        <translation type="vanished">Standaard resolutie:</translation>
-    </message>
-    <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="129"/>
         <source>The initial resolution as applied by the game at first launch.</source>
         <translation>De oorspronkelijke resolutie die toegepast wordt bij de eerste start van het spel.</translation>
@@ -68,10 +60,6 @@
         <location filename="../src/plugins/sims2/sims2settings.ui" line="132"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default resolution to use, if the game is in high quality mode. This only applies when first starting up the game; use the in-game settings to change the actual resolution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De standaard resolutie om te gebruiken, mits het spel in hoge-kwaliteitsmodus start. Deze instelling werkt alleen bij de eerste start van het spel; gebruik de instellingen in het spel om de daadwerkelijke resolutie aan te passen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>Maximum resolution:</source>
-        <translation type="vanished">Maximale resolutie:</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="149"/>
@@ -146,7 +134,7 @@
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="161"/>
         <source>&amp;Auto-detect</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="171"/>
@@ -166,7 +154,7 @@
     <message>
         <location filename="../src/plugins/sims2/sims2settings.cpp" line="111"/>
         <source>Auto-detect Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.cpp" line="112"/>
@@ -177,7 +165,13 @@ These settings are not guaranteed to work!
 If the detected settings do not help, you should change the options manually.
 
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphics Rules Maker zal nu proberen om de beste instellingen voor jouw systeem te detecteren. Ze worden niet opgeslagen totdat je op &quot;Bestanden Opslaan&quot; klikt.
+
+Er is geen garantie dat deze instellingen werken!
+
+Als de gedetecteerde instellingen niet helpen, zul je de opties handmatig moeten aanpassen.
+
+Wil je doorgaan?</translation>
     </message>
 </context>
 </TS>
