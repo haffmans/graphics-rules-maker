@@ -422,6 +422,8 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
+    <addaction name="locateGameAction"/>
+    <addaction name="separator"/>
     <addaction name="quitAction"/>
    </widget>
    <widget class="QMenu" name="helpMenu">
@@ -466,6 +468,11 @@
   <action name="action_Dutch_Nederlands">
    <property name="text">
     <string>&amp;Dutch (Nederlands)</string>
+   </property>
+  </action>
+  <action name="locateGameAction">
+   <property name="text">
+    <string>&amp;Locate Game</string>
    </property>
   </action>
  </widget>

@@ -65,6 +65,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(videoCardDatabase, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
     connect(videoCardDatabase, SIGNAL(modelReset()), SLOT(updateDeviceStatus()));
     connect(ui->aboutAction, SIGNAL(triggered()), SLOT(about()));
+    connect(ui->locateGameAction, SIGNAL(triggered()), SLOT(locateGame()));
 
     ui->deviceSelect->setModel(m_model);
     if (m_model->rowCount() > 0) {
@@ -257,6 +258,18 @@ void MainWindow::replaceWidget()
     m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
     connect(m_currentGameSettingsWidget, SIGNAL(destroyed(QObject*)), SLOT(replaceWidget()));
+}
+
+void MainWindow::locateGame()
+{
+    qDebug() << "Auto-locating game";
+    QDir gameDir = m_currentPlugin->findGameDirectory();
+    if (gameDir != QDir()) {
+        ui->gamePath->setText(QDir::toNativeSeparators(gameDir.absolutePath()));
+    }
+    else {
+        QMessageBox::critical(this, tr("Locate Game"), tr("Could not find the game automatically. Please manually enter the game installation path."));
+    }
 }
 
 void MainWindow::locateGameFiles(const QString& directory)

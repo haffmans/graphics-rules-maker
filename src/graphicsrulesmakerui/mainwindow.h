@@ -46,6 +46,7 @@ private slots:
     void selectCard(int row = 0);
     void selectGame(int row = 0);
     void tabOpen(int tabIndex = 0);
+    void locateGame();
     void locateGameFiles(const QString &directory);
     void setStatus(const QString &text, bool allok);
     void browseGame();

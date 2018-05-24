@@ -186,7 +186,11 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>Geen DirectX grafische kaarten zijn gedetecteerd! </translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="400"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="475"/>
+        <source>&amp;Locate Game</source>
+        <translation>Spel automatisch &amp;vinden</translation>
+    </message>
+    <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwork&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#508ed8;&quot;&gt;SimsNetwerk&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -283,7 +287,17 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>%1 Voorbeeld</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="266"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="271"/>
+        <source>Locate Game</source>
+        <translation>Spel Automatisch Vinden</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="271"/>
+        <source>Could not find the game automatically. Please manually enter the game installation path.</source>
+        <translation>Kon het spel niet automatisch vinden. Voer handmatig het installatiepad van het spel in.</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="279"/>
         <source>No game selected</source>
         <translation>Geen spel geselecteerd</translation>
     </message>
