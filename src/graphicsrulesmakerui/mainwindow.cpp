@@ -538,7 +538,7 @@ void MainWindow::saveVideoCards()
         return;
     }
 
-    m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
+    m_videoCardDatabase->write(&dst);
     dst.close();
 
     QMessageBox::information(this, tr("File saved"), tr("Video cards database saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
