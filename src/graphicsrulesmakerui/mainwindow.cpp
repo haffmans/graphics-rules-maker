@@ -499,14 +499,14 @@ void MainWindow::saveGraphicRules()
 
     QFile dst(destination);
     if (!dst.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(destination));
+        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(QDir::toNativeSeparators(destination)));
         return;
     }
 
     m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
     dst.close();
 
-    QMessageBox::information(this, tr("File saved"), tr("Graphics rules saved to '%1'.").arg(destination));
+    QMessageBox::information(this, tr("File saved"), tr("Graphics rules saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
 }
 
 void MainWindow::saveVideoCards()
@@ -534,14 +534,14 @@ void MainWindow::saveVideoCards()
 
     QFile dst(destination);
     if (!dst.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(destination));
+        QMessageBox::critical(this, tr("Error"), tr("File '%1' cannot be written to.").arg(QDir::toNativeSeparators(destination)));
         return;
     }
 
     m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
     dst.close();
 
-    QMessageBox::information(this, tr("File saved"), tr("Video cards database saved to '%1'.").arg(destination));
+    QMessageBox::information(this, tr("File saved"), tr("Video cards database saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
 }
 
 void MainWindow::openDestinationDirectory()
