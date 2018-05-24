@@ -717,6 +717,24 @@ logSystemInfo "Computer:        ${computerName}"
 logSystemInfo "=== Sound device info ==="
 logSystemInfo "Name:            ${soundCardName}"
 logSystemInfo "Driver:          ${soundDriverName}"
+
+# GraphicsRulesMaker: Log tweak settings
+logSystemInfo "=== Graphics Rules Maker Configuration ==="
+)EOF";
+    if (options.forceMemory > 0) {
+        stream << "logSystemInfo \"Force texture memory: " << options.forceMemory << " Mb\"\n";
+    }
+    else {
+        stream << "logSystemInfo \"Force texture memory: No\n";
+    }
+    stream <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Intel V-Sync:         " << (options.intelVsync ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Default Resolution:   " << options.defaultResolution.width() << "x" << options.defaultResolution.height() << "\"\n"
+           <<     "logSystemInfo \"Maximum Resolution:   " << options.maximumResolution.width() << "x" << options.maximumResolution.height() << "\"\n";
+
+stream << R"EOF(
 endif
 
 logSystemInfo "=== Graphics device info ==="
@@ -746,24 +764,6 @@ logSystemInfo "HW T&L:          Fixed function:${fixedFunctionHWTnL} Programmabl
 logSystemInfo "Pixel program:   ${maxPixelProgramVersionMajor}.${maxPixelProgramVersionMinor}"
 logSystemInfo "Texture stages:  ${textureStages}"
 logSystemInfo "AppControlledAA: ${appControlledAA}"
-
-# GraphicsRulesMaker: Log tweak settings
-logSystemInfo "=== Graphics Rules Maker Configuration ==="
-)EOF";
-    if (options.forceMemory > 0) {
-        stream << "logSystemInfo \"Force texture memory: " << options.forceMemory << " Mb\n";
-    }
-    else {
-        stream << "logSystemInfo \"Force texture memory: No\n";
-    }
-    stream <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\n"
-           <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\n"
-           <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\n"
-           <<     "logSystemInfo \"Intel V-Sync:         " << (options.intelVsync ? "Yes" : "No") << "\n"
-           <<     "logSystemInfo \"Default Resolution:   " << options.defaultResolution.width() << "x" << options.defaultResolution.height() << "\n"
-           <<     "logSystemInfo \"Maximum Resolution:   " << options.maximumResolution.width() << "x" << options.maximumResolution.height() << "\n";
-
-stream << R"EOF(
 
 #############################################################################
 #
