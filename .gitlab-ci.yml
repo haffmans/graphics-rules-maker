@@ -74,7 +74,7 @@ build:win64:release:
   stage: build
 
 package:ubuntu-16.04:
-  image: haffmans/cmake-qt5-qommando:latest
+  image: haffmans/cmake-qt5:latest
   artifacts:
     paths:
     - images
