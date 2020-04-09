@@ -14,10 +14,6 @@ build:ubuntu-16.04:debug:
   - cd build/ubuntu-16.04/debug
   - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr ${CI_PROJECT_DIR}
   - make -j4
-  tags:
-  - cmake
-  - qt5
-  - ubuntu
   stage: build
 
 build:ubuntu-16.04:release:
@@ -31,10 +27,6 @@ build:ubuntu-16.04:release:
   - cd build/ubuntu-16.04/release
   - cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ${CI_PROJECT_DIR}
   - make -j4
-  tags:
-  - cmake
-  - qt5
-  - ubuntu
   stage: build
 
 build:win32:release:
@@ -57,9 +49,6 @@ build:win32:release:
     -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
     ${CI_PROJECT_DIR}
   - make -j4
-  tags:
-  - cmake-mingw
-  - qt5-mingw
   stage: build
 
 build:win64:release:
@@ -82,9 +71,6 @@ build:win64:release:
     -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
     ${CI_PROJECT_DIR}
   - make -j4
-  tags:
-  - cmake-mingw
-  - qt5-mingw
   stage: build
 
 package:ubuntu-16.04:
@@ -129,10 +115,6 @@ package:ubuntu-16.04:
   - md5sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.md5"
   - sha1sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha1"
   stage: deploy
-  tags:
-  - qt5
-  - cmake
-  - ubuntu:16.04
 
 package:src:
   artifacts:
@@ -157,7 +139,6 @@ package:src:
   - md5sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.md5"
   - sha1sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha1"
   stage: deploy
-  tags:
 
 package:win32:
   image: haffmans/mingw-qt5:latest
@@ -183,9 +164,6 @@ package:win32:
   - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
   - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
   stage: deploy
-  tags:
-  - cmake-mingw
-  - qt5-mingw
 
 package:win64:
   image: haffmans/mingw-qt5:latest
@@ -211,7 +189,4 @@ package:win64:
   - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
   - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
   stage: deploy
-  tags:
-  - cmake-mingw
-  - qt5-mingw
 
