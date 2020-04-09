@@ -43,6 +43,9 @@ add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
     COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 16x16 "${PROJECT_BINARY_DIR}/icon-16.png"
     COMMENT "Resizing icon"
     MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
+    BYPRODUCTS "${PROJECT_BINARY_DIR}/icon-48.png"
+               "${PROJECT_BINARY_DIR}/icon-32.png"
+               "${PROJECT_BINARY_DIR}/icon-16.png"
 )
 
 add_custom_command(OUTPUT "icon.ico"
