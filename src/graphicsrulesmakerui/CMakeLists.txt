@@ -65,6 +65,7 @@ configure_file(graphicsrulesmakerui.rc.in
 # GraphicsRulesMaker UI
 set(GraphicsRulesMakerUi_SRCS
     main.cpp
+    messagehandler.cpp
     mainwindow.cpp
     manualsaveconfirmationbox.cpp
     aboutdialog.cpp

@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2014-2020 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
 #include <QtCore/QDebug>
+#include <QtCore/QStandardPaths>
 
 #include <iostream>
 
@@ -27,15 +28,24 @@
 
 #include "gamewriterfactory.h"
 #include "mainwindow.h"
+#include "messagehandler.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setApplicationName("GraphicsRulesMaker");
     app.setApplicationDisplayName("Graphics Rules Maker");
-    app.setApplicationVersion("1.0");
+    app.setApplicationVersion("1.91.0");
     app.setOrganizationName("SimsNetwork");
     app.setOrganizationDomain("simsnetwork.com");
+
+    QDir appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    appData.mkpath(".");
+    MessageHandler logger(appData.filePath("log.txt"));
+    logger.install();
+
+    qInfo() << "============================================================";
+    qInfo() << qPrintable(app.applicationDisplayName()) << qPrintable(app.applicationVersion()) << "starting";
 
     DeviceModel *model = new DeviceModel();
     VideoCardDatabase *database = new VideoCardDatabase();
@@ -58,6 +68,9 @@ int main(int argc, char *argv[])
     delete model;
     delete database;
     delete pluginFactory;
+
+    qInfo() << "Exiting with code" << result;
+    logger.uninstall();
 
     return result;
 }
