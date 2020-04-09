@@ -117,6 +117,7 @@ package:ubuntu-16.04:
   stage: deploy
 
 package:src:
+  image: haffmans/cmake-qt5:latest
   artifacts:
     paths:
     - images
