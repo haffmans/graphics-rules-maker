@@ -16,11 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "messagehandler.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
+
+namespace {
+    int rotateKeepFiles = 5; // TODO: make this value more flexible?
+}
 
 MessageHandler* MessageHandler::m_active_instance = nullptr;
 
@@ -39,6 +44,8 @@ MessageHandler::~MessageHandler()
 
 void MessageHandler::install()
 {
+    rotate(rotateKeepFiles);
+
     if (m_active_instance != nullptr) {
         m_previous_instance = m_active_instance;
     }
@@ -67,6 +74,35 @@ void MessageHandler::uninstall()
 
     // TODO: If another handler was installed after this one, this may behave strangely
     qInstallMessageHandler(m_previous_handler);
+}
+
+void MessageHandler::rotate(int keep)
+{
+    QFileInfo currentInfo(backupFile(keep));
+    if (currentInfo.exists()) {
+        QFile::remove(currentInfo.filePath());
+    }
+    QFileInfo destInfo = currentInfo;
+
+    for (int i = keep - 1; i >= 0; --i) {
+        currentInfo = backupFile(i);
+        if (currentInfo.exists()) {
+            QFile::rename(currentInfo.filePath(), destInfo.filePath());
+        }
+        destInfo = currentInfo;
+    }
+}
+
+QString MessageHandler::backupFile(int n) const
+{
+    if (n == 0) {
+        return m_destination;
+    }
+
+    QFileInfo info(m_destination);
+    QString backupName = info.baseName() + QString::number(n) + "." + info.completeSuffix();
+    info.setFile(info.dir(), backupName);
+    return info.filePath();
 }
 
 void MessageHandler::handleMessage(QtMsgType type, const QMessageLogContext& context, const QString& message)

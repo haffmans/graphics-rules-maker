@@ -45,7 +45,6 @@ int main(int argc, char *argv[])
     MessageHandler logger(appData.filePath("log.txt"));
     logger.install();
 
-    qInfo() << "============================================================";
     qInfo() << qPrintable(app.applicationDisplayName()) << GRAPHICSRULESMAKER_VERSION << "starting";
 
     DeviceModel *model = new DeviceModel();

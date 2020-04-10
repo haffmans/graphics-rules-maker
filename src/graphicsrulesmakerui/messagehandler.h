@@ -41,6 +41,8 @@ public:
 private:
     static void handleMessage(QtMsgType type, const QMessageLogContext& context, const QString& message);
     void writeMessage(QtMsgType type, const QMessageLogContext& context, const QString& message);
+    void rotate(int keep);
+    QString backupFile(int n) const;
 
     QString m_destination;
     static MessageHandler* m_active_instance;
