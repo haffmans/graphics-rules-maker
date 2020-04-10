@@ -35,6 +35,7 @@ public:
     explicit MessageHandler(const QString& destination, QObject* parent = nullptr);
     ~MessageHandler();
 
+    static void setMessagePattern();
     void install();
     void uninstall();
 

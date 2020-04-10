@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     app.setOrganizationName("SimsNetwork");
     app.setOrganizationDomain("simsnetwork.com");
 
+    MessageHandler::setMessagePattern();
     QDir appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     appData.mkpath(".");
     MessageHandler logger(appData.filePath("log.txt"));

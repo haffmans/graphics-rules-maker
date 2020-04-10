@@ -42,6 +42,11 @@ MessageHandler::~MessageHandler()
     uninstall();
 }
 
+void MessageHandler::setMessagePattern()
+{
+    qSetMessagePattern("[%{time}] [%{if-debug}D%{endif}%{if-info}I%{endif}%{if-warning}W%{endif}%{if-critical}C%{endif}%{if-fatal}F%{endif}] %{if-category}%{category}: %{endif}%{message}");
+}
+
 void MessageHandler::install()
 {
     rotate(rotateKeepFiles);
@@ -115,6 +120,6 @@ void MessageHandler::writeMessage(QtMsgType type, const QMessageLogContext& cont
     QFile f(m_destination);
     f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
     QTextStream out(&f);
-    out << message << "\n";
+    out << qPrintable(qFormatLogMessage(type, context, message)) << "\n";
     f.close();
 }
