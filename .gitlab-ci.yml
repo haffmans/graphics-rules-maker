@@ -128,10 +128,10 @@ package:src:
   - mkdir -p "$TARGET"
 
   - echo "Creating ${TARGET}${PACKNAME}.src.tar.gz..."
-  - git archive --prefix=${PACKNAME}/ ${CI_BUILD_REF_NAME} | gzip > "${TARGET}${PACKNAME}.src.tar.gz"
+  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | gzip > "${TARGET}${PACKNAME}.src.tar.gz"
 
   - echo "Creating ${TARGET}${PACKNAME}.src.tar.bz2..."
-  - git archive --prefix=${PACKNAME}/ ${CI_BUILD_REF_NAME} | bzip2 > "${TARGET}${PACKNAME}.src.tar.bz2"
+  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | bzip2 > "${TARGET}${PACKNAME}.src.tar.bz2"
 
   # Creating checksums
   - cd "${TARGET}"
