@@ -194,21 +194,27 @@ void MainWindow::browseGame()
 
 void MainWindow::selectGame(int row)
 {
+    qDebug() << "Selected game @ index " << row;
+
     // Save path of current selection first
     QSettings s;
     if (m_currentPlugin) {
         s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
+        qDebug() << "- Settings for" << m_currentPlugin->id() << "saved";
     }
 
     // Load plugin
     QString id = ui->gameSelect->currentData().toString();
+    qDebug() << "- New id:" << id;
     m_currentPlugin = m_gamePlugins->plugin(id);
     if (!m_currentPlugin) {
         return;
     }
 
+    qDebug() << "- Plugin loaded";
     // Load settings widget - this will trigger the replaceWidget() slot a bit later
     if (m_currentGameSettingsWidget) {
+        qDebug() << "- Unloading old settings widget";
         ui->settingsBox->layout()->removeWidget(m_currentGameSettingsWidget);
         m_currentGameSettingsWidget->deleteLater();
     }
@@ -216,15 +222,18 @@ void MainWindow::selectGame(int row)
     // Determine game path - use previous setting if possible
     QString oldPath = ui->gamePath->text();
     if (s.contains(m_currentPlugin->id() + "/path")) {
+        qDebug() << "- Use path from saved settings:" << s.value(m_currentPlugin->id() + "/path").toString();
         ui->gamePath->setText(s.value(m_currentPlugin->id() + "/path").toString());
     }
     else {
         // We don't use this as s.value()'s default, to avoid searching the
         // game every time.
+        qDebug() << "- Search for game";
         ui->gamePath->setText(QDir::toNativeSeparators(m_currentPlugin->findGameDirectory().absolutePath()));
     }
 
     if (ui->gamePath->text() == oldPath) {
+        qDebug() << "- Force locate game files";
         // Force update of status text, even though change signal didn't trigger.
         // This avoids the default "Directory not found" message after changing locales (caused by retranslateUi).
         locateGameFiles(ui->gamePath->text());
@@ -359,6 +368,7 @@ void MainWindow::tabOpen(int tabIndex)
 void MainWindow::save()
 {
     // First make sure devices are in database
+    qDebug() << "Saving files";
     askAddDevices();
 
     // TODO: Date/timestamp in suffix?
@@ -383,9 +393,11 @@ void MainWindow::save()
         //       if the file exists. Hence we check ourselves.
         bool backupOk = true;
         if (!graphicsRulesBackup.exists()) {
+            qDebug() << "- Creating Graphics Rules backup";
             backupOk = backupOk && QFile::copy(graphicsRulesFile.absoluteFilePath(), graphicsRulesBackup.absoluteFilePath());
         }
         if (!videoCardsFileBackup.exists()) {
+            qDebug() << "- Creating Video Cards backup";
             backupOk = backupOk && QFile::copy(videoCardsFile.absoluteFilePath(), videoCardsFileBackup.absoluteFilePath());
         }
 
@@ -395,6 +407,7 @@ void MainWindow::save()
         }
     }
     else {
+        qDebug() << "- Prompt to save to location";
         QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Saving files"),
             tr("The files cannot be saved to the game directory (it is not writable).\n\n"
                "They will instead be saved to a temporary directory."
@@ -421,10 +434,12 @@ void MainWindow::save()
         // Make Graphics Rules file backup
         if (graphicsRulesBackup.exists()) {
             // Copy original back-up so all files are together
+            qDebug() << "- Copying Graphics Rules backup to destination";
             QFile::copy(graphicsRulesBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
         }
         else {
             // Copy original file as backup
+            qDebug() << "- Creating Graphics Rules backup in destination";
             QFile::copy(graphicsRulesFile.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
         }
         // We want to write to the temporary directory
@@ -433,10 +448,12 @@ void MainWindow::save()
         // Make Video Cards file backup
         if (videoCardsFileBackup.exists()) {
             // Copy original back-up so all files are together
+            qDebug() << "- Copying Video Cards backup to destination";
             QFile::copy(videoCardsFileBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
         }
         else {
             // Copy original file as backup
+            qDebug() << "- Creating Video Cards backup in destination";
             QFile::copy(videoCardsFile.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
         }
         // We want to write to the temporary directory
@@ -444,22 +461,27 @@ void MainWindow::save()
     }
 
     // Backup made, file info point to correct path now. Write files.
+    qDebug() << "- Open Graphics Rules file" << graphicsRulesFile.absoluteFilePath();
     QFile graphicsRulesOut(graphicsRulesFile.absoluteFilePath());
     if (!graphicsRulesOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::critical(this, tr("Error"), tr("Could not open Graphic Rules file for writing."));
         return;
     }
+    qDebug() << "- Call plugin to write contents";
     m_currentPlugin->write(m_currentGameSettingsWidget, &graphicsRulesOut);
     graphicsRulesOut.close();
 
+    qDebug() << "- Open Video Cards file" << videoCardsFile.absoluteFilePath();
     QFile videoCardsOut(videoCardsFile.absoluteFilePath());
     if (!videoCardsOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
         QMessageBox::critical(this, tr("Error"), tr("Could not open Video Cards file for writing."));
         return;
     }
+    qDebug() << "- Call cards database to write contents";
     m_videoCardDatabase->write(&videoCardsOut);
     videoCardsOut.close();
 
+    qDebug() << "- Files saved; show confirmation";
     if (!manualSave) {
         QMessageBox::information(this, tr("Files Saved"),
             tr("The files have been saved. You can now run your game using the new settings.")
@@ -563,11 +585,13 @@ void MainWindow::openTemporaryDirectory()
 
 void MainWindow::askAddDevices()
 {
+    qDebug() << "- Check if all devices present in database";
     QList<GraphicsDevice> missingDevices;
     QStringList missingDeviceNames;
     for (int i = 0; i < m_model->rowCount(); ++i) {
         GraphicsDevice device = m_model->device(i);
         if (!m_videoCardDatabase->contains(device.vendorId, device.deviceId)) {
+            qDebug() << "  - Missing device:" << qPrintable(formatId(device.vendorId)) << "/" << qPrintable(formatId(device.deviceId)) << ":" << device.name;
             missingDevices.append(device);
             missingDeviceNames.append(device.name);
         }
@@ -581,10 +605,12 @@ void MainWindow::askAddDevices()
         + "\n\n"
         + missingDeviceNames.join("\n");
 
+    qDebug() << "- Prompt to add devices";
     QMessageBox::StandardButton result = QMessageBox::question(this, tr("Add devices?"), question, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
     if (result == QMessageBox::Yes) {
         foreach(const GraphicsDevice &device, missingDevices) {
+            qDebug() << "- Adding device" << qPrintable(formatId(device.vendorId)) << "/" << qPrintable(formatId(device.deviceId)) << ":" << device.name;
             m_videoCardDatabase->addDevice(device.vendorId, device.deviceId, device.name);
         }
     }

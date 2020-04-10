@@ -78,7 +78,7 @@ endif(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
 
 # Version information
 set(GraphicsRulesMaker_MAJOR_VERSION 1)
-set(GraphicsRulesMaker_MINOR_VERSION 90)
+set(GraphicsRulesMaker_MINOR_VERSION 91)
 set(GraphicsRulesMaker_PATCH_VERSION 0)
 set(GraphicsRulesMaker_VERSION
   ${GraphicsRulesMaker_MAJOR_VERSION}.${GraphicsRulesMaker_MINOR_VERSION}.${GraphicsRulesMaker_PATCH_VERSION})

@@ -29,13 +29,14 @@
 #include "gamewriterfactory.h"
 #include "mainwindow.h"
 #include "messagehandler.h"
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setApplicationName("GraphicsRulesMaker");
     app.setApplicationDisplayName("Graphics Rules Maker");
-    app.setApplicationVersion("1.91.0");
+    app.setApplicationVersion(GRAPHICSRULESMAKER_VERSION);
     app.setOrganizationName("SimsNetwork");
     app.setOrganizationDomain("simsnetwork.com");
 
@@ -45,7 +46,7 @@ int main(int argc, char *argv[])
     logger.install();
 
     qInfo() << "============================================================";
-    qInfo() << qPrintable(app.applicationDisplayName()) << qPrintable(app.applicationVersion()) << "starting";
+    qInfo() << qPrintable(app.applicationDisplayName()) << GRAPHICSRULESMAKER_VERSION << "starting";
 
     DeviceModel *model = new DeviceModel();
     VideoCardDatabase *database = new VideoCardDatabase();

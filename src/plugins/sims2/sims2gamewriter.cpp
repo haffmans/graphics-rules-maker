@@ -22,16 +22,19 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
+#include <QtCore/QDebug>
 
 #include "sims2settings.h"
 
 Sims2GameWriter::Sims2GameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
 {
+    qInfo() << "Sims 2 Game Writer constructed";
 }
 
 QWidget* Sims2GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
+    qInfo() << "Loading Sims 2 Settings widget";
     return new Sims2Settings(devices, database, parent);
 }
 
@@ -59,15 +62,18 @@ QDir Sims2GameWriter::findGameDirectory() const
                                      << "Sims2EP1.exe"
                                      << "Sims2.exe";
 
+    qInfo() << "Trying to find The Sims 2 through the registry...";
     QString result;
     QSettings s("HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths", QSettings::NativeFormat);
     foreach(const QString &exe, exes) {
         // Find path
         s.beginGroup(exe);
+        qInfo() << "-" << exe << " (" << s.value("Default").toString() << ")";
         QFileInfo file(s.value("Default").toString());
         if (file.exists()) {
             // Item found and file exists -- use "Path" setting
             result = s.value("Path").toString();
+            qInfo() << "  File exists in " << result;
             break;
         }
         s.endGroup();
@@ -162,7 +168,11 @@ QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
     foreach(const QString &option, options) {
         QString path = baseDir.absoluteFilePath(option);
         if (QFileInfo::exists(path)) {
+            qInfo() << "Sims 2: File" << path << " FOUND";
             return path;
+        }
+        else {
+            qInfo() << "Sims 2: File" << path << " NOT found";
         }
     }
 
@@ -172,6 +182,8 @@ QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
 
 void Sims2GameWriter::write(QWidget* settingsWidget, QIODevice* target)
 {
+    qInfo() << "Sims 2: Writing rules";
+
     // Load settings
     Sims2Settings *widget = dynamic_cast<Sims2Settings*>(settingsWidget);
     if (!widget) {
