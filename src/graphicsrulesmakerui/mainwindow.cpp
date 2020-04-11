@@ -684,6 +684,9 @@ void MainWindow::setLocale(const QLocale& locale)
     setLocale(locale, "GraphicsRulesMakerUi", &m_uiTranslator);
     this->ui->retranslateUi(this);
 
+    // Fix copyright year (translate will break it)
+    ui->copyright->setText(ui->copyright->text().replace("GRAPHICSRULESMAKER_COPYRIGHT_YEAR", GRAPHICSRULESMAKER_COPYRIGHT_YEAR));
+
     // Recreate plugin widget to make sure it's translated
     selectGame(this->ui->gameSelect->currentIndex());
     // And reload database entry (because retranslateUi messed it up)

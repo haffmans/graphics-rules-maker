@@ -22,5 +22,10 @@
  */
 #define GRAPHICSRULESMAKER_VERSION "@GraphicsRulesMaker_VERSION@"
 
+/**
+ * The last copyright year
+ */
+#define GRAPHICSRULESMAKER_COPYRIGHT_YEAR "@GraphicsRulesMaker_COPYRIGHT_YEAR@"
+
 #endif // GRAPHICSRULESMAKER_CONFIG_H
 

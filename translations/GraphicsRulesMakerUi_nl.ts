@@ -13,7 +13,7 @@
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
 &lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
 &lt;h2&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
-&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt;&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 
@@ -24,6 +24,34 @@ Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&q
 &lt;p&gt;You should have received a copy of the GNU General Public License along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;. &lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
+&lt;h2&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
+&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Meld fouten/problemen&lt;/a&gt;&lt;br/&gt;
+E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;
+Graphics: Rosana Kooymans.&lt;br/&gt;
+Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama en iedereen die dit programma getest heeft, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;
+&lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw keuze) elke latere versie.&lt;/p&gt;
+&lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL. Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;
+&lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben ontvangen samen met dit programma. Als dat niet het geval is, zie &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;. &lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
+&lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
+&lt;h2&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
+&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt;&lt;br/&gt;
+E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;
+Graphics: Rosana Kooymans.&lt;br/&gt;
+Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way. &lt;/p&gt;
+&lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. &lt;/p&gt;&lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. &lt;/p&gt;
+&lt;p&gt;You should have received a copy of the GNU General Public License along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;. &lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;
 &lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
 &lt;h2&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
@@ -186,6 +214,11 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>Geen DirectX grafische kaarten zijn gedetecteerd! </translation>
     </message>
     <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="400"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="475"/>
         <source>&amp;Locate Game</source>
         <translation>Spel automatisch &amp;vinden</translation>
@@ -231,9 +264,8 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>&lt;p&gt;Dit tabblad toont de grafische-kaartendatabase en een voorbeeld van het bestand.&lt;/p&gt;&lt;p&gt;Voor geavanceerde gebruikers.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="400"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-2018 &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="423"/>
@@ -281,89 +313,89 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>Kies het installatiepad van %1</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="246"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="248"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="255"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="257"/>
         <source>%1 Preview</source>
         <translation>%1 Voorbeeld</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="271"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="280"/>
         <source>Locate Game</source>
         <translation>Spel Automatisch Vinden</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="271"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="280"/>
         <source>Could not find the game automatically. Please manually enter the game installation path.</source>
         <translation>Kon het spel niet automatisch vinden. Voer handmatig het installatiepad van het spel in.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="279"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="288"/>
         <source>No game selected</source>
         <translation>Geen spel geselecteerd</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="285"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="294"/>
         <source>Directory does not exist.</source>
         <translation>Map bestaat niet.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="291"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="300"/>
         <source>Cannot find game application.</source>
         <translation>Kan applicatiebestand van spel niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="295"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="304"/>
         <source>Game application file is not an executable file.</source>
         <translation>Applicatiebestand van spel is geen uitvoerbaar bestand.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="301"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="310"/>
         <source>Cannot find Graphics Rules files.</source>
         <translation>Kan bestanden met grafische regels niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="305"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="314"/>
         <source>Graphics Rules file is not a readable file.</source>
         <translation>Bestand met grafische regels is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="311"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="320"/>
         <source>Cannot find Video Cards database.</source>
         <translation>Kan grafische-kaartendatabase niet vinden.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="315"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="324"/>
         <source>Video Cards database file is not a readable file.</source>
         <translation>Grafische-kaartendatabase is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="320"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="329"/>
         <source>Game found, video cards database loaded.</source>
         <translation>Spel gevonden, grafische-kaartendatabase ingeladen.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="393"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="411"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="416"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="449"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="457"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="502"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="537"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="405"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="424"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="429"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="467"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="477"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="524"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="559"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="393"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="405"/>
         <source>Could not create back-up files. Aborting.</source>
         <translation>Kon back-upbestanden niet maken. Het proces wordt afgebroken.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="398"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="411"/>
         <source>Saving files</source>
         <translation>Bestanden opslaan</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="399"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="412"/>
         <source>The files cannot be saved to the game directory (it is not writable).
 
 They will instead be saved to a temporary directory.You will need to copy them to the game directory manually.
@@ -376,76 +408,76 @@ In plaats daarvan worden ze in een tijdelijke map geplaatst. Je moet ze daar han
 Het kan ook helpen om de Graphics Rules Maker als beheerder uit te voeren.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="411"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="424"/>
         <source>Could not create temporary location for files.</source>
         <translation>Kan map voor tijdelijke bestanden niet maken.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="416"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="429"/>
         <source>Could not write to temporary location.</source>
         <translation>Kan niet schrijven naar tijdelijke map.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="449"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="467"/>
         <source>Could not open Graphic Rules file for writing.</source>
         <translation>Kan grafische regels bestand niet openen om te schrijven.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="457"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="477"/>
         <source>Could not open Video Cards file for writing.</source>
         <translation>Kan grafische-kaartenbestand niet openen om te schrijven.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="464"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="486"/>
         <source>Files Saved</source>
         <translation>Bestanden Opgeslagen</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="465"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="487"/>
         <source>The files have been saved. You can now run your game using the new settings.</source>
         <translation>De bestanden zijn opgeslagen. Je kunt het spel nu starten met de nieuwe instellingen.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="490"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="525"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="512"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="547"/>
         <source>Save %1</source>
         <translation>%1 Opslaan</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="492"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="527"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="514"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="549"/>
         <source>SimCity Graphic Rules files (*.sgr);;All files (*.*)</source>
         <translation>SimCity Grafische-Regels-bestand (*.sgr);;Alle bestanden (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="502"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="537"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="524"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="559"/>
         <source>File &apos;%1&apos; cannot be written to.</source>
         <translation>Kan niet schrijven naar bestand &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="509"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="544"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="531"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="566"/>
         <source>File saved</source>
         <translation>Bestand opgeslagen</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="509"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="531"/>
         <source>Graphics rules saved to &apos;%1&apos;.</source>
         <translation>Grafische regels opgeslagen in &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="544"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="566"/>
         <source>Video cards database saved to &apos;%1&apos;.</source>
         <translation>Grafischekaarten-database opgeslagen naar &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="580"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="604"/>
         <source>The following devices are still missing in the video card database. Do you want to add them?</source>
         <translation>De volgende apparaten ontbreken nog in de grafischekaarten-database. Wil je deze toevoegen?</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="584"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="609"/>
         <source>Add devices?</source>
         <translation>Apparaten toevoegen?</translation>
     </message>
@@ -476,12 +508,12 @@ Het kan ook helpen om de Graphics Rules Maker als beheerder uit te voeren.</tran
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="48"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="59"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="48"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="59"/>
         <source>No game plugins found. Please re-install the application.</source>
         <translation>Geen spelplugins gevonden. Herinstalleer aub de applicatie.</translation>
     </message>

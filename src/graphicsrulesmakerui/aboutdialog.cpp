@@ -35,6 +35,7 @@ AboutDialog::AboutDialog(QWidget* parent, Qt::WindowFlags flags) :
     }
 
     ui->label->setText(ui->label->text().replace("GRAPHICSRULESMAKER_VERSION", GRAPHICSRULESMAKER_VERSION));
+    ui->label->setText(ui->label->text().replace("GRAPHICSRULESMAKER_COPYRIGHT_YEAR", GRAPHICSRULESMAKER_COPYRIGHT_YEAR));
 }
 
 AboutDialog::~AboutDialog()
