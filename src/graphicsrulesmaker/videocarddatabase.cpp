@@ -243,9 +243,11 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
     bool fileWasOpen = file->isOpen();
     if ((!file->isOpen() && !file->open(QIODevice::ReadOnly | QIODevice::Text)) ||
         (!file->isReadable() || file->atEnd())) {
+        qCritical() << "Could not open file!";
         return;
     }
 
+    qDebug() << "Reset model";
     beginResetModel();
 
     m_vendors.clear();
@@ -258,6 +260,7 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
         QString line(stream.readLine());
 
         if (vendorMatch.exactMatch(line)) {
+            qDebug() << "- Vendor" << vendorMatch.cap(1);
             // Add new vendor
             vendor.insert(VideoCardVendor());
             vendor.value().name = vendorMatch.cap(1);
@@ -279,9 +282,11 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
     }
 
     endResetModel();
+    qDebug() << "Video cards loaded";
 
     // Close file again if we opened it earlier
     if (!fileWasOpen) {
+        qDebug() << "Closing video cards file";
         file->close();
     }
 }
