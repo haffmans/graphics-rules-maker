@@ -400,8 +400,18 @@ boolProp useRenderTextures       false
 uintProp antialiasingSupport             1
 
 boolProp dontMergeNHFlora       true
+)EOF";
 
+      if (options.disableTexMemEstimateAdjustment) {
+          // Force the texture memory estimated adjustment here (unconditional). It's reported to work
+          // mostly for NVidia users, but this way it always applies.
+          stream << R"EOF(
+# GraphicsRulesMaker Tweak: Disable Texture Memory Estimate Adjustment
+boolProp disableTexMemEstimateAdjustment true
+)EOF";
+      }
 
+      stream << R"EOF(
 if (not $useSoftwareRasterizer)
 
    # never trust the driver to manage its own memory
@@ -740,7 +750,8 @@ logSystemInfo "=== Graphics Rules Maker Configuration ==="
     else {
         stream << "logSystemInfo \"Force texture memory: No\n";
     }
-    stream <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\"\n"
+    stream <<     "logSystemInfo \"Disable Texture Memory Estimate Adjustment: " << (options.disableTexMemEstimateAdjustment ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel V-Sync:         " << (options.intelVsync ? "Yes" : "No") << "\"\n"

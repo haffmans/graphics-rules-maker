@@ -61,6 +61,7 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
     s.beginGroup("sims2");
 
     ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
+    ui->disableTexMemEstimateAdjustment->setChecked(s.value("disableTexMemEstimateAdjustment", false).toBool());
     ui->disableSimShadows->setChecked(s.value("disableSimShadows", false).toBool());
     ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
     ui->intelHigh->setChecked(s.value("intelHigh", false).toBool());
@@ -76,6 +77,7 @@ Sims2Variables Sims2Settings::current() const
     QRegExp resolutionString("^(\\d+)x(\\d+)$");
     Sims2Variables result;
     result.forceMemory = ui->forceMem->value();
+    result.disableTexMemEstimateAdjustment = ui->disableTexMemEstimateAdjustment->isChecked();
     result.disableSimShadows = ui->disableSimShadows->isChecked();
     result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
     result.intelHigh = ui->intelHigh->isChecked();
@@ -98,6 +100,7 @@ void Sims2Settings::reset()
 {
     // Restore all defaults
     ui->forceMem->setValue(0);
+    ui->disableTexMemEstimateAdjustment->setChecked(false);
     ui->disableSimShadows->setChecked(false);
     ui->radeonHd7000Fix->setChecked(false);
     ui->intelHigh->setChecked(false);
@@ -126,6 +129,16 @@ void Sims2Settings::autodetect()
     }
     int maxMemoryMb = static_cast<int>(maxMemory / (1024*1024));
     ui->forceMem->setValue(std::min<int>(ui->forceMem->maximum(), maxMemoryMb));
+
+    // Disabling texture memory estimate adjustment: nVidia cards only for now
+    bool hasNvidia = false;
+    for (int i = 0; i < deviceCount; ++i) {
+        auto device = m_devices->device(i);
+        if (device.vendorId == 0x10de) {
+            hasNvidia = true;
+        }
+    }
+    ui->disableTexMemEstimateAdjustment->setChecked(hasNvidia);
 
     // Sim Shadows: Windows 8 and up
 #ifdef Q_OS_WIN32
@@ -176,6 +189,7 @@ Sims2Settings::~Sims2Settings()
 
     s.beginGroup("sims2");
     s.setValue("forceMemory", ui->forceMem->value());
+    s.setValue("disableTexMemEstimateAdjustment", ui->disableTexMemEstimateAdjustment->isChecked());
     s.setValue("disableSimShadows", ui->disableSimShadows->isChecked());
     s.setValue("radeonHd7000Fix", ui->radeonHd7000Fix->isChecked());
     s.setValue("intelHigh", ui->intelHigh->isChecked());
