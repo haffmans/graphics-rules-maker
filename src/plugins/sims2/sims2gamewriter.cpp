@@ -53,7 +53,7 @@ QDir Sims2GameWriter::findGameDirectory() const
                                      << "Sims2SP5.exe"
                                      << "Sims2SP4.exe"
                                      << "Sims2EP5.exe"
-                                     << "Sims2SP8.exe" // Seasons seems to suppresses Kitchen & Bath
+                                     << "Sims2SP8.exe" // Seasons seems to suppress Kitchen & Bath
                                      << "Sims2EP4.exe"
                                      << "Sims2SP2.exe"
                                      << "Sims2SP1.exe"
