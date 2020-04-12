@@ -211,6 +211,7 @@ bool DeviceModel::loadDxDgi()
         return false;
     }
 
+    qDebug() << "DXGI Enumerating adapters";
     UINT i = 0;
     IDXGIAdapter *adapter;
     while(factory->EnumAdapters(i, &adapter) != DXGI_ERROR_NOT_FOUND) {
@@ -232,6 +233,7 @@ bool DeviceModel::loadDxDgi()
             dev.deviceId = description.DeviceId;
             dev.vendorId = description.VendorId;
             dev.memory = description.DedicatedVideoMemory + description.DedicatedSystemMemory + description.SharedSystemMemory;
+            qDebug() << "Found graphics card: " << qPrintable(dev.name) << "; Vendor " << description.DeviceId << "; Device" << description.DeviceId;
 
             dev.driver = "WDDM Driver";
 
@@ -292,7 +294,7 @@ bool DeviceModel::loadDxDgi()
     SAFE_RELEASE(factory);
 
     FreeLibrary(dxgi);
-    qDebug() << "DXGI devices loaded...";
+    qDebug() << m_devices.count() << "DXGI devices loaded";
     return true;
 }
 #endif

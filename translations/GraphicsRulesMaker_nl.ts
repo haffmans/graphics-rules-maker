@@ -4,42 +4,42 @@
 <context>
     <name>DeviceModel</name>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="280"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="282"/>
         <source>[Disconnected]</source>
         <translation>[Niet aangesloten]</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="452"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="454"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="454"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="456"/>
         <source>Vendor ID</source>
         <translation>Fabrikant ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="456"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="458"/>
         <source>Device ID</source>
         <translation>Apparaat ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="458"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="460"/>
         <source>Display</source>
         <translation>Monitor</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="460"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="462"/>
         <source>Driver name</source>
         <translation>Drivernaam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="462"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="464"/>
         <source>Texture Memory (bytes)</source>
         <translation>Textuurgeheugen (bytes)</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="464"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="466"/>
         <source>Available Modes</source>
         <translation>Beschikbare Modes</translation>
     </message>
