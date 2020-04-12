@@ -122,7 +122,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
             QLocale::languageToString(locale.language()),
             locale.nativeLanguageName()
         );
-        QAction *switchAction = ui->languageMenu->addAction(caption, this, &MainWindow::switchLocale);
+        QAction *switchAction = ui->languageMenu->addAction(caption, this, SLOT(switchLocale()));
         switchAction->setData(locale);
     }
 
