@@ -167,15 +167,22 @@ void MainWindow::addDeviceLink(const QString& link)
 void MainWindow::updateDeviceStatus()
 {
     int row = ui->deviceSelect->currentIndex();
-    GraphicsDevice dev = m_model->device(row);
-    if (m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
-        ui->cardInDb->setText("<font style=\"color: green\">" + tr("Yes") + "</font>");
-    }
-    else {
-        ui->cardInDb->setText("<font style=\"color: red\">" + tr("No") + "</font> "
-            "<a href=\"addcard?row=" + QString::number(row) + "\">" +
-            tr("Add now...") + "</a>"
-        );
+    qDebug() << "Update selected device status; selected row:" << row << "/" << m_model->rowCount();
+    if (0 <= row && row < m_model->rowCount()) {
+        GraphicsDevice dev = m_model->device(row);
+
+        qDebug() << "- Querying video cards database";
+        if (m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
+            qDebug() << "- Card is in database";
+            ui->cardInDb->setText("<font style=\"color: green\">" + tr("Yes") + "</font>");
+        }
+        else {
+            qDebug() << "- Card is NOT in database";
+            ui->cardInDb->setText("<font style=\"color: red\">" + tr("No") + "</font> "
+                "<a href=\"addcard?row=" + QString::number(row) + "\">" +
+                tr("Add now...") + "</a>"
+            );
+        }
     }
 }
 
