@@ -30,7 +30,7 @@ SimsLSSettings::SimsLSSettings(DeviceModel *devices, VideoCardDatabase *database
     ui = new Ui::SimsLSSettings;
     ui->setupUi(this);
 
-    connect(ui->resetDefaults, SIGNAL(clicked(bool)), SLOT(reset()));
+    connect(ui->resetDefaults, &QPushButton::clicked, this, &SimsLSSettings::reset);
 
     // Load available resolutions
     QStringList resolutions;

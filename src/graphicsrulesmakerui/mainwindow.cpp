@@ -52,20 +52,20 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
 
     ui->setupUi(this);
 
-    connect(ui->deviceSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectCard(int)));
-    connect(ui->mainTabs, SIGNAL(currentChanged(int)), SLOT(tabOpen(int)));
-    connect(ui->gameSelect, SIGNAL(currentIndexChanged(int)), SLOT(selectGame(int)));
-    connect(ui->gamePath, SIGNAL(textChanged(QString)), SLOT(locateGameFiles(QString)));
-    connect(ui->browseFilesButton, SIGNAL(clicked(bool)), SLOT(browseGame()));
-    connect(ui->saveAll, SIGNAL(clicked(bool)), SLOT(save()));
-    connect(ui->graphicsRulesSave, SIGNAL(clicked(bool)), SLOT(saveGraphicRules()));
-    connect(ui->videoCardsSave, SIGNAL(clicked(bool)), SLOT(saveVideoCards()));
-    connect(ui->cardInDb, SIGNAL(linkActivated(QString)), SLOT(addDeviceLink(QString)));
-    connect(videoCardDatabase, SIGNAL(rowsInserted(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
-    connect(videoCardDatabase, SIGNAL(rowsRemoved(QModelIndex,int,int)), SLOT(updateDeviceStatus()));
-    connect(videoCardDatabase, SIGNAL(modelReset()), SLOT(updateDeviceStatus()));
-    connect(ui->aboutAction, SIGNAL(triggered()), SLOT(about()));
-    connect(ui->locateGameAction, SIGNAL(triggered()), SLOT(locateGame()));
+    connect(ui->deviceSelect, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::selectCard);
+    connect(ui->mainTabs, &QTabWidget::currentChanged, this, &MainWindow::tabOpen);
+    connect(ui->gameSelect, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
+    connect(ui->gamePath, &QLineEdit::textChanged, this, &MainWindow::locateGameFiles);
+    connect(ui->browseFilesButton, &QPushButton::clicked, this, &MainWindow::browseGame);
+    connect(ui->saveAll, &QPushButton::clicked, this, &MainWindow::save);
+    connect(ui->graphicsRulesSave, &QPushButton::clicked, this, &MainWindow::saveGraphicRules);
+    connect(ui->videoCardsSave, &QPushButton::clicked, this, &MainWindow::saveVideoCards);
+    connect(ui->cardInDb, &QLabel::linkActivated, this, &MainWindow::addDeviceLink);
+    connect(videoCardDatabase, &VideoCardDatabase::rowsInserted, this, &MainWindow::updateDeviceStatus);
+    connect(videoCardDatabase, &VideoCardDatabase::rowsRemoved, this, &MainWindow::updateDeviceStatus);
+    connect(videoCardDatabase, &VideoCardDatabase::modelReset, this, &MainWindow::updateDeviceStatus);
+    connect(ui->aboutAction, &QAction::triggered, this, &MainWindow::about);
+    connect(ui->locateGameAction, &QAction::triggered, this, &MainWindow::locateGame);
 
     ui->deviceSelect->setModel(m_model);
     if (m_model->rowCount() > 0) {
@@ -122,7 +122,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
             QLocale::languageToString(locale.language()),
             locale.nativeLanguageName()
         );
-        QAction *switchAction = ui->languageMenu->addAction(caption, this, SLOT(switchLocale()));
+        QAction *switchAction = ui->languageMenu->addAction(caption, this, &MainWindow::switchLocale);
         switchAction->setData(locale);
     }
 
@@ -266,7 +266,7 @@ void MainWindow::replaceWidget()
     qDebug() << "SETTING WIDGET";
     m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
-    connect(m_currentGameSettingsWidget, SIGNAL(destroyed(QObject*)), SLOT(replaceWidget()));
+    connect(m_currentGameSettingsWidget, &QWidget::destroyed, this, &MainWindow::replaceWidget);
 }
 
 void MainWindow::locateGame()
@@ -489,9 +489,9 @@ void MainWindow::save()
     }
     else {
         ManualSaveConfirmationBox *confirmation = new ManualSaveConfirmationBox(this);
-        connect(confirmation, SIGNAL(finished(int)), confirmation, SLOT(deleteLater()));
-        connect(confirmation, SIGNAL(openDestinationDirectory()), SLOT(openDestinationDirectory()));
-        connect(confirmation, SIGNAL(openTemporaryDirectory()), SLOT(openTemporaryDirectory()));
+        connect(confirmation, &ManualSaveConfirmationBox::finished, confirmation, &ManualSaveConfirmationBox::deleteLater);
+        connect(confirmation, &ManualSaveConfirmationBox::openDestinationDirectory, this, &MainWindow::openDestinationDirectory);
+        connect(confirmation, &ManualSaveConfirmationBox::openTemporaryDirectory, this, &MainWindow::openTemporaryDirectory);
         confirmation->open();
     }
 }
@@ -708,7 +708,7 @@ void MainWindow::setLocale(const QLocale& locale, const QString& prefix, QTransl
 void MainWindow::about()
 {
     AboutDialog *dialog = new AboutDialog(this, Qt::Dialog);
-    connect(dialog, SIGNAL(accepted()), dialog, SLOT(deleteLater()));
+    connect(dialog, &AboutDialog::accepted, dialog, &AboutDialog::deleteLater);
     dialog->show();
 }
 

@@ -29,9 +29,9 @@ ManualSaveConfirmationBox::ManualSaveConfirmationBox(QWidget* parent, Qt::Window
     ui->setupUi(this);
 
     QPushButton *tempButton = ui->buttonBox->addButton(tr("Open Temporary Directory..."), QDialogButtonBox::ActionRole);
-    connect(tempButton, SIGNAL(clicked(bool)), SIGNAL(openTemporaryDirectory()));
+    connect(tempButton, &QPushButton::clicked, this, &ManualSaveConfirmationBox::openTemporaryDirectory);
     tempButton = ui->buttonBox->addButton(tr("Open Destination Directory..."), QDialogButtonBox::ActionRole);
-    connect(tempButton, SIGNAL(clicked(bool)), SIGNAL(openDestinationDirectory()));
+    connect(tempButton, &QPushButton::clicked, this, &ManualSaveConfirmationBox::openDestinationDirectory);
 }
 
 ManualSaveConfirmationBox::~ManualSaveConfirmationBox()

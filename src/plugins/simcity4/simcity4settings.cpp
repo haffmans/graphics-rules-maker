@@ -30,7 +30,7 @@ SimCity4Settings::SimCity4Settings(DeviceModel *devices, VideoCardDatabase *data
     ui = new Ui::SimCity4Settings;
     ui->setupUi(this);
 
-    connect(ui->resetDefaults, SIGNAL(clicked(bool)), SLOT(reset()));
+    connect(ui->resetDefaults, &QPushButton::clicked, this, &SimCity4Settings::reset);
 
     // Load available resolutions
     QStringList resolutions;

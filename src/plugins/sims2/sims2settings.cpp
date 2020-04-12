@@ -37,8 +37,8 @@ Sims2Settings::Sims2Settings(DeviceModel *devices, VideoCardDatabase *database, 
     ui = new Ui::Sims2Settings;
     ui->setupUi(this);
 
-    connect(ui->resetDefaults, SIGNAL(clicked(bool)), SLOT(reset()));
-    connect(ui->autodetect, SIGNAL(clicked(bool)), SLOT(autodetect()));
+    connect(ui->resetDefaults, &QPushButton::clicked, this, &Sims2Settings::reset);
+    connect(ui->autodetect, &QPushButton::clicked, this, &Sims2Settings::autodetect);
 
     // Load available resolutions
     QStringList resolutions;
