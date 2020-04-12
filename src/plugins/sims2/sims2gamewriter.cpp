@@ -168,11 +168,11 @@ QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
     foreach(const QString &option, options) {
         QString path = baseDir.absoluteFilePath(option);
         if (QFileInfo::exists(path)) {
-            qInfo() << "Sims 2: File" << path << " FOUND";
+            qDebug() << "Sims 2: File" << path << " FOUND";
             return path;
         }
         else {
-            qInfo() << "Sims 2: File" << path << " NOT found";
+            qDebug() << "Sims 2: File" << path << " NOT found";
         }
     }
 
@@ -187,6 +187,7 @@ void Sims2GameWriter::write(QWidget* settingsWidget, QIODevice* target)
     // Load settings
     Sims2Settings *widget = dynamic_cast<Sims2Settings*>(settingsWidget);
     if (!widget) {
+        qCritical() << "Settings widget incorrect! Aborting";
         return;
     }
 
