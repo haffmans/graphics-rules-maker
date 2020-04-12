@@ -55,7 +55,7 @@ build:win32:release:
     -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
     -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
     -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
-    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
     ${CI_PROJECT_DIR}
   - make -j4
   stage: build
@@ -78,7 +78,7 @@ build:win64:release:
     -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
     -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
     -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
-    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
     ${CI_PROJECT_DIR}
   - make -j4
   stage: build
@@ -94,7 +94,7 @@ package:ubuntu-16.04:
   script:
   # Defaults
   - TARGET="${CI_PROJECT_DIR}/images/linux/"
-  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_NAME}"
+  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_SLUG}"
 
   # Determine distribution name + release
   - if [ -f /etc/lsb-release ]; then
@@ -134,7 +134,7 @@ package:src:
     expire_in: 30 days
   script:
   - TARGET="${CI_PROJECT_DIR}/images/src/"
-  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_NAME}"
+  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_SLUG}"
   - mkdir -p "$TARGET"
 
   - echo "Creating ${TARGET}${PACKNAME}.src.tar.gz..."
@@ -163,10 +163,10 @@ package:win32:
   - TOOLCHAIN=i686-w64-mingw32
   - ARCH=win32
   - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
+  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}
 
   - cd build/${ARCH}/release
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
 
   # Creating checksums
   - cd "${DEPLOYTARGET}"
@@ -188,10 +188,10 @@ package:win64:
   - TOOLCHAIN=x86_64-w64-mingw32
   - ARCH=win64
   - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_NAME}-${ARCH}
+  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}
 
   - cd build/${ARCH}/release
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_NAME}
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
 
   # Creating checksums
   - cd "${DEPLOYTARGET}"
