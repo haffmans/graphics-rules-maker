@@ -25,7 +25,7 @@
 #include "graphicsrulesmaker/videocarddatabase.h"
 
 SimsLSSettings::SimsLSSettings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-	: QWidget(parent)
+    : QWidget(parent)
 {
     ui = new Ui::SimsLSSettings;
     ui->setupUi(this);

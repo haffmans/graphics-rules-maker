@@ -25,7 +25,7 @@
 #include "graphicsrulesmaker/videocarddatabase.h"
 
 SimCity4Settings::SimCity4Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-	: QWidget(parent)
+    : QWidget(parent)
 {
     ui = new Ui::SimCity4Settings;
     ui->setupUi(this);
