@@ -295,7 +295,7 @@ bool DeviceModel::loadDxDgi()
 
     FreeLibrary(dxgi);
     qDebug() << m_devices.count() << "DXGI devices loaded";
-    return true;
+    return (m_devices.count() > 0);
 }
 #endif
 
