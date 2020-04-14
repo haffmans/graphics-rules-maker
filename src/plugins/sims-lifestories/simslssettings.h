@@ -32,6 +32,7 @@ class VideoCardDatabase;
 struct SimsLSVariables
 {
     quint16 forceMemory;
+    bool disableTexMemEstimateAdjustment;
     bool disableSimShadows;
     bool radeonHd7000Fix;
     bool intelHigh;
@@ -52,9 +53,11 @@ public:
 
 public slots:
     void reset();
+    void autodetect();
 
 private:
     Ui::SimsLSSettings* ui;
+    DeviceModel *m_devices;
 };
 
 #endif // SIMSLSSETTINGS_H

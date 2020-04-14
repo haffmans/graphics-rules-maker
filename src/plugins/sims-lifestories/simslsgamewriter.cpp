@@ -22,6 +22,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
+#include <QtCore/QDebug>
 
 #include "simslssettings.h"
 
@@ -104,6 +105,8 @@ QFileInfo SimsLSGameWriter::findFile(QDir baseDir, QStringList options) const
 
 void SimsLSGameWriter::write(QWidget* settingsWidget, QIODevice* target)
 {
+    qInfo() << "Sims Life Stories: Writing rules";
+
     // Load settings
     SimsLSSettings *widget = dynamic_cast<SimsLSSettings*>(settingsWidget);
     if (!widget) {
@@ -310,7 +313,18 @@ setb forceMediumDefaultLow      false
 boolProp useRenderTextures               false
 uintProp antialiasingSupport             1
 
+)EOF";
 
+      if (options.disableTexMemEstimateAdjustment) {
+          // Force the texture memory estimated adjustment here (unconditional). It's reported to work
+          // mostly for NVidia users, but this way it always applies.
+          stream << R"EOF(
+# GraphicsRulesMaker Tweak: Disable Texture Memory Estimate Adjustment
+boolProp disableTexMemEstimateAdjustment true
+)EOF";
+      }
+
+      stream << R"EOF(
 if (not $useSoftwareRasterizer)
 
  # never trust the driver to manage its own memory
