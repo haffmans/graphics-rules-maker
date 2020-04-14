@@ -159,7 +159,7 @@
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="58"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to use the texture memory reported by the driver. This may greatly improve the game&apos;s stability, especially when using a recent nVidia graphics card.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze aanpassing om de hoeveelheid textuurgeheugen te bepalen die de driver rapporteerd. Dit kan de stabiliteit van het spel verbeteren, vooral bij nVidia kaarten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze aanpassing om de hoeveelheid textuurgeheugen te bepalen die de driver rapporteert. Dit kan de stabiliteit van het spel verbeteren, vooral bij nVidia kaarten.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="61"/>
