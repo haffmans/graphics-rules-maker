@@ -249,7 +249,7 @@
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>No DirectX Devices graphics cards were detected! </string>
+               <string>No DirectX graphics cards were detected! </string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

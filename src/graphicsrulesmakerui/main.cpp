@@ -62,6 +62,10 @@ int main(int argc, char *argv[])
         QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
         return -1;
     }
+    if (model->rowCount() == 0) {
+        QMessageBox::warning(0, QObject::tr("No Graphics Card"),
+            QObject::tr("No DirectX supported graphics card detected. Please install the latest drivers for your graphics card. Graphics Rules Maker may not function correctly."));
+    }
 
     window.show();
 
