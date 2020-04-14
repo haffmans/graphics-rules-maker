@@ -55,12 +55,13 @@ int main(int argc, char *argv[])
     model->load();
     pluginFactory->loadPlugins();
 
+    // MainWindow must be created prior to showing any messages, otherwise they won't be translated
+    MainWindow window(model, database, pluginFactory);
+
     if (pluginFactory->plugins().size() == 0) {
         QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
         return -1;
     }
-
-    MainWindow window(model, database, pluginFactory);
 
     window.show();
 

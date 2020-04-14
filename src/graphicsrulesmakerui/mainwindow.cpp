@@ -91,7 +91,6 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     s.beginGroup("ui");
     restoreGeometry(s.value("window/geometry").toByteArray());
     restoreState(s.value("window/state").toByteArray());
-    setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());
     ui->videoCardsSplitter->restoreState(s.value("videocards/splitterstate").toByteArray());
     if (s.contains("videocards/treeviewheaderstate")) {
         ui->videoCardsView->header()->restoreState(s.value("videocards/treeviewheaderstate").toByteArray());
@@ -129,7 +128,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     qApp->installTranslator(&m_libraryTranslator);
     qApp->installTranslator(&m_uiTranslator);
     qApp->installTranslator(&m_pluginTranslator);
-    setLocale(m_locale);
+    setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());
 
     // Call this once to set up the initial widget
     replaceWidget();
