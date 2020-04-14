@@ -22,6 +22,11 @@
 #include <QtCore/QSettings>
 #include <QMessageBox>
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#include <versionhelpers.h>
+#endif
+
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 
