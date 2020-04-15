@@ -326,9 +326,22 @@ boolProp disableTexMemEstimateAdjustment true
 
       stream << R"EOF(
 if (not $useSoftwareRasterizer)
+)EOF";
 
+      if (options.enableDriverMemoryManager) {
+          stream << R"EOF(
+ # GraphicsRulesMaker Tweak: Enable Driver Memory Manager
+ boolProp enableDriverMemoryManager  true
+)EOF";
+      }
+      else {
+          stream << R"EOF(
  # never trust the driver to manage its own memory
  boolProp enableDriverMemoryManager  false
+)EOF";
+      }
+
+      stream << R"EOF(
 
  boolProp vs2LoopsFunctional         false
  boolProp presentWorkaround          false
