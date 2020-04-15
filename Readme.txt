@@ -1,8 +1,8 @@
-Graphic Rules Maker 1.0
+Graphic Rules Maker 1.91.0
 
 Manipulate Graphics Rules files for Maxis games for better compatibility with newer systems.
 
-Copyright (C) 2014 SimsNetwork.com
+Copyright (C) 2014-2020 SimsNetwork.com
 
 Programming by Wouter Haffmans
 Graphics by Rosana Kooymans
