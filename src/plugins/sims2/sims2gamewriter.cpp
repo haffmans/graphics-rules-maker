@@ -413,10 +413,22 @@ boolProp disableTexMemEstimateAdjustment true
 
       stream << R"EOF(
 if (not $useSoftwareRasterizer)
+)EOF";
 
+      if (options.enableDriverMemoryManager) {
+          stream << R"EOF(
+   # GraphicsRulesMaker Tweak: Enable Driver Memory Manager
+   boolProp enableDriverMemoryManager  true
+)EOF";
+      }
+      else {
+          stream << R"EOF(
    # never trust the driver to manage its own memory
    boolProp enableDriverMemoryManager  false
+)EOF";
+      }
 
+      stream << R"EOF(
    boolProp vs2LoopsFunctional         false
    boolProp presentWorkaround          false
    boolProp enumerateMultisampleLevels true
@@ -751,6 +763,7 @@ logSystemInfo "=== Graphics Rules Maker Configuration ==="
         stream << "logSystemInfo \"Force texture memory: No\n";
     }
     stream <<     "logSystemInfo \"Disable Texture Memory Estimate Adjustment: " << (options.disableTexMemEstimateAdjustment ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Enable Driver Memory Manager: " << (options.enableDriverMemoryManager ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\"\n"

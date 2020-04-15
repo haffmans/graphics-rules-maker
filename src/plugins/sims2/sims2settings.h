@@ -33,6 +33,7 @@ struct Sims2Variables
 {
     quint16 forceMemory;
     bool disableTexMemEstimateAdjustment;
+    bool enableDriverMemoryManager;
     bool disableSimShadows;
     bool radeonHd7000Fix;
     bool intelHigh;
