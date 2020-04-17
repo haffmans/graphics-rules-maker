@@ -64,6 +64,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(videoCardDatabase, &VideoCardDatabase::rowsInserted, this, &MainWindow::updateDeviceStatus);
     connect(videoCardDatabase, &VideoCardDatabase::rowsRemoved, this, &MainWindow::updateDeviceStatus);
     connect(videoCardDatabase, &VideoCardDatabase::modelReset, this, &MainWindow::updateDeviceStatus);
+    connect(ui->donateAction, &QAction::triggered, this, []() { QDesktopServices::openUrl(QUrl("https://www.paypal.me/snwgames")); });
     connect(ui->aboutAction, &QAction::triggered, this, &MainWindow::about);
     connect(ui->locateGameAction, &QAction::triggered, this, &MainWindow::locateGame);
 

@@ -106,7 +106,12 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="32"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="38"/>
+        <source>Leave a small tip to support the development of Graphics Rules Maker (https://www.paypal.me/snwgames)</source>
+        <translation>Een kleine fooi helpt de ontwikkeling van de Graphics Rules Maker (https://www.paypal.me/snwgames)</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="64"/>
         <source>&lt;p&gt;The Settings tab provides all bells and whistles required to fix support for modern day systems.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Het Instellingen tabblad levert alle toeters en bellen die nodig zijn voor ondersteuning op moderne systemen.&lt;/p&gt;</translation>
     </message>
@@ -177,7 +182,12 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>&lt;font style=&quot;color: red;&quot;&gt;Nee!&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="400"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="507"/>
+        <source>Donate...</source>
+        <translation>Doneer...</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="25"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -208,7 +218,12 @@ Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=544
         <translation>GraphicRules.sgr</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="252"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="41"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.paypal.me/snwgames&quot;&gt;Donate&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.paypal.me/snwgames&quot;&gt;Doneer&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="291"/>
         <source>No DirectX graphics cards were detected! </source>
         <translation>Geen DirectX grafische kaarten zijn gedetecteerd! </translation>
     </message>
