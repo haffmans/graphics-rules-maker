@@ -67,6 +67,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
     connect(ui->donateAction, &QAction::triggered, this, []() { QDesktopServices::openUrl(QUrl("https://www.paypal.me/snwgames")); });
     connect(ui->aboutAction, &QAction::triggered, this, &MainWindow::about);
     connect(ui->locateGameAction, &QAction::triggered, this, &MainWindow::locateGame);
+    connect(ui->locateGameButton, &QPushButton::clicked, ui->locateGameAction, &QAction::trigger);
 
     ui->deviceSelect->setModel(m_model);
     if (m_model->rowCount() > 0) {
