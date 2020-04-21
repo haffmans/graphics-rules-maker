@@ -9,7 +9,7 @@ set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "Graphics Rules Maker")
 
 # Components: application, dev, sims2, simcity4, simslifestories
-set(CPACK_COMPONENTS_ALL application dev sims2 simcity4 simslifestories simspetstories)
+set(CPACK_COMPONENTS_ALL application dev sims2 simcity4 simslifestories simspetstories simscastawaystories)
 
 set(CPACK_COMPONENT_APPLICATION_DISPLAY_NAME "Graphics Rules Maker Application")
 set(CPACK_COMPONENT_APPLICATION_DESCRIPTION "The application and all required files.")
@@ -50,6 +50,13 @@ set(CPACK_COMPONENT_SIMSPETSTORIES_REQUIRED 0)
 set(CPACK_COMPONENT_SIMSPETSTORIES_INSTALL_TYPES Default Dev)
 set(CPACK_COMPONENT_SIMSPETSTORIES_GROUP Plugins)
 set(CPACK_COMPONENT_SIMSPETSTORIES_DEPENDS application)
+
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_DISPLAY_NAME "Sims Castaway Stories")
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_DESCRIPTION "Sims Castaway Stories plugin")
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_REQUIRED 0)
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_INSTALL_TYPES Default Dev)
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_GROUP Plugins)
+set(CPACK_COMPONENT_SIMSCASTAWAYSTORIES_DEPENDS application)
 
 set(CPACK_COMPONENT_GROUP_APP_DISPLAY_NAME "Graphics Rules Maker")
 set(CPACK_COMPONENT_GROUP_APP_DESCRIPTION "The application itself.")
