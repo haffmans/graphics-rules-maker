@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Sims2BodyShopSettings</class>
+ <widget class="QWidget" name="Sims2BodyShopSettings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>498</width>
+    <height>226</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Sims 2 Body Shop Settings</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="forceMemLabel">
+     <property name="text">
+      <string>Force &amp;texture memory:</string>
+     </property>
+     <property name="buddy">
+      <cstring>forceMem</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="forceMem">
+     <property name="toolTip">
+      <string>Override texture (graphics card) memory detection</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Force the texture memory to a specific size. Use this if The Sims 2 only runs in software mode.&lt;/p&gt;&lt;p&gt;If your config log file has a line that reads:&lt;/p&gt;&lt;pre style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Courier New,courier';&quot;&gt;Texture memory:  32MB&lt;/span&gt;&lt;/pre&gt;&lt;p&gt;You probably want to apply this fix.&lt;/p&gt;&lt;p&gt;It's recommended to set this value to match the info on the &amp;quot;Device Info&amp;quot; tab. More recent cards generally have at least &lt;span style=&quot; font-weight:600;&quot;&gt;1024 Mb&lt;/span&gt; available, which is a good value to use.&lt;/p&gt;&lt;p&gt;For high quality graphics, a value of at least &lt;span style=&quot; font-weight:600;&quot;&gt;128 Mb&lt;/span&gt; must be used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="specialValueText">
+      <string>Do not force</string>
+     </property>
+     <property name="suffix">
+      <string> Mb</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>32768</number>
+     </property>
+     <property name="singleStep">
+      <number>32</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QCheckBox" name="disableTexMemEstimateAdjustment">
+     <property name="toolTip">
+      <string>Do not adjust the texture memory reported by the driver, to improve stability (especially with nVidia cards)</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to use the texture memory reported by the driver. This may greatly improve the game's stability, especially when using a recent nVidia graphics card.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Disable texture memory estimate adjustment</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QCheckBox" name="enableDriverMemoryManager">
+     <property name="toolTip">
+      <string>Use the graphics driver's memory manager, to improve the game's stability</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This makes the game rely on the graphics card driver for its memory management, rather than the game's own memory manager. Enabling this using modern drivers generally improves the game's stability.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Enable driver's memory manager</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="radeonHd7000Fix">
+     <property name="toolTip">
+      <string>Do not force low quality on Radeon HD 7000 series graphics cards (as opposed to the older Radeon 7000 series).</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this if you have a graphics card in the &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; series.&lt;/p&gt;&lt;p&gt;The detection in the default code overlaps with the older &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; series, and forces the settings to a low quality code. Apply this tweak to make sure the detection only picks out the old graphics cards, but not the newer &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; ones.&lt;/p&gt;&lt;p&gt;If you do not have an ATI/AMD graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Fix AMD Radeon HD 7000 series recognition</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="intelHigh">
+     <property name="toolTip">
+      <string>Allow high quality graphics for most recent Intel Graphics cards.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable high quality graphics for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. If you have a fairly recent Intel graphics card, you may enable this tweak to increase graphics quality (at the cost of performance).&lt;/p&gt;&lt;p&gt;If your game runs choppy or slow after applying this tweak, disable it again.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>High Quality on Intel Graphics</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QCheckBox" name="intelVsync">
+     <property name="toolTip">
+      <string>Enable VSync for Intel Graphics cards. May cause (or solve) flickering graphics and/or UI.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable VSync for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. VSync is disabled by default, because with some driver versions and some cards this caused a flickering UI.&lt;/p&gt;&lt;p&gt;If you experience flickering graphics or UI in the Sims 2, enabling or disabling this tweak may help.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Support VSync on Intel</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <layout class="QHBoxLayout" name="defaultsLayout" stretch="0,0">
+     <item>
+      <widget class="QPushButton" name="autodetect">
+       <property name="text">
+        <string>&amp;Auto-detect</string>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="resetDefaults">
+       <property name="toolTip">
+        <string>Disable all tweaks and restore default values.</string>
+       </property>
+       <property name="whatsThis">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="text">
+        <string>&amp;Default Settings</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>forceMem</tabstop>
+  <tabstop>disableTexMemEstimateAdjustment</tabstop>
+  <tabstop>enableDriverMemoryManager</tabstop>
+  <tabstop>radeonHd7000Fix</tabstop>
+  <tabstop>intelHigh</tabstop>
+  <tabstop>intelVsync</tabstop>
+  <tabstop>autodetect</tabstop>
+  <tabstop>resetDefaults</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
