@@ -1,4 +1,4 @@
-Graphic Rules Maker 1.91.0
+Graphic Rules Maker 1.92.0
 
 Manipulate Graphics Rules files for Maxis games for better compatibility with newer systems.
 
