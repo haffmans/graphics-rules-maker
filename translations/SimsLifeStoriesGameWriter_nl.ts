@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="90"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8 and 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze instelling om schaduwen van Sims altijd uit te schakelen. Als je zwarte rechthoeken bij Sims en huisdieren hebt, kun je deze instelling toepassen om die schaduwen uit te schakelen.&lt;/p&gt;&lt;p&gt;Dit probleem komt met name op Windows 8 en 10 voor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze instelling om schaduwen van Sims altijd uit te schakelen. Als je zwarte rechthoeken bij Sims hebt, kun je deze instelling toepassen om die schaduwen uit te schakelen.&lt;/p&gt;&lt;p&gt;Dit probleem komt met name op Windows 8 en 10 voor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="93"/>

@@ -87,7 +87,7 @@
       <string>Disable shadows for Sims and Pets, to work around black rectangles as shadows</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8 and 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="text">
       <string>Disable Sim Shadows</string>

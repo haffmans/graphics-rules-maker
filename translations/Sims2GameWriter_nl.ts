@@ -42,11 +42,6 @@
         <translation>Schakel schaduwen uit voor Sims en Huisdieren, om zwarte rechthoeken als schaduwen te voorkomen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2/sims2settings.ui" line="90"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze instelling om schaduwen van Sims altijd uit te schakelen. Als je zwarte rechthoeken bij Sims en huisdieren hebt, kun je deze instelling toepassen om die schaduwen uit te schakelen.&lt;/p&gt;&lt;p&gt;Dit probleem komt met name op Windows 8 voor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="93"/>
         <source>Disable Sim Shadows</source>
         <translation>Geen Sim-schaduw</translation>
@@ -85,6 +80,11 @@
         <location filename="../src/plugins/sims2/sims2settings.ui" line="55"/>
         <source>Do not adjust the texture memory reported by the driver, to improve stability (especially with nVidia cards)</source>
         <translation>Pas de hoeveelheid textuurgeheugen niet aan in het spel, om de stabiliteit te verbeteren (vooral met nVidia kaarten)</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2/sims2settings.ui" line="90"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this tweak to always disable the shadows of Sims. If you experience black boxes on the ground near Sims and pets, apply this tweak to disable those shadows.&lt;/p&gt;&lt;p&gt;This issue occurs mostly on Windows 8 and 10.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik deze instelling om schaduwen van Sims altijd uit te schakelen. Als je zwarte rechthoeken bij Sims en huisdieren hebt, kun je deze instelling toepassen om die schaduwen uit te schakelen.&lt;/p&gt;&lt;p&gt;Dit probleem komt met name op Windows 8 en 10 voor.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/plugins/sims2/sims2settings.ui" line="106"/>
