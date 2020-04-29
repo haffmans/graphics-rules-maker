@@ -79,8 +79,8 @@ endif(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
 # Version information
 set(GraphicsRulesMaker_COPYRIGHT_YEAR 2020)
 set(GraphicsRulesMaker_GIT_VERSION "" CACHE STRING "Version suffix, e.g. a git commit hash")
-set(GraphicsRulesMaker_MAJOR_VERSION 1)
-set(GraphicsRulesMaker_MINOR_VERSION 92)
+set(GraphicsRulesMaker_MAJOR_VERSION 2)
+set(GraphicsRulesMaker_MINOR_VERSION 0)
 set(GraphicsRulesMaker_PATCH_VERSION 0)
 
 if (NOT GraphicsRulesMaker_GIT_VERSION STREQUAL "")
