@@ -35,10 +35,10 @@
     <item row="1" column="1">
      <widget class="QLabel" name="donate">
       <property name="toolTip">
-       <string>Leave a small tip to support the development of Graphics Rules Maker (https://www.paypal.me/snwgames)</string>
+       <string>Leave a small tip to support the development of Graphics Rules Maker (https://www.simsnetwork.com/donate)</string>
       </property>
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.paypal.me/snwgames&quot;&gt;Donate&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Donate&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>

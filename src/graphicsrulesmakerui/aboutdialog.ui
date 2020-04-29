@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>638</width>
-    <height>473</height>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,6 +38,7 @@
 &lt;h2&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt; (or &lt;a href=&quot;https://www.simsnetwork.com/discord&quot;&gt;Discord&lt;/a&gt;)&lt;br/&gt;
+&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Donate&lt;/a&gt; (buy us a coffee)&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;

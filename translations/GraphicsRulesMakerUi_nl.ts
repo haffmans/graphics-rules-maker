@@ -15,6 +15,7 @@
 &lt;h2&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt; (or &lt;a href=&quot;https://www.simsnetwork.com/discord&quot;&gt;Discord&lt;/a&gt;)&lt;br/&gt;
+&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Donate&lt;/a&gt; (buy us a coffee)&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;
@@ -28,6 +29,7 @@ Thanks to: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-mak
 &lt;h2&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Meld fouten/problemen&lt;/a&gt; (of via &lt;a href=&quot;https://www.simsnetwork.com/discord&quot;&gt;Discord&lt;/a&gt;)&lt;br/&gt;
+&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Doneer&lt;/a&gt; (geef ons een kopje koffie)&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;
 Graphics: Rosana Kooymans.&lt;br/&gt;
@@ -81,6 +83,16 @@ Met dank aan: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Voer hier de installatiemap van het spel in.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="38"/>
+        <source>Leave a small tip to support the development of Graphics Rules Maker (https://www.simsnetwork.com/donate)</source>
+        <translation>Een kleine fooi helpt de ontwikkeling van de Graphics Rules Maker (https://www.simsnetwork.com/donate)</translation>
+    </message>
+    <message>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="41"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Donate&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.simsnetwork.com/donate&quot;&gt;Doneer&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="80"/>
         <source>&amp;Browse...</source>
         <translation>&amp;Bladeren...</translation>
@@ -104,11 +116,6 @@ Met dank aan: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="61"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
-    </message>
-    <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="38"/>
-        <source>Leave a small tip to support the development of Graphics Rules Maker (https://www.paypal.me/snwgames)</source>
-        <translation>Een kleine fooi helpt de ontwikkeling van de Graphics Rules Maker (https://www.paypal.me/snwgames)</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="64"/>
@@ -217,11 +224,6 @@ Met dank aan: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="306"/>
         <source>GraphicRules.sgr</source>
         <translation>GraphicRules.sgr</translation>
-    </message>
-    <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="41"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.paypal.me/snwgames&quot;&gt;Donate&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://www.paypal.me/snwgames&quot;&gt;Doneer&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/graphicsrulesmakerui/mainwindow.ui" line="291"/>
