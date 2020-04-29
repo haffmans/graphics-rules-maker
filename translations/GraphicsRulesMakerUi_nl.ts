@@ -14,12 +14,12 @@
 &lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
 &lt;h2&gt;Version GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwork.com&quot;&gt;SimsNetwork&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt;&lt;br/&gt;
+&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Report Bugs/Problems&lt;/a&gt; (or &lt;a href=&quot;https://www.simsnetwork.com/discord&quot;&gt;Discord&lt;/a&gt;)&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Programming: Wouter Haffmans.&lt;br/&gt;
 Graphics: Rosana Kooymans.&lt;br/&gt;
-Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way. &lt;/p&gt;
+Thanks to: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-maker/credit-crazysim&quot;&gt;CrazySim&lt;/a&gt;, &lt;a href=&quot;http://www.leefish.nl/mybb/forumdisplay.php?fid=21&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama and everybody else who tested this tool, gave feedback, or helped in any other way. &lt;/p&gt;
 &lt;p&gt;This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. &lt;/p&gt;&lt;p&gt;This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. &lt;/p&gt;
 &lt;p&gt;You should have received a copy of the GNU General Public License along with this program. If not, see &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;. &lt;/p&gt;
 &lt;/body&gt;&lt;/html&gt;</source>
@@ -27,11 +27,11 @@ Thanks to: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&q
 &lt;h1&gt;Graphics Rules Maker&lt;/h1&gt;
 &lt;h2&gt;Versie GRAPHICSRULESMAKER_VERSION&lt;/h2&gt;
 &lt;p&gt;Copyright © 2014-GRAPHICSRULESMAKER_COPYRIGHT_YEAR &lt;a href=&quot;http://www.simsnetwerk.com&quot;&gt;SimsNetwerk&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Meld fouten/problemen&lt;/a&gt;&lt;br/&gt;
+&lt;p&gt;&lt;a href=&quot;https://git.simply-life.net/simply-life.net/graphicsrulesmaker/issues&quot;&gt;Meld fouten/problemen&lt;/a&gt; (of via &lt;a href=&quot;https://www.simsnetwork.com/discord&quot;&gt;Discord&lt;/a&gt;)&lt;br/&gt;
 E-mail: &lt;a href=&quot;mailto:wouter@simply-life.net&quot;&gt;wouter@simply-life.net&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Programma: Wouter Haffmans.&lt;br/&gt;
 Graphics: Rosana Kooymans.&lt;br/&gt;
-Met dank aan: &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama en iedereen die dit programma getest heeft, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;
+Met dank aan: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-maker/credit-crazysim&quot;&gt;CrazySim&lt;/a&gt;, &lt;a href=&quot;http://www.leefish.nl/mybb/showthread.php?tid=5446&quot;&gt;Leefish&lt;/a&gt;, Ketsu_sama en iedereen die dit programma getest heeft, feedback heeft gegeven of op een andere manier heeft geholpen.&lt;/p&gt;
 &lt;p&gt;Dit programma is vrije software: je mag het herdistribueren en/of wijzigen onder de voorwaarden van de GNU Algemene Publieke Licentie zoals gepubliceerd door de Free Software Foundation, onder versie 3 van de Licentie of (naar jouw keuze) elke latere versie.&lt;/p&gt;
 &lt;p&gt;Dit programma is gedistribueerd in de hoop dat het nuttig zal zijn maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garanties die GEBRUIKELIJK ZIJN IN DE HANDEL of voor BRUIKBAARHEID VOOR EEN SPECIFIEK DOEL. Zie de GNU Algemene Publieke Licentie voor meer details. &lt;/p&gt;
 &lt;p&gt;Je hoort een kopie van de GNU Algemene Publieke Licentie te hebben ontvangen samen met dit programma. Als dat niet het geval is, zie &lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;http://www.gnu.org/licenses/&lt;/a&gt;. &lt;/p&gt;
