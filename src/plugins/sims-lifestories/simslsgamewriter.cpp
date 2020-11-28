@@ -665,7 +665,7 @@ logSystemInfo "=== Graphics Rules Maker Configuration ==="
         stream << "logSystemInfo \"Force texture memory: " << options.forceMemory << " Mb\"\n";
     }
     else {
-        stream << "logSystemInfo \"Force texture memory: No\n";
+        stream << "logSystemInfo \"Force texture memory: No\"\n";
     }
     stream <<     "logSystemInfo \"Disable Texture Memory Estimate Adjustment: " << (options.disableTexMemEstimateAdjustment ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Enable Driver Memory Manager: " << (options.enableDriverMemoryManager ? "Yes" : "No") << "\"\n"
