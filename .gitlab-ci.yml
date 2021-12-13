@@ -3,15 +3,15 @@ stages:
 - test
 - deploy
 
-build:ubuntu-16.04:debug:
+build:ubuntu-18.04:debug:
   image: haffmans/cmake-qt5:latest
   artifacts:
     paths:
-    - build/ubuntu-16.04/debug
+    - build/ubuntu-18.04/debug
     expire_in: 30 days
   script:
-  - mkdir -p build/ubuntu-16.04/debug
-  - cd build/ubuntu-16.04/debug
+  - mkdir -p build/ubuntu-18.04/debug
+  - cd build/ubuntu-18.04/debug
   - cmake
     -DCMAKE_BUILD_TYPE=Debug
     -DCMAKE_INSTALL_PREFIX=/usr
@@ -20,15 +20,15 @@ build:ubuntu-16.04:debug:
   - make -j4
   stage: build
 
-build:ubuntu-16.04:release:
+build:ubuntu-18.04:release:
   image: haffmans/cmake-qt5:latest
   artifacts:
     paths:
-    - build/ubuntu-16.04/release
+    - build/ubuntu-18.04/release
     expire_in: 30 days
   script:
-  - mkdir -p build/ubuntu-16.04/release
-  - cd build/ubuntu-16.04/release
+  - mkdir -p build/ubuntu-18.04/release
+  - cd build/ubuntu-18.04/release
   - cmake
     -DCMAKE_BUILD_TYPE=Release
     -DCMAKE_INSTALL_PREFIX=/usr
@@ -83,14 +83,14 @@ build:win64:release:
   - make -j4
   stage: build
 
-package:ubuntu-16.04:
+package:ubuntu-18.04:
   image: haffmans/cmake-qt5:latest
   artifacts:
     paths:
     - images
     expire_in: 30 days
   dependencies:
-  - build:ubuntu-16.04:release
+  - build:ubuntu-18.04:release
   script:
   # Defaults
   - TARGET="${CI_PROJECT_DIR}/images/linux/"
@@ -104,12 +104,12 @@ package:ubuntu-16.04:
   - fi
 
   # Install to temporary directory
-  - cd build/ubuntu-16.04/release
-  - mkdir -p "${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}"
-  - make DESTDIR="${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}" install
+  - cd build/ubuntu-18.04/release
+  - mkdir -p "${CI_PROJECT_DIR}/package/ubuntu-18.04/${PACKNAME}"
+  - make DESTDIR="${CI_PROJECT_DIR}/package/ubuntu-18.04/${PACKNAME}" install
 
   # Prepare target
-  - cd "${CI_PROJECT_DIR}/package/ubuntu-16.04/${PACKNAME}"
+  - cd "${CI_PROJECT_DIR}/package/ubuntu-18.04/${PACKNAME}"
   - mkdir -p "$TARGET"
 
   # Create tar.gz and tar.bz2
