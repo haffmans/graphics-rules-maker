@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.19)
 project(GraphicsRulesMakerUi)
 
 # Find other dependencies
@@ -113,15 +113,25 @@ install(
 )
 
 if(WIN32)
+    include(InstallRequiredSystemLibraries)
+
     # Install dependencies (Qt) for Windows
     get_target_property(Qt5Core_Location Qt5::Core LOCATION)
     get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
-    get_target_property(Qt5Gui_WindowsPlugin_Location Qt5::QWindowsIntegrationPlugin LOCATION)
 
-    install(FILES $<TARGET_PROPERTY:Qt5::QWindowsIntegrationPlugin,LOCATION_$<CONFIG>>
-            DESTINATION bin/platforms
-            COMPONENT application
+    set(_plugins
+        "platforms/qwindows.dll"
     )
+
+    foreach(_plugin ${_plugins})
+        message(STATUS "Plugin: ${_plugin}")
+        get_filename_component(_plugin_dir ${_plugin} DIRECTORY)
+
+        install(FILES ${_qt5Core_install_prefix}/lib/qt/plugins/${_plugin}
+                DESTINATION bin/${_plugin_dir}
+                COMPONENT application
+        )
+    endforeach()
 
     # Create bundle installation for Windows
 
@@ -137,81 +147,38 @@ if(WIN32)
     if (NOT "${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
         # Cross compiling; force using objdump to verify prerequisites
         set(gp_tool "objdump")
-
-        # Fake sysroot to make GetPrerequisites find these as system libraries
-        set(gp_sysroot "${PROJECT_BINARY_DIR}/fakewin")
-
-        # Lowercase names of Win32 system libraries to ignore, without .dll extension, separated by '|' for the regex usage below
-        set(win32_system_libs "advapi32|crypt32|dnsapi|dwmapi|gdi32|kernel32|mpr|shell32|user32|ws2_32|d3d9|ole32|msvcrt|mscvrt|winmm|netapi32|uxtheme|iphlpapi|version|userenv|opengl32")
-
-        set(codeInstallPrepare "
-            set(ENV{SystemRoot} ${gp_sysroot})
-
-            function(gp_resolve_item_override context item exepath dirs resolved_item_var resolved_var)
-                set(override_resolved \${\${resolved_var}})
-                # If already resolved, skip this
-                if (override_resolved)
-                    # Already resolved
-                    return()
-                endif()
-
-                # Ignore case
-                string(TOLOWER \"\${item}\" lower)
-
-                if (lower MATCHES \".*(${win32_system_libs}).dll\" )
-                    set(\${resolved_item_var} \$ENV{SystemRoot}/system/\${lower} PARENT_SCOPE)
-                    set(\${resolved_var} 1 PARENT_SCOPE)
-                    set(override_resolved 1)
-                endif ()
-
-                # Resolve in parent directories, required for plugins with dlls in their base
-                set(exe_parent \${exepath})
-                while (NOT override_resolved AND NOT exe_parent STREQUAL previous_parent)
-                    if (EXISTS \${exe_parent}/\${item})
-                      set(\${resolved_item_var} \${exe_parent}/\${item} PARENT_SCOPE)
-                      set(\${resolved_var} 1 PARENT_SCOPE)
-                      set(override_resolved 1)
-                    endif()
-
-                    # Keep previous to detect root (e.g. / on Linux, possibly e.g. C: on Windows)
-                    set(previous_parent \${exe_parent})
-                    get_filename_component(exe_parent \${exe_parent} DIRECTORY)
-
-                endwhile()
-
-            endfunction()
-
-            function(gp_resolved_file_type_override resolved_item type_var)
-                string(TOLOWER \"\${resolved_item}\" lower)
-
-                if (lower MATCHES \"(${win32_system_libs}).dll\" )
-                    set(\${type_var} \"system\" PARENT_SCOPE)
-                endif ()
-
-                string(FIND \"\${resolved_item}\" \"\${CMAKE_INSTALL_PREFIX}\" subdirpos)
-                if (subdirpos EQUAL 0)
-                    set(\${type_var} \"local\" PARENT_SCOPE)
-                endif()
-            endfunction()
-        ")
-
-        # Also install libEGL.dll (indirect dependency of Qt)
-        install(FILES ${Qt5Core_BinDir}/libEGL.dll
-                DESTINATION bin COMPONENT application)
     endif ()
 
     # Generate code to fixup bundle during install; installed plugins will be globbed during this step
     install(CODE "
-        ${codeInstallPrepare}
+        set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH})
+        include(Win32CrossBundle)
+
+        # Keep binary dir for Win32CrossBundle
+        set(PROJECT_BINARY_DIR ${PROJECT_BINARY_DIR})
+
+        # Force system correctly to work around issues with BundleUtilities trying to get the RPATH
+        # for Windows DLLs (using file(READ_ELF)).
+        set(UNIX ${UNIX})
+        set(WIN32 ${WIN32})
+
+        # Force gp_tool in cross-compile context to objdump
         set(gp_tool \"${gp_tool}\")
+
+        if (NOT \$ENV{DESTDIR} STREQUAL \"\")
+            message(STATUS \"Applying destdir \$ENV{DESTDIR}\")
+            file(REAL_PATH \"\$ENV{DESTDIR}\" DESTDIR)
+            set(DESTDIR \"\${DESTDIR}/\")
+        endif()
+
         file(GLOB_RECURSE BundlePlugins
-          \"\${CMAKE_INSTALL_PREFIX}/bin/decoders/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
-          \"\${CMAKE_INSTALL_PREFIX}/bin/views/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
-          \"\${CMAKE_INSTALL_PREFIX}/bin/platform/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
-          \"\${CMAKE_INSTALL_PREFIX}/bin/imageformats/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
-          \"\${CMAKE_INSTALL_PREFIX}/bin/libEGL.dll\"
+          \"\${DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/decoders/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
+          \"\${DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/views/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
+          \"\${DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/platform/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
+          \"\${DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/imageformats/*${CMAKE_SHARED_LIBRARY_SUFFIX}\"
+          \"\${DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/libEGL.dll\"
         )
         include(BundleUtilities)
-        fixup_bundle(\"${BundleApp}\" \"\${BundlePlugins}\" \"${BundleLibraryDirs}\")
+        fixup_bundle(\"\${DESTDIR}${BundleApp}\" \"\${BundlePlugins}\" \"${BundleLibraryDirs}\")
     " COMPONENT application)
 endif(WIN32)
