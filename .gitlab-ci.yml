@@ -4,7 +4,7 @@ stages:
 - deploy
 
 build:ubuntu-18.04:debug:
-  image: haffmans/cmake-qt5:latest
+  image: haffmans/cmake-qt5:18.04
   artifacts:
     paths:
     - build/ubuntu-18.04/debug
@@ -21,7 +21,7 @@ build:ubuntu-18.04:debug:
   stage: build
 
 build:ubuntu-18.04:release:
-  image: haffmans/cmake-qt5:latest
+  image: haffmans/cmake-qt5:18.04
   artifacts:
     paths:
     - build/ubuntu-18.04/release
@@ -38,7 +38,7 @@ build:ubuntu-18.04:release:
   stage: build
 
 build:win32:release:
-  image: haffmans/mingw-qt5:latest
+  image: haffmans/mingw-qt5:qt5
   artifacts:
     paths:
     - build/win32/release
@@ -61,7 +61,7 @@ build:win32:release:
   stage: build
 
 build:win64:release:
-  image: haffmans/mingw-qt5:latest
+  image: haffmans/mingw-qt5:qt5
   artifacts:
     paths:
     - build/win64/release
@@ -84,7 +84,7 @@ build:win64:release:
   stage: build
 
 package:ubuntu-18.04:
-  image: haffmans/cmake-qt5:latest
+  image: haffmans/cmake-qt5:18.04
   artifacts:
     paths:
     - images
@@ -127,7 +127,7 @@ package:ubuntu-18.04:
   stage: deploy
 
 package:src:
-  image: haffmans/cmake-qt5:latest
+  image: haffmans/cmake-qt5:18.04
   artifacts:
     paths:
     - images
@@ -152,7 +152,7 @@ package:src:
   stage: deploy
 
 package:win32:
-  image: haffmans/mingw-qt5:latest
+  image: haffmans/mingw-qt5:qt5
   artifacts:
     paths:
     - images
@@ -177,7 +177,7 @@ package:win32:
   stage: deploy
 
 package:win64:
-  image: haffmans/mingw-qt5:latest
+  image: haffmans/mingw-qt5:qt5
   artifacts:
     paths:
     - images
