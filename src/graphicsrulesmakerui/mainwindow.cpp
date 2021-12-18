@@ -484,11 +484,11 @@ void MainWindow::save()
         }
 
         if (!backupOk) {
-            QMessageBox::critical(this, tr("Error"), tr("Could not create back-up files. Aborting."));
-            return;
+            manualSave = true;
         }
     }
-    else {
+
+    if (manualSave) { // Not 'else' -> manualSave may have been toggled by the back-up process
         qDebug() << "- Prompt to save to location";
         QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Saving files"),
             tr("The files cannot be saved to the game directory (it is not writable).\n\n"
