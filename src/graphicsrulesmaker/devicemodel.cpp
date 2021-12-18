@@ -305,6 +305,16 @@ void DeviceModel::load()
     // Insert bogus devices for testing
 
     // First some modes
+    GraphicsMode mode320_240_60;
+    mode320_240_60.width = 320;
+    mode320_240_60.height = 240;
+    mode320_240_60.refreshRate = 60;
+
+    GraphicsMode mode640_480_60;
+    mode640_480_60.width = 640;
+    mode640_480_60.height = 480;
+    mode640_480_60.refreshRate = 60;
+
     GraphicsMode mode800_600_60;
     mode800_600_60.width = 800;
     mode800_600_60.height = 600;
@@ -357,7 +367,7 @@ void DeviceModel::load()
     dev1.vendorId = 0x10b4;
     dev1.deviceId = 0xFFFF;
     dev1.memory = 1024*1048576;
-    dev1.modes << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1080_59 << mode1920_1080_60;
+    dev1.modes << mode320_240_60 << mode640_480_60 << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1080_59 << mode1920_1080_60;
 
     GraphicsDevice dev2;
     dev2.name = "NVIDIA GeForce GTX 770";
