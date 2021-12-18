@@ -25,13 +25,14 @@
 #include <QtCore/QDebug>
 
 #include "simslssettings.h"
+#include "simslsvariables.h"
 
 SimsLSGameWriter::SimsLSGameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
 {
 }
 
-QWidget* SimsLSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* SimsLSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     return new SimsLSSettings(devices, database, parent);
 }
@@ -103,17 +104,10 @@ QFileInfo SimsLSGameWriter::findFile(QDir baseDir, QStringList options) const
 }
 
 
-void SimsLSGameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void SimsLSGameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
     qInfo() << "Sims Life Stories: Writing rules";
-
-    // Load settings
-    SimsLSSettings *widget = dynamic_cast<SimsLSSettings*>(settingsWidget);
-    if (!widget) {
-        return;
-    }
-
-    SimsLSVariables options = widget->current();
+    SimsLSVariables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

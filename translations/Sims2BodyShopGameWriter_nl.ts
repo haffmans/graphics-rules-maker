@@ -137,12 +137,12 @@
         <translation>Geen aanpassing van schatting van textuurgeheugen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="84"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="78"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="85"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="79"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

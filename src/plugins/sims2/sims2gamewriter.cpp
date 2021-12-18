@@ -25,6 +25,7 @@
 #include <QtCore/QDebug>
 
 #include "sims2settings.h"
+#include "sims2variables.h"
 
 Sims2GameWriter::Sims2GameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
@@ -32,7 +33,7 @@ Sims2GameWriter::Sims2GameWriter(QObject* parent)
     qInfo() << "Sims 2 Game Writer constructed";
 }
 
-QWidget* Sims2GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* Sims2GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     qInfo() << "Loading Sims 2 Settings widget";
     return new Sims2Settings(devices, database, parent);
@@ -180,18 +181,10 @@ QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
 }
 
 
-void Sims2GameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void Sims2GameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
     qInfo() << "Sims 2: Writing rules";
-
-    // Load settings
-    Sims2Settings *widget = dynamic_cast<Sims2Settings*>(settingsWidget);
-    if (!widget) {
-        qCritical() << "Settings widget incorrect! Aborting";
-        return;
-    }
-
-    Sims2Variables options = widget->current();
+    Sims2Variables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

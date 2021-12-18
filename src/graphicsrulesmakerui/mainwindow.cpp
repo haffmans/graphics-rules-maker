@@ -31,6 +31,7 @@
 #include <QtWidgets/QCompleter>
 #include <QtGui/QDesktopServices>
 
+#include "graphicsrulesmaker/abstractsettingswidget.h"
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 #include "graphicsrulesmaker/gamewriterinterface.h"
@@ -207,6 +208,7 @@ void MainWindow::selectGame(int row)
     QSettings s;
     if (m_currentPlugin) {
         s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
+        saveWidgetSettings();
         qDebug() << "- Settings for" << m_currentPlugin->id() << "saved";
     }
 
@@ -272,6 +274,7 @@ void MainWindow::replaceWidget()
     // widget, hence it's in the destroyed() slot.
     qDebug() << "SETTING WIDGET";
     m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
+    loadWidgetSettings();
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
     connect(m_currentGameSettingsWidget, &QWidget::destroyed, this, &MainWindow::replaceWidget);
 }
@@ -355,7 +358,7 @@ void MainWindow::tabOpen(int tabIndex)
     if (ui->mainTabs->currentWidget() == ui->graphicsRulesTab && m_currentPlugin) {
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly | QIODevice::Text);
-        m_currentPlugin->write(m_currentGameSettingsWidget, &buffer);
+        m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &buffer);
         QString plainText(buffer.data());
         buffer.close();
 
@@ -372,9 +375,76 @@ void MainWindow::tabOpen(int tabIndex)
     }
 }
 
+void MainWindow::loadWidgetSettings()
+{
+    if (!m_currentPlugin || !m_currentGameSettingsWidget) {
+        return;
+    }
+
+    QSettings s;
+    QVariantMap map;
+    s.beginGroup(m_currentPlugin->id());
+    map = recursiveLoadSettings(&s);
+    s.endGroup();
+
+    m_currentGameSettingsWidget->setSettings(map);
+}
+
+QVariantMap MainWindow::recursiveLoadSettings(QSettings* settings)
+{
+    QVariantMap result;
+
+    for(const auto& item: settings->childKeys()) {
+        result[item] = settings->value(item);
+    }
+
+    for(const auto& group: settings->childGroups()) {
+        settings->beginGroup(group);
+        result[group] = recursiveLoadSettings(settings);
+        settings->endGroup();
+    }
+
+    return result;
+}
+
+void MainWindow::saveWidgetSettings() const
+{
+    if (!m_currentPlugin || !m_currentGameSettingsWidget) {
+        return;
+    }
+
+    QVariantMap map = m_currentGameSettingsWidget->settings();
+
+    QSettings s;
+    s.beginGroup(m_currentPlugin->id());
+    recursiveSaveSettings(map, &s);
+    s.endGroup();
+}
+
+void MainWindow::recursiveSaveSettings(const QVariantMap& map, QSettings* settings) const
+{
+    for (auto item = map.cbegin(); item != map.cend(); ++item) {
+        auto& key = item.key();
+        auto& value = item.value();
+
+        if (value.type() == QVariant::Map) {
+            settings->beginGroup(key);
+            recursiveSaveSettings(value.toMap(), settings);
+            settings->endGroup();
+        }
+        else {
+            settings->setValue(key, value);
+        }
+    }
+}
+
 void MainWindow::save()
 {
-    // First make sure devices are in database
+    // Persist widget settings
+    qDebug() << "Persisting settings";
+    saveWidgetSettings();
+
+    // Make sure devices are in database
     qDebug() << "Saving files";
     askAddDevices();
 
@@ -475,7 +545,7 @@ void MainWindow::save()
         return;
     }
     qDebug() << "- Call plugin to write contents";
-    m_currentPlugin->write(m_currentGameSettingsWidget, &graphicsRulesOut);
+    m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &graphicsRulesOut);
     graphicsRulesOut.close();
 
     qDebug() << "- Open Video Cards file" << videoCardsFile.absoluteFilePath();
@@ -532,7 +602,7 @@ void MainWindow::saveGraphicRules()
         return;
     }
 
-    m_currentPlugin->write(m_currentGameSettingsWidget, &dst);
+    m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &dst);
     dst.close();
 
     QMessageBox::information(this, tr("File saved"), tr("Graphics rules saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
@@ -730,5 +800,6 @@ MainWindow::~MainWindow()
     s.setValue("videocards/splitterstate", ui->videoCardsSplitter->saveState());
     s.setValue("videocards/treeviewheaderstate", ui->videoCardsView->header()->saveState());
     s.setValue("game/id", m_currentPlugin->id());
+    saveWidgetSettings();
     delete ui;
 }

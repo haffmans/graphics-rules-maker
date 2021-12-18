@@ -30,63 +30,40 @@
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 
+#include "simspsvariables.h"
+
 SimsPSSettings::SimsPSSettings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-    : QWidget(parent)
+    : AbstractSettingsWidget(parent)
+    , ui(new Ui::SimsPSSettings)
     , m_devices(devices)
 {
-    ui = new Ui::SimsPSSettings;
     ui->setupUi(this);
 
     connect(ui->resetDefaults, &QPushButton::clicked, this, &SimsPSSettings::reset);
     connect(ui->autodetect, &QPushButton::clicked, this, &SimsPSSettings::autodetect);
 
     // Load available resolutions
-    QStringList resolutions;
-    int previousWidth = -1;
-    int previousHeight = -1;
+    QMap<QString, QSize> resolutions;
+    QSize previousSize;
+
     foreach(const GraphicsMode &mode, devices->allModes()) {
         // We don't care about refresh rates - i.e. avoid duplicates from the list. Also ignore anything below 800x600.
-        if ((mode.width != previousWidth || mode.height != previousHeight) && mode.width >= 800 && mode.height >= 600) {
-            resolutions << QString::number(mode.width) + "x" + QString::number(mode.height);
-            previousWidth = mode.width;
-            previousHeight = mode.height;
+        QSize size(mode.width, mode.height);
+        if (size != previousSize && size.width() >= 800 && size.height() >= 600) {
+            previousSize = size;
+
+            QString text = QString("%1x%2").arg(size.width()).arg(size.height());
+            ui->defaultResolution->addItem(text, size);
+            ui->maxResolution->addItem(text, size);
         }
     }
 
-    ui->defaultResolution->addItems(resolutions);
-    ui->maxResolution->addItems(resolutions);
-
-    // Load Settings
-    QSettings s;
-    s.beginGroup("sims-petstories");
-
-    ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
-    ui->disableTexMemEstimateAdjustment->setChecked(s.value("disableTexMemEstimateAdjustment", false).toBool());
-    ui->enableDriverMemoryManager->setChecked(s.value("enableDriverMemoryManager", false).toBool());
-    ui->disableSimShadows->setChecked(s.value("disableSimShadows", false).toBool());
-    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
-    ui->intelHigh->setChecked(s.value("intelHigh", false).toBool());
-    ui->intelVsync->setChecked(s.value("intelVsync", false).toBool());
-
-    auto defaultResolution = stringToSize(s.value("defaultResolution", "1024x768").toString());
-    if (defaultResolution.isValid()) {
-        selectResolution(ui->defaultResolution, defaultResolution);
-    }
-    else {
-        selectResolution(ui->defaultResolution, QSize(1024, 768));
-    }
-
-    auto maxResolution = stringToSize(s.value("maximumResolution", "1600x1200").toString());
-    if (maxResolution.isValid()) {
-        selectResolution(ui->maxResolution, maxResolution);
-    }
-    else {
-        selectResolution(ui->maxResolution, QSize(1600, 1200));
-    }
-    s.endGroup();
+    // Pick the best matching default resolutions
+    selectResolution(ui->defaultResolution, QSize(1024, 768));
+    selectResolution(ui->maxResolution, QSize(1600, 1200));
 }
 
-SimsPSVariables SimsPSSettings::current() const
+QVariantMap SimsPSSettings::settings() const
 {
     SimsPSVariables result;
     result.forceMemory = ui->forceMem->value();
@@ -97,17 +74,59 @@ SimsPSVariables SimsPSSettings::current() const
     result.intelHigh = ui->intelHigh->isChecked();
     result.intelVsync = ui->intelVsync->isChecked();
 
-    auto defaultResolution = stringToSize(ui->defaultResolution->currentText());
+    auto defaultResolution = ui->defaultResolution->currentData().toSize();
     if (defaultResolution.isValid()) {
         result.defaultResolution = defaultResolution;
     }
 
-    auto maxResolution = stringToSize(ui->maxResolution->currentText());
+    auto maxResolution = ui->maxResolution->currentData().toSize();
     if (maxResolution.isValid()) {
         result.maximumResolution = maxResolution;
     }
 
     return result;
+}
+
+void SimsPSSettings::setSettings(const QVariantMap& settings)
+{
+    SimsPSVariables result(settings);
+
+    ui->forceMem->setValue(result.forceMemory);
+    ui->disableTexMemEstimateAdjustment->setChecked(result.disableTexMemEstimateAdjustment);
+    ui->enableDriverMemoryManager->setChecked(result.enableDriverMemoryManager);
+    ui->disableSimShadows->setChecked(result.disableSimShadows);
+    ui->radeonHd7000Fix->setChecked(result.radeonHd7000Fix);
+    ui->intelHigh->setChecked(result.intelHigh);
+    ui->intelVsync->setChecked(result.intelVsync);
+
+    selectResolution(ui->defaultResolution, result.defaultResolution);
+    selectResolution(ui->maxResolution, result.maximumResolution);
+}
+
+void SimsPSSettings::reset()
+{
+    setSettings(QVariantMap());
+}
+
+void SimsPSSettings::selectResolution(QComboBox* comboBox, const QSize& resolution)
+{
+    QSize bestMatch;
+    int bestMatchIndex = -1;
+
+    for (int i = 0; i < comboBox->count(); ++i) {
+        auto itemSize = comboBox->itemData(i).toSize();
+
+        // If this comes closer to the requested resolution (in both dimensions), it's a better match
+        if ((bestMatch.width() <= itemSize.width() && itemSize.width() <= resolution.width()) &&
+            (bestMatch.height() <= itemSize.height() && itemSize.height() <= resolution.height())) {
+            bestMatch = itemSize;
+            bestMatchIndex = i;
+        }
+    }
+
+    if (bestMatchIndex >= 0) {
+        comboBox->setCurrentIndex(bestMatchIndex);
+    }
 }
 
 void SimsPSSettings::autodetect()
@@ -188,71 +207,8 @@ void SimsPSSettings::autodetect()
     ui->maxResolution->setCurrentIndex(ui->maxResolution->count() - 1);
 }
 
-void SimsPSSettings::reset()
-{
-    // Restore all defaults
-    ui->forceMem->setValue(0);
-    ui->disableTexMemEstimateAdjustment->setChecked(false);
-    ui->enableDriverMemoryManager->setChecked(false);
-    ui->disableSimShadows->setChecked(false);
-    ui->radeonHd7000Fix->setChecked(false);
-    ui->intelHigh->setChecked(false);
-    ui->intelVsync->setChecked(false);
-    selectResolution(ui->defaultResolution, QSize(1024, 768));
-    selectResolution(ui->maxResolution, QSize(1600, 1200));
-}
-
-QSize SimsPSSettings::stringToSize(QString value) const
-{
-    QSize result;
-    static QRegExp resolutionString("^(\\d+)x(\\d+)$");
-    if (resolutionString.exactMatch(value)) {
-        result.setWidth(resolutionString.cap(1).toInt());
-        result.setHeight(resolutionString.cap(2).toInt());
-    }
-    return result;
-}
-
-void SimsPSSettings::selectResolution(QComboBox* comboBox, const QSize& resolution)
-{
-    QSize bestMatch;
-    int bestMatchIndex = -1;
-
-    for (int i = 0; i < comboBox->count(); ++i) {
-        auto itemSize = stringToSize(comboBox->itemText(i));
-
-        // If this comes closer to the requested resolution (in both dimensions), it's a better match
-        if ((bestMatch.width() <= itemSize.width() && itemSize.width() <= resolution.width()) &&
-            (bestMatch.height() <= itemSize.height() && itemSize.height() <= resolution.height())) {
-            bestMatch = itemSize;
-            bestMatchIndex = i;
-        }
-    }
-
-    if (bestMatchIndex >= 0) {
-        comboBox->setCurrentIndex(bestMatchIndex);
-    }
-}
-
 SimsPSSettings::~SimsPSSettings()
 {
-    // Write settings
-    QSettings s;
-    SimsPSVariables vars = current();
-
-    s.beginGroup("sims-petstories");
-    s.setValue("forceMemory", ui->forceMem->value());
-    s.setValue("disableTexMemEstimateAdjustment", ui->disableTexMemEstimateAdjustment->isChecked());
-    s.setValue("enableDriverMemoryManager", ui->enableDriverMemoryManager->isChecked());
-    s.setValue("disableSimShadows", ui->disableSimShadows->isChecked());
-    s.setValue("radeonHd7000Fix", ui->radeonHd7000Fix->isChecked());
-    s.setValue("intelHigh", ui->intelHigh->isChecked());
-    s.setValue("intelVsync", ui->intelVsync->isChecked());
-    s.setValue("defaultResolution", ui->defaultResolution->currentText());
-    s.setValue("maximumResolution", ui->maxResolution->currentText());
-    s.endGroup();
-
-    delete ui;
 }
 
 #include "moc_simspssettings.cpp"

@@ -19,7 +19,7 @@
 #ifndef SIMS2BODYSHOPSETTINGS_H
 #define SIMS2BODYSHOPSETTINGS_H
 
-#include <QtWidgets/QWidget>
+#include <graphicsrulesmaker/abstractsettingswidget.h>
 
 namespace Ui
 {
@@ -29,31 +29,22 @@ class Sims2BodyShopSettings;
 class DeviceModel;
 class VideoCardDatabase;
 
-struct Sims2BodyShopVariables
-{
-    quint16 forceMemory;
-    bool disableTexMemEstimateAdjustment;
-    bool enableDriverMemoryManager;
-    bool radeonHd7000Fix;
-    bool intelHigh;
-    bool intelVsync;
-};
-
-class Sims2BodyShopSettings : public QWidget
+class Sims2BodyShopSettings : public AbstractSettingsWidget
 {
     Q_OBJECT
 public:
     Sims2BodyShopSettings(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent = 0);
     ~Sims2BodyShopSettings();
 
-    Sims2BodyShopVariables current() const;
+    QVariantMap settings() const override;
+    void setSettings(const QVariantMap & settings) override;
 
 public slots:
     void reset();
     void autodetect();
 
 private:
-    Ui::Sims2BodyShopSettings* ui;
+    std::unique_ptr<Ui::Sims2BodyShopSettings> ui;
     DeviceModel *m_devices;
 };
 

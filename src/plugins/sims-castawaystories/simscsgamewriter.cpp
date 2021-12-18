@@ -25,13 +25,14 @@
 #include <QtCore/QDebug>
 
 #include "simscssettings.h"
+#include "simscsvariables.h"
 
 SimsCSGameWriter::SimsCSGameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
 {
 }
 
-QWidget* SimsCSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* SimsCSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     return new SimsCSSettings(devices, database, parent);
 }
@@ -100,17 +101,10 @@ QFileInfo SimsCSGameWriter::findFile(QDir baseDir, QStringList options) const
 }
 
 
-void SimsCSGameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void SimsCSGameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
     qInfo() << "Sims Castaway Stories: Writing rules";
-
-    // Load settings
-    SimsCSSettings *widget = dynamic_cast<SimsCSSettings*>(settingsWidget);
-    if (!widget) {
-        return;
-    }
-
-    SimsCSVariables options = widget->current();
+    SimsCSVariables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

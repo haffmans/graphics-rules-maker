@@ -23,11 +23,12 @@
 
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
+#include "simcity4variables.h"
 
 SimCity4Settings::SimCity4Settings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-    : QWidget(parent)
+    : AbstractSettingsWidget(parent)
+    , ui(new Ui::SimCity4Settings)
 {
-    ui = new Ui::SimCity4Settings;
     ui->setupUi(this);
 
     connect(ui->resetDefaults, &QPushButton::clicked, this, &SimCity4Settings::reset);
@@ -44,48 +45,34 @@ SimCity4Settings::SimCity4Settings(DeviceModel *devices, VideoCardDatabase *data
             previousHeight = mode.height;
         }
     }
-
-    // Load Settings
-    QSettings s;
-    s.beginGroup("simcity4");
-
-    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
-    ui->fastCard->setChecked(s.value("fastCard", false).toBool());
-    ui->allHighSettings->setChecked(s.value("allHighSettings", false).toBool());
-
-    s.endGroup();
 }
 
-SimCity4Variables SimCity4Settings::current() const
+QVariantMap SimCity4Settings::settings() const
 {
-    SimCity4Variables result;
-    result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
-    result.fastCard = ui->fastCard->isChecked();
-    result.allHighSettings = ui->allHighSettings->isChecked();
-    return result;
+    SimCity4Variables options;
+    options.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
+    options.fastCard = ui->fastCard->isChecked();
+    options.allHighSettings = ui->allHighSettings->isChecked();
+    return options;
+}
+
+void SimCity4Settings::setSettings(const QVariantMap& settings)
+{
+    SimCity4Variables options(settings);
+
+    ui->radeonHd7000Fix->setChecked(options.radeonHd7000Fix);
+    ui->fastCard->setChecked(options.fastCard);
+    ui->allHighSettings->setChecked(options.allHighSettings);
 }
 
 void SimCity4Settings::reset()
 {
     // Restore all defaults
-    ui->radeonHd7000Fix->setChecked(false);
-    ui->fastCard->setChecked(false);
-    ui->allHighSettings->setChecked(false);
+    setSettings(QVariantMap{});
 }
 
 SimCity4Settings::~SimCity4Settings()
 {
-    // Write settings
-    QSettings s;
-    SimCity4Variables vars = current();
-
-    s.beginGroup("simcity4");
-    s.setValue("radeonHd7000Fix", ui->radeonHd7000Fix->isChecked());
-    s.setValue("fastCard", ui->fastCard->isChecked());
-    s.setValue("allHighSettings", ui->allHighSettings->isChecked());
-    s.endGroup();
-
-    delete ui;
 }
 
 #include "moc_simcity4settings.cpp"

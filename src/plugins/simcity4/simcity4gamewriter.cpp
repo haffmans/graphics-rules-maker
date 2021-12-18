@@ -28,13 +28,14 @@
 #endif
 
 #include "simcity4settings.h"
+#include "simcity4variables.h"
 
 SimCity4GameWriter::SimCity4GameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
 {
 }
 
-QWidget* SimCity4GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* SimCity4GameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     return new SimCity4Settings(devices, database, parent);
 }
@@ -87,15 +88,9 @@ QFileInfo SimCity4GameWriter::findFile(QDir baseDir, const QString& file) const
 }
 
 
-void SimCity4GameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void SimCity4GameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
-    // Load settings
-    SimCity4Settings *widget = qobject_cast<SimCity4Settings*>(settingsWidget);
-    if (!widget) {
-        return;
-    }
-
-    SimCity4Variables options = widget->current();
+    SimCity4Variables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

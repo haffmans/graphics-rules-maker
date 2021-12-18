@@ -26,6 +26,7 @@ if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
 set(GraphicsRulesMaker_SRCS
+    abstractsettingswidget.cpp
     videocarddatabase.cpp
     devicemodel.cpp
 )
@@ -34,6 +35,7 @@ set(GraphicsRulesMaker_HDRS
     "devicemodel.h"
     "videocarddatabase.h"
     "gamewriterinterface.h"
+    "abstractsettingswidget.h"
     "${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h"
 )
 

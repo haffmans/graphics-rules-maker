@@ -43,7 +43,7 @@ public:
         return tr("The Sims 2");
     }
 
-    QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0) override;
+    AbstractSettingsWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0) override;
 
     QDir findGameDirectory() const override;
 
@@ -56,7 +56,7 @@ public:
     QString databaseFileName() const override { return "Video Cards.sgr"; }
     QFileInfo databaseFileName(const QDir& gameDirectory) const override;
 
-    void write(QWidget *settingsWidget, QIODevice* target) override;
+    void write(const QVariantMap& settings, QIODevice* target) override;
 
     ~Sims2GameWriter() override;
 

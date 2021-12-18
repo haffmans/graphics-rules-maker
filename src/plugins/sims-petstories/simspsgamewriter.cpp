@@ -25,13 +25,14 @@
 #include <QtCore/QDebug>
 
 #include "simspssettings.h"
+#include "simspsvariables.h"
 
 SimsPSGameWriter::SimsPSGameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
 {
 }
 
-QWidget* SimsPSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* SimsPSGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     return new SimsPSSettings(devices, database, parent);
 }
@@ -100,17 +101,10 @@ QFileInfo SimsPSGameWriter::findFile(QDir baseDir, QStringList options) const
 }
 
 
-void SimsPSGameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void SimsPSGameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
     qInfo() << "Sims Pet Stories: Writing rules";
-
-    // Load settings
-    SimsPSSettings *widget = dynamic_cast<SimsPSSettings*>(settingsWidget);
-    if (!widget) {
-        return;
-    }
-
-    SimsPSVariables options = widget->current();
+    SimsPSVariables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

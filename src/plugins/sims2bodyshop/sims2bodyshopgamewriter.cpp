@@ -25,6 +25,7 @@
 #include <QtCore/QDebug>
 
 #include "sims2bodyshopsettings.h"
+#include "sims2bodyshopvariables.h"
 
 Sims2BodyShopGameWriter::Sims2BodyShopGameWriter(QObject* parent)
     : QObject(parent), GameWriterInterface()
@@ -32,7 +33,7 @@ Sims2BodyShopGameWriter::Sims2BodyShopGameWriter(QObject* parent)
     qInfo() << "Sims 2 Body Shop Game Writer constructed";
 }
 
-QWidget* Sims2BodyShopGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
+AbstractSettingsWidget* Sims2BodyShopGameWriter::settingsWidget(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent)
 {
     qInfo() << "Loading Sims 2 Body Shop Settings widget";
     return new Sims2BodyShopSettings(devices, database, parent);
@@ -164,18 +165,10 @@ QFileInfo Sims2BodyShopGameWriter::findFile(QDir baseDir, QStringList options) c
     return QFileInfo();
 }
 
-void Sims2BodyShopGameWriter::write(QWidget* settingsWidget, QIODevice* target)
+void Sims2BodyShopGameWriter::write(const QVariantMap& settings, QIODevice* target)
 {
     qInfo() << "Sims 2 Body Shop: Writing rules";
-
-    // Load settings
-    Sims2BodyShopSettings *widget = dynamic_cast<Sims2BodyShopSettings*>(settingsWidget);
-    if (!widget) {
-        qCritical() << "Settings widget incorrect! Aborting";
-        return;
-    }
-
-    Sims2BodyShopVariables options = widget->current();
+    Sims2BodyShopVariables options(settings);
 
     // Write code - Lots of ugly code follows, beware....
     QTextStream stream(target);

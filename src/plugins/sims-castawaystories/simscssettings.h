@@ -19,7 +19,7 @@
 #ifndef SIMSCSSETTINGS_H
 #define SIMSCSSETTINGS_H
 
-#include <QtWidgets/QWidget>
+#include <graphicsrulesmaker/abstractsettingswidget.h>
 
 namespace Ui
 {
@@ -30,37 +30,23 @@ class QComboBox;
 class DeviceModel;
 class VideoCardDatabase;
 
-struct SimsCSVariables
-{
-    quint16 forceMemory;
-    bool disableTexMemEstimateAdjustment;
-    bool enableDriverMemoryManager;
-    bool disableSimShadows;
-    bool radeonHd7000Fix;
-    bool intelHigh;
-    bool intelVsync;
-
-    QSize defaultResolution;
-    QSize maximumResolution;
-};
-
-class SimsCSSettings : public QWidget
+class SimsCSSettings : public AbstractSettingsWidget
 {
     Q_OBJECT
 public:
     SimsCSSettings(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent = 0);
     ~SimsCSSettings();
 
-    SimsCSVariables current() const;
+    QVariantMap settings() const override;
+    void setSettings(const QVariantMap & settings) override;
 
 public slots:
     void reset();
     void autodetect();
 
 private:
-    QSize stringToSize(QString value) const;
     void selectResolution(QComboBox* comboBox, const QSize& resolution);
-    Ui::SimsCSSettings* ui;
+    std::unique_ptr<Ui::SimsCSSettings> ui;
     DeviceModel *m_devices;
 };
 

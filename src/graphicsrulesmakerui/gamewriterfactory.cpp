@@ -51,6 +51,7 @@ void GameWriterFactory::loadPlugins()
         QStringList files = searchDir.entryList(QDir::Files);
         foreach(const QString &pluginFile, files) {
             if (!libraries.contains(pluginFile)) {
+                qDebug() << "- found" << pluginFile;
                 libraries.insert(pluginFile, searchDir);
             }
         }
@@ -65,6 +66,9 @@ void GameWriterFactory::loadPlugins()
             qDebug() << "Found plugin for game " << instance->displayName() << " [" << instance->id() << "] in " << fullPath;
             m_plugins.append(instance);
             m_pluginPaths.insert(instance->id(), fullPath);
+        }
+        else {
+            qWarning() << fullPath << "is not a valid plugin library";
         }
     }
 }

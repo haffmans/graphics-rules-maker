@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2021 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,37 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SIMS2SETTINGS_H
-#define SIMS2SETTINGS_H
+#ifndef ABSTRACTSETTINGSWIDGET_H
+#define ABSTRACTSETTINGSWIDGET_H
 
-#include <QtCore/QVariantMap>
-#include <memory>
+#include <QWidget>
 
-#include "graphicsrulesmaker/abstractsettingswidget.h"
-
-namespace Ui
-{
-class SimCity4Settings;
-}
-
-class DeviceModel;
-class VideoCardDatabase;
-
-class SimCity4Settings : public AbstractSettingsWidget
+/**
+ * The base for a Graphics Rules Maker settings widget.
+ */
+class AbstractSettingsWidget : public QWidget
 {
     Q_OBJECT
+
 public:
-    SimCity4Settings(DeviceModel* devices, VideoCardDatabase* database, QWidget* parent = 0);
-    ~SimCity4Settings();
+    /**
+     * Constructor
+     */
+    explicit AbstractSettingsWidget(QWidget* parent);
 
-    QVariantMap settings() const override;
-    void setSettings(const QVariantMap & settings) override;
+    /**
+     * The current settings in the widget.
+     */
+    virtual QVariantMap settings() const = 0;
 
-public slots:
-    void reset();
-
-private:
-    std::unique_ptr<Ui::SimCity4Settings> ui;
+    /**
+     * Apply previously saved settings to the widget.
+     */
+    virtual void setSettings(const QVariantMap& settings) = 0;
 };
 
-#endif // SIMS2SETTINGS_H
+#endif // ABSTRACTSETTINGSWIDGET_H

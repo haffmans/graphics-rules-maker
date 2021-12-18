@@ -25,7 +25,7 @@
 #include <QtCore/QDir>
 
 class QIODevice;
-class QWidget;
+class AbstractSettingsWidget;
 class DeviceModel;
 class VideoCardDatabase;
 
@@ -49,7 +49,7 @@ public:
      *
      * You should use the widget to load/store settings of previous runs.
      */
-    virtual QWidget *settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget *parent = 0) = 0;
+    virtual AbstractSettingsWidget *settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget *parent = 0) = 0;
 
     /**
      * Find the game's default directory.
@@ -93,7 +93,7 @@ public:
     /**
      * Write the graphics rules to the given device.
      */
-    virtual void write(QWidget *settingsWidget, QIODevice *target) = 0;
+    virtual void write(const QVariantMap& settings, QIODevice *target) = 0;
 
     /**
      * Destructor

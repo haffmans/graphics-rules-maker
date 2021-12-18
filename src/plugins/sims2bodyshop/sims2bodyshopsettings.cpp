@@ -30,33 +30,21 @@
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 
+#include "sims2bodyshopvariables.h"
+
 Sims2BodyShopSettings::Sims2BodyShopSettings(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent)
-    : QWidget(parent)
+    : AbstractSettingsWidget(parent)
+    , ui(new Ui::Sims2BodyShopSettings)
     , m_devices(devices)
 {
-    ui = new Ui::Sims2BodyShopSettings;
     ui->setupUi(this);
 
     connect(ui->resetDefaults, &QPushButton::clicked, this, &Sims2BodyShopSettings::reset);
     connect(ui->autodetect, &QPushButton::clicked, this, &Sims2BodyShopSettings::autodetect);
-
-    // Load Settings
-    QSettings s;
-    s.beginGroup("sims2bodyshop");
-
-    ui->forceMem->setValue(s.value("forceMemory", 0).toInt());
-    ui->disableTexMemEstimateAdjustment->setChecked(s.value("disableTexMemEstimateAdjustment", false).toBool());
-    ui->enableDriverMemoryManager->setChecked(s.value("enableDriverMemoryManager", false).toBool());
-    ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
-    ui->intelHigh->setChecked(s.value("intelHigh", false).toBool());
-    ui->intelVsync->setChecked(s.value("intelVsync", false).toBool());
-
-    s.endGroup();
 }
 
-Sims2BodyShopVariables Sims2BodyShopSettings::current() const
+QVariantMap Sims2BodyShopSettings::settings() const
 {
-    QRegExp resolutionString("^(\\d+)x(\\d+)$");
     Sims2BodyShopVariables result;
     result.forceMemory = ui->forceMem->value();
     result.disableTexMemEstimateAdjustment = ui->disableTexMemEstimateAdjustment->isChecked();
@@ -68,15 +56,21 @@ Sims2BodyShopVariables Sims2BodyShopSettings::current() const
     return result;
 }
 
+void Sims2BodyShopSettings::setSettings(const QVariantMap& settings)
+{
+    Sims2BodyShopVariables result(settings);
+
+    ui->forceMem->setValue(result.forceMemory);
+    ui->disableTexMemEstimateAdjustment->setChecked(result.disableTexMemEstimateAdjustment);
+    ui->enableDriverMemoryManager->setChecked(result.enableDriverMemoryManager);
+    ui->radeonHd7000Fix->setChecked(result.radeonHd7000Fix);
+    ui->intelHigh->setChecked(result.intelHigh);
+    ui->intelVsync->setChecked(result.intelVsync);
+}
+
 void Sims2BodyShopSettings::reset()
 {
-    // Restore all defaults
-    ui->forceMem->setValue(0);
-    ui->disableTexMemEstimateAdjustment->setChecked(false);
-    ui->enableDriverMemoryManager->setChecked(false);
-    ui->radeonHd7000Fix->setChecked(false);
-    ui->intelHigh->setChecked(false);
-    ui->intelVsync->setChecked(false);
+    setSettings(QVariantMap());
 }
 
 void Sims2BodyShopSettings::autodetect()
@@ -148,20 +142,6 @@ void Sims2BodyShopSettings::autodetect()
 
 Sims2BodyShopSettings::~Sims2BodyShopSettings()
 {
-    // Write settings
-    QSettings s;
-    Sims2BodyShopVariables vars = current();
-
-    s.beginGroup("sims2bodyshop");
-    s.setValue("forceMemory", ui->forceMem->value());
-    s.setValue("disableTexMemEstimateAdjustment", ui->disableTexMemEstimateAdjustment->isChecked());
-    s.setValue("enableDriverMemoryManager", ui->enableDriverMemoryManager->isChecked());
-    s.setValue("radeonHd7000Fix", ui->radeonHd7000Fix->isChecked());
-    s.setValue("intelHigh", ui->intelHigh->isChecked());
-    s.setValue("intelVsync", ui->intelVsync->isChecked());
-    s.endGroup();
-
-    delete ui;
 }
 
 #include "moc_sims2bodyshopsettings.cpp"

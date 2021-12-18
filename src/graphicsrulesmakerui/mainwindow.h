@@ -22,11 +22,14 @@
 #include <QtWidgets/QMainWindow>
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
+#include <QtCore/QVariantMap>
+#include <QtCore/QSettings>
 
 namespace Ui {
 class MainWindow;
 }
 
+class AbstractSettingsWidget;
 class DeviceModel;
 class GameWriterFactory;
 class GameWriterInterface;
@@ -74,7 +77,7 @@ private:
     VideoCardDatabase *m_videoCardDatabase;
     GameWriterFactory *m_gamePlugins;
     GameWriterInterface *m_currentPlugin;
-    QWidget *m_currentGameSettingsWidget;
+    AbstractSettingsWidget *m_currentGameSettingsWidget;
 
     QTranslator m_libraryTranslator;
     QTranslator m_uiTranslator;
@@ -84,6 +87,12 @@ private:
 
     QStringList translationDirectories() const;
     QList<QLocale> appLocales() const;
+
+    void loadWidgetSettings();
+    void saveWidgetSettings() const;
+
+    QVariantMap recursiveLoadSettings(QSettings* settings);
+    void recursiveSaveSettings(const QVariantMap& map, QSettings* settings) const;
 
     void setLocale(const QLocale &locale, const QString &prefix, QTranslator *translator);
     QLocale m_locale;
