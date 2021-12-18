@@ -20,6 +20,7 @@
 #define SIMS2BODYSHOPSETTINGS_H
 
 #include <graphicsrulesmaker/abstractsettingswidget.h>
+#include <memory>
 
 namespace Ui
 {

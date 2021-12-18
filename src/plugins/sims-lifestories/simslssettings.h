@@ -20,6 +20,7 @@
 #define SIMSLSSETTINGS_H
 
 #include <graphicsrulesmaker/abstractsettingswidget.h>
+#include <memory>
 
 namespace Ui
 {

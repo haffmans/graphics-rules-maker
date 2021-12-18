@@ -20,11 +20,12 @@
 #define ABSTRACTSETTINGSWIDGET_H
 
 #include <QWidget>
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 /**
  * The base for a Graphics Rules Maker settings widget.
  */
-class AbstractSettingsWidget : public QWidget
+class GRAPHICSRULESMAKER_EXPORT AbstractSettingsWidget : public QWidget
 {
     Q_OBJECT
 
