@@ -24,9 +24,11 @@
 #include <QtCore/QMap>
 #include <QtCore/QDir>
 
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+
 class GameWriterInterface;
 
-class GameWriterFactory : public QObject
+class GRAPHICSRULESMAKER_EXPORT GameWriterFactory : public QObject
 {
     Q_OBJECT
 

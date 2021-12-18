@@ -35,9 +35,9 @@
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 #include "graphicsrulesmaker/gamewriterinterface.h"
+#include "graphicsrulesmaker/gamewriterfactory.h"
 #include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
-#include "gamewriterfactory.h"
 #include "manualsaveconfirmationbox.h"
 #include "aboutdialog.h"
 

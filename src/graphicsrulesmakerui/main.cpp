@@ -26,10 +26,10 @@
 
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
+#include "graphicsrulesmaker/gamewriterfactory.h"
+#include "graphicsrulesmaker/messagehandler.h"
 
-#include "gamewriterfactory.h"
 #include "mainwindow.h"
-#include "messagehandler.h"
 #include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 int main(int argc, char *argv[])

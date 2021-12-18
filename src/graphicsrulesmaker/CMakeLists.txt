@@ -27,16 +27,20 @@ endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
 set(GraphicsRulesMaker_SRCS
     abstractsettingswidget.cpp
+    gamewriterfactory.cpp
     videocarddatabase.cpp
     devicemodel.cpp
+    messagehandler.cpp
 )
 
 set(GraphicsRulesMaker_HDRS
-    "devicemodel.h"
-    "videocarddatabase.h"
-    "gamewriterinterface.h"
-    "abstractsettingswidget.h"
-    "${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h"
+    devicemodel.h
+    videocarddatabase.h
+    gamewriterfactory.h
+    gamewriterinterface.h
+    abstractsettingswidget.h
+    messagehandler.h
+    ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h
 )
 
 # Translations

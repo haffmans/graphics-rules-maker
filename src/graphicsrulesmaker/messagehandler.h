@@ -20,11 +20,12 @@
 #define MESSAGEHANDLER_H
 
 #include <QtCore/QObject>
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 /**
  * @todo write docs
  */
-class MessageHandler : public QObject
+class GRAPHICSRULESMAKER_EXPORT MessageHandler : public QObject
 {
     Q_OBJECT
 
