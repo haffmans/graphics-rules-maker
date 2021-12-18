@@ -35,33 +35,33 @@ class Sims2GameWriter : public QObject, public GameWriterInterface
 public:
     explicit Sims2GameWriter(QObject* parent = 0);
 
-    virtual QString id() const {
+    QString id() const override {
         return "sims2";
     }
 
-    virtual QString displayName() const {
+    QString displayName() const override {
         return tr("The Sims 2");
     }
 
-    virtual QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0);
+    QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0) override;
 
-    virtual QDir findGameDirectory() const;
+    QDir findGameDirectory() const override;
 
-    virtual QString gameExecutable() const { return "Sims2.exe"; }
-    virtual QFileInfo gameExecutable(const QDir& gameDirectory) const;
+    QString gameExecutable() const override { return "Sims2.exe"; }
+    QFileInfo gameExecutable(const QDir& gameDirectory) const override;
 
-    virtual QString rulesFileName() const { return "Graphics Rules.sgr"; }
-    virtual QFileInfo rulesFileName(const QDir& gameDirectory) const;
+    QString rulesFileName() const override { return "Graphics Rules.sgr"; }
+    QFileInfo rulesFileName(const QDir& gameDirectory) const override;
 
-    virtual QString databaseFileName() const { return "Video Cards.sgr"; }
-    virtual QFileInfo databaseFileName(const QDir& gameDirectory) const;
+    QString databaseFileName() const override { return "Video Cards.sgr"; }
+    QFileInfo databaseFileName(const QDir& gameDirectory) const override;
 
-    virtual void write(QWidget *settingsWidget, QIODevice* target);
+    void write(QWidget *settingsWidget, QIODevice* target) override;
 
-    virtual ~Sims2GameWriter();
+    ~Sims2GameWriter() override;
 
 private:
-    virtual QFileInfo findFile(QDir baseDir, QStringList options) const;
+    QFileInfo findFile(QDir baseDir, QStringList options) const;
 };
 
 #endif // SIMS2GAMEWRITER_H

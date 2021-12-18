@@ -22,6 +22,7 @@
 #include <QtCore/QStandardPaths>
 
 #include <iostream>
+#include <memory>
 
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
@@ -48,19 +49,19 @@ int main(int argc, char *argv[])
 
     qInfo() << qPrintable(app.applicationDisplayName()) << GRAPHICSRULESMAKER_VERSION << "starting";
 
-    DeviceModel *model = new DeviceModel();
-    VideoCardDatabase *database = new VideoCardDatabase();
-    GameWriterFactory *pluginFactory = new GameWriterFactory();
+    auto model = std::make_unique<DeviceModel>();
+    auto database = std::make_unique<VideoCardDatabase>();
+    auto pluginFactory = std::make_unique<GameWriterFactory>();
 
     model->load();
     pluginFactory->loadPlugins();
 
     // MainWindow must be created prior to showing any messages, otherwise they won't be translated
-    MainWindow window(model, database, pluginFactory);
+    MainWindow window(model.get(), database.get(), pluginFactory.get());
 
     if (pluginFactory->plugins().size() == 0) {
         QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
-        return -1;
+        return 1;
     }
     if (model->rowCount() == 0) {
         QMessageBox::warning(0, QObject::tr("No Graphics Card"),
@@ -71,9 +72,9 @@ int main(int argc, char *argv[])
 
     int result = app.exec();
 
-    delete model;
-    delete database;
-    delete pluginFactory;
+    model.reset();
+    database.reset();
+    pluginFactory.reset();
 
     qInfo() << "Exiting with code" << result;
     logger.uninstall();

@@ -51,7 +51,7 @@ public:
      */
     virtual QWidget *settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget *parent = 0) = 0;
 
-        /**
+    /**
      * Find the game's default directory.
      *
      * This will be used if no path was set by the user in an earlier session.

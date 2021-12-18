@@ -406,7 +406,7 @@ QList<GraphicsMode> DeviceModel::allModes()
         modes.unite(dev.modes.toSet());
     }
 
-    QList<GraphicsMode> result = modes.toList();
+    auto result = modes.values();
     std::sort(result.begin(), result.end());
 
     return result;

@@ -60,7 +60,7 @@ void GameWriterFactory::loadPlugins()
     for (i = libraries.constBegin(); i != libraries.constEnd(); ++i) {
         QString fullPath = i.value().absoluteFilePath(i.key());
         QPluginLoader loader(fullPath, this);
-        GameWriterInterface *instance = dynamic_cast<GameWriterInterface*>(loader.instance());
+        auto instance = qobject_cast<GameWriterInterface*>(loader.instance());
         if (instance) {
             qDebug() << "Found plugin for game " << instance->displayName() << " [" << instance->id() << "] in " << fullPath;
             m_plugins.append(instance);

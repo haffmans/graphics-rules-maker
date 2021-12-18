@@ -4,10 +4,10 @@ project(GraphicsRulesMaker)
 # Find other dependencies
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Widgets 5.7 REQUIRED)
 find_package(Qt5LinguistTools)
 
 if(WIN32)

@@ -40,21 +40,20 @@
 #include "manualsaveconfirmationbox.h"
 #include "aboutdialog.h"
 
-MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins) :
-    QMainWindow(0, Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins)
+    : QMainWindow(0, Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint)
+    , ui(new Ui::MainWindow)
+    , m_model(model)
+    , m_videoCardDatabase(videoCardDatabase)
+    , m_gamePlugins(gamePlugins)
+    , m_currentPlugin(nullptr)
+    , m_currentGameSettingsWidget(nullptr)
 {
-    m_model = model;
-    m_videoCardDatabase = videoCardDatabase;
-    m_gamePlugins = gamePlugins;
-    m_currentPlugin = nullptr;
-    m_currentGameSettingsWidget = nullptr;
-
     ui->setupUi(this);
 
-    connect(ui->deviceSelect, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::selectCard);
+    connect(ui->deviceSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectCard);
     connect(ui->mainTabs, &QTabWidget::currentChanged, this, &MainWindow::tabOpen);
-    connect(ui->gameSelect, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
+    connect(ui->gameSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
     connect(ui->gamePath, &QLineEdit::textChanged, this, &MainWindow::locateGameFiles);
     connect(ui->browseFilesButton, &QPushButton::clicked, this, &MainWindow::browseGame);
     connect(ui->saveAll, &QPushButton::clicked, this, &MainWindow::save);

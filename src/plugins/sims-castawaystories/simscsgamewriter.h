@@ -35,33 +35,33 @@ class SimsCSGameWriter : public QObject, public GameWriterInterface
 public:
     explicit SimsCSGameWriter(QObject* parent = 0);
 
-    virtual QString id() const {
+    QString id() const override {
         return "sims-castawaystories";
     }
 
-    virtual QString displayName() const {
+    QString displayName() const override {
         return tr("The Sims Castaway Stories");
     }
 
-    virtual QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0);
+    QWidget* settingsWidget(DeviceModel *devices, VideoCardDatabase *database, QWidget* parent = 0) override;
 
-    virtual QDir findGameDirectory() const;
+    QDir findGameDirectory() const override;
 
-    virtual QString gameExecutable() const { return "SimsCS.exe"; }
-    virtual QFileInfo gameExecutable(const QDir& gameDirectory) const;
+    QString gameExecutable() const override { return "SimsCS.exe"; }
+    QFileInfo gameExecutable(const QDir& gameDirectory) const override;
 
-    virtual QString rulesFileName() const { return "Graphics Rules.sgr"; }
-    virtual QFileInfo rulesFileName(const QDir& gameDirectory) const;
+    QString rulesFileName() const override { return "Graphics Rules.sgr"; }
+    QFileInfo rulesFileName(const QDir& gameDirectory) const override;
 
-    virtual QString databaseFileName() const { return "Video Cards.sgr"; }
-    virtual QFileInfo databaseFileName(const QDir& gameDirectory) const;
+    QString databaseFileName() const override { return "Video Cards.sgr"; }
+    QFileInfo databaseFileName(const QDir& gameDirectory) const override;
 
-    virtual void write(QWidget *settingsWidget, QIODevice* target);
+    void write(QWidget *settingsWidget, QIODevice* target) override;
 
-    virtual ~SimsCSGameWriter();
+    ~SimsCSGameWriter() override;
 
 private:
-    virtual QFileInfo findFile(QDir baseDir, QStringList options) const;
+    QFileInfo findFile(QDir baseDir, QStringList options) const;
 };
 
 #endif // SIMSCSGAMEWRITER_H
