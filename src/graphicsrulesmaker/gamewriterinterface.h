@@ -1,6 +1,6 @@
 /*
- * <one line to give the program's name and a brief idea of what it does.>
- * Copyright (C) 2014  W. Haffmans <wouter@simply-life.net>
+ * Graphics Rules Maker
+ * Copyright (C) 2014-2021 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
