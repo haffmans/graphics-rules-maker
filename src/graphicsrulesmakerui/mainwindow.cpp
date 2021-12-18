@@ -116,7 +116,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
         }
     }
     this->ui->gameSelect->setCurrentIndex(gameRow); // Will call selectGame() slot
-    qDebug() << "Selected game on index: " <<  this->ui->gameSelect->currentIndex() << " - id: " << m_currentPlugin->id();
+    qDebug() << "Selected game on index: " <<  this->ui->gameSelect->currentIndex();
 
     foreach(const QLocale &locale, appLocales()) {
         QString caption = QString("%1 (%2)").arg(
@@ -273,6 +273,11 @@ void MainWindow::replaceWidget()
     // switched locales). Settings are usually saved on the destruction of the
     // widget, hence it's in the destroyed() slot.
     qDebug() << "SETTING WIDGET";
+    if (!m_currentPlugin) {
+        qDebug() << "No plugin loaded";
+        return;
+    }
+
     m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
     loadWidgetSettings();
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
@@ -799,7 +804,9 @@ MainWindow::~MainWindow()
     s.setValue("window/locale", m_locale);
     s.setValue("videocards/splitterstate", ui->videoCardsSplitter->saveState());
     s.setValue("videocards/treeviewheaderstate", ui->videoCardsView->header()->saveState());
-    s.setValue("game/id", m_currentPlugin->id());
+    if (m_currentPlugin) {
+        s.setValue("game/id", m_currentPlugin->id());
+    }
     saveWidgetSettings();
     delete ui;
 }
