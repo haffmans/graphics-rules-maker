@@ -67,15 +67,27 @@ SimsPSSettings::SimsPSSettings(DeviceModel *devices, VideoCardDatabase *database
     ui->radeonHd7000Fix->setChecked(s.value("radeonHd7000Fix", false).toBool());
     ui->intelHigh->setChecked(s.value("intelHigh", false).toBool());
     ui->intelVsync->setChecked(s.value("intelVsync", false).toBool());
-    ui->defaultResolution->setCurrentText(s.value("defaultResolution", "1024x768").toString());
-    ui->maxResolution->setCurrentText(s.value("maximumResolution", "1600x1200").toString());
 
+    auto defaultResolution = stringToSize(s.value("defaultResolution", "1024x768").toString());
+    if (defaultResolution.isValid()) {
+        selectResolution(ui->defaultResolution, defaultResolution);
+    }
+    else {
+        selectResolution(ui->defaultResolution, QSize(1024, 768));
+    }
+
+    auto maxResolution = stringToSize(s.value("maximumResolution", "1600x1200").toString());
+    if (maxResolution.isValid()) {
+        selectResolution(ui->maxResolution, maxResolution);
+    }
+    else {
+        selectResolution(ui->maxResolution, QSize(1600, 1200));
+    }
     s.endGroup();
 }
 
 SimsPSVariables SimsPSSettings::current() const
 {
-    QRegExp resolutionString("^(\\d+)x(\\d+)$");
     SimsPSVariables result;
     result.forceMemory = ui->forceMem->value();
     result.disableTexMemEstimateAdjustment = ui->disableTexMemEstimateAdjustment->isChecked();
@@ -85,14 +97,14 @@ SimsPSVariables SimsPSSettings::current() const
     result.intelHigh = ui->intelHigh->isChecked();
     result.intelVsync = ui->intelVsync->isChecked();
 
-    if (resolutionString.exactMatch(ui->defaultResolution->currentText())) {
-        result.defaultResolution.setWidth(resolutionString.cap(1).toInt());
-        result.defaultResolution.setHeight(resolutionString.cap(2).toInt());
+    auto defaultResolution = stringToSize(ui->defaultResolution->currentText());
+    if (defaultResolution.isValid()) {
+        result.defaultResolution = defaultResolution;
     }
 
-    if (resolutionString.exactMatch(ui->maxResolution->currentText())) {
-        result.maximumResolution.setWidth(resolutionString.cap(1).toInt());
-        result.maximumResolution.setHeight(resolutionString.cap(2).toInt());
+    auto maxResolution = stringToSize(ui->maxResolution->currentText());
+    if (maxResolution.isValid()) {
+        result.maximumResolution = maxResolution;
     }
 
     return result;
@@ -186,8 +198,40 @@ void SimsPSSettings::reset()
     ui->radeonHd7000Fix->setChecked(false);
     ui->intelHigh->setChecked(false);
     ui->intelVsync->setChecked(false);
-    ui->defaultResolution->setCurrentText("1024x768");
-    ui->maxResolution->setCurrentText("1600x1200");
+    selectResolution(ui->defaultResolution, QSize(1024, 768));
+    selectResolution(ui->maxResolution, QSize(1600, 1200));
+}
+
+QSize SimsPSSettings::stringToSize(QString value) const
+{
+    QSize result;
+    static QRegExp resolutionString("^(\\d+)x(\\d+)$");
+    if (resolutionString.exactMatch(value)) {
+        result.setWidth(resolutionString.cap(1).toInt());
+        result.setHeight(resolutionString.cap(2).toInt());
+    }
+    return result;
+}
+
+void SimsPSSettings::selectResolution(QComboBox* comboBox, const QSize& resolution)
+{
+    QSize bestMatch;
+    int bestMatchIndex = -1;
+
+    for (int i = 0; i < comboBox->count(); ++i) {
+        auto itemSize = stringToSize(comboBox->itemText(i));
+
+        // If this comes closer to the requested resolution (in both dimensions), it's a better match
+        if ((bestMatch.width() <= itemSize.width() && itemSize.width() <= resolution.width()) &&
+            (bestMatch.height() <= itemSize.height() && itemSize.height() <= resolution.height())) {
+            bestMatch = itemSize;
+            bestMatchIndex = i;
+        }
+    }
+
+    if (bestMatchIndex >= 0) {
+        comboBox->setCurrentIndex(bestMatchIndex);
+    }
 }
 
 SimsPSSettings::~SimsPSSettings()

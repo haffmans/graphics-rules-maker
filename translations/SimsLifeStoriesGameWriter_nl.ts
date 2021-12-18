@@ -182,12 +182,12 @@
         <translation>Standaard&amp;instellingen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="103"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="116"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="104"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="117"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

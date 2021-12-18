@@ -26,6 +26,7 @@ namespace Ui
 class SimsPSSettings;
 }
 
+class QComboBox;
 class DeviceModel;
 class VideoCardDatabase;
 
@@ -57,6 +58,8 @@ public slots:
     void autodetect();
 
 private:
+    QSize stringToSize(QString value) const;
+    void selectResolution(QComboBox* comboBox, const QSize& resolution);
     Ui::SimsPSSettings* ui;
     DeviceModel *m_devices;
 };
