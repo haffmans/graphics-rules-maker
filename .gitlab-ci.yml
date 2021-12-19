@@ -11,6 +11,13 @@ variables:
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}"
   DEPLOY_DIR: '${CI_PROJECT_DIR}/images'
 
+# Partial script to update the PACKAGE_VERSION in a better format (preserves dots for version numbers,
+# otherwise very similar to CI_COMMIT_REF_SLUG).
+.slug-version: &slug-version
+  - export PACKAGE_VERSION="$(echo ${CI_COMMIT_REF_NAME} | iconv -t ascii//TRANSLIT | sed -r -e 's/[^\.a-zA-Z0-9]+/-/g' -e 's/^-+\|-+$//g' | cut -c -63 | tr A-Z a-z)"
+  - export PACKAGE_REGISTRY_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}"
+  - export PACKNAME="${PACKAGE_NAME}-${PACKAGE_VERSION}${PACKNAME_SUFFIX}"
+
 .build-ubuntu: &build-ubuntu
   image: haffmans/cmake-qt5:${UBUNTU_VERSION}
   artifacts:
@@ -18,6 +25,7 @@ variables:
     - build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
     expire_in: 30 days
   script:
+  <<: *slug-version
   - mkdir -p build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
   - cd build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
   - cmake
@@ -35,6 +43,7 @@ variables:
     - build/${ARCH}/${LOWER_BUILD_TYPE}
     expire_in: 30 days
   script:
+  <<: *slug-version
   - mkdir -p build/${ARCH}/${LOWER_BUILD_TYPE}
   - cd build/${ARCH}/${LOWER_BUILD_TYPE}
   - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
@@ -51,21 +60,19 @@ variables:
   TOOLCHAIN: 'i686-w64-mingw32'
   ARCH: 'win32'
   DEPLOYTARGET: '${DEPLOY_DIR}/${ARCH}/'
-  PACKNAME: "${PACKAGE_NAME}-${PACKAGE_VERSION}-${ARCH}"
+  PACKNAME_SUFFIX: "-${ARCH}"
 
 .mingw-w64-vars: &mingw-w64-vars
   TOOLCHAIN: 'x86_64-w64-mingw32'
   ARCH: 'win64'
+  PACKNAME_SUFFIX: "-${ARCH}"
   DEPLOYTARGET: '${DEPLOY_DIR}/${ARCH}/'
-  PACKNAME: "${PACKAGE_NAME}-${PACKAGE_VERSION}-${ARCH}"
 
 .ubuntu-vars: &ubuntu-vars
   DEPLOYTARGET: '${DEPLOY_DIR}/linux/'
-  PACKNAME: '${PACKAGE_NAME}-${PACKAGE_VERSION}'
 
 .src-vars: &src-vars
   DEPLOYTARGET: '${DEPLOY_DIR}/src/'
-  PACKNAME: '${PACKAGE_NAME}-${PACKAGE_VERSION}'
 
 build:ubuntu-18.04:debug:
   <<: *build-ubuntu
@@ -106,6 +113,7 @@ package:ubuntu-18.04:
   variables:
     <<: *ubuntu-vars
   script:
+  <<: *slug-version
   # Determine distribution name + release
   - if [ -f /etc/lsb-release ]; then
   -   '. /etc/lsb-release'
@@ -145,6 +153,7 @@ package:src:
   variables:
     <<: *src-vars
   script:
+  <<: *slug-version
   - mkdir -p "${DEPLOYTARGET}"
 
   - echo "Creating ${DEPLOYTARGET}${PACKNAME}.src.tar.gz..."
@@ -168,6 +177,7 @@ package:src:
     - images
     expire_in: 30 days
   script:
+  <<: *slug-version
   - cd build/${ARCH}/release
   - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
 
@@ -197,26 +207,23 @@ upload:
   stage: upload
   image: curlimages/curl:latest
   dependencies:
+  - package:src
   - package:ubuntu-18.04
   - package:win32
   - package:win64
   rules:
   - if: $CI_COMMIT_TAG
   script:
+  <<: *slug-version
   # Note: these uploads rely on e.g. specific Ubuntu version knowledge and filename details.
-  # This skips the sha1 checksum files. Source packages are created by Gitlab itself, so excluded too.
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe     "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe.md5 "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe.md5"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe     "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe.md5 "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe.md5"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip     "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip.md5 "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip.md5"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip     "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip.md5 "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip.md5"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz      "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.gz.md5  "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz.md5"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.bz2     "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKAGE_NAME}-${PACKAGE_VERSION}.tar.bz2.md5 "${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2.md5"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.exe"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKNAME}.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.gz"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKNAME}.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.bz2"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/src/${PACKNAME}.src.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-src.tar.gz"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/src/${PACKNAME}.src.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-src.tar.bz2"'
 
 release:
   stage: release
@@ -226,17 +233,13 @@ release:
   dependencies:
   - upload
   script:
+  <<: *slug-version
+  # Source packages are created by Gitlab itself, so excluded from the links.
   - |
-    release-cli create --name "Release ${PACKAGE_VERSION}" --tag-name "${CI_COMMIT_TAG}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.exe.md5\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.exe.md5\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win32.zip.md5\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-win64.zip.md5\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.gz.md5\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2\"}" \
-      --assets-link "{\"name\":\"${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2.md5\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKAGE_NAME}-${PACKAGE_VERSION}-ubuntu-bionic.tar.bz2.md5\"}"
+    release-cli create --name "Release ${CI_COMMIT_NAME}" --tag-name "${CI_COMMIT_TAG}" \
+      --assets-link "{\"name\":\"${PACKNAME}-win32.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.exe\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-bionic.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.gz\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-bionic.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.bz2\"}" \
