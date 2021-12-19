@@ -145,7 +145,7 @@ package:src:
   variables:
     <<: *src-vars
   script:
-  - mkdir -p "DEPLOYTARGET"
+  - mkdir -p "${DEPLOYTARGET}"
 
   - echo "Creating ${DEPLOYTARGET}${PACKNAME}.src.tar.gz..."
   - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | gzip > "${DEPLOYTARGET}${PACKNAME}.src.tar.gz"
