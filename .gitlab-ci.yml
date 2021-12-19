@@ -185,8 +185,6 @@ package:src:
     paths:
     - images
     expire_in: 30 days
-  dependencies:
-  - environment
   script:
   - cd build/${ARCH}/release
   - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
@@ -202,6 +200,7 @@ package:src:
 package:win32:
   <<: *package-windows
   dependencies:
+  - environment
   - build:win32:release
   variables:
     <<: *mingw-w32-vars
@@ -209,6 +208,7 @@ package:win32:
 package:win64:
   <<: *package-windows
   dependencies:
+  - environment
   - build:win64:release
   variables:
     <<: *mingw-w64-vars
