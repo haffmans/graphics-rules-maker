@@ -1,87 +1,91 @@
 stages:
 - build
 - test
-- deploy
+- package
+
+.build-ubuntu: &build-ubuntu
+  image: haffmans/cmake-qt5:${UBUNTU_VERSION}
+  artifacts:
+    paths:
+    - build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
+    expire_in: 30 days
+  script:
+  - mkdir -p build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
+  - cd build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
+  - cmake
+    -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+    -DCMAKE_INSTALL_PREFIX=/usr
+    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
+    ${CI_PROJECT_DIR}
+  - make -j4
+  stage: build
+
+.build-windows: &build-windows
+  image: haffmans/mingw-qt5:qt5
+  artifacts:
+    paths:
+    - build/${ARCH}/${LOWER_BUILD_TYPE}
+    expire_in: 30 days
+  script:
+  - mkdir -p build/${ARCH}/${LOWER_BUILD_TYPE}
+  - cd build/${ARCH}/${LOWER_BUILD_TYPE}
+  - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
+    -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
+    -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
+    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
+    -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
+    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
+    ${CI_PROJECT_DIR}
+  - make -j4
+  stage: build
+
+.mingw-w32-vars: &mingw-w32-vars
+  TOOLCHAIN: 'i686-w64-mingw32'
+  ARCH: 'win32'
+  DEPLOYTARGET: '${CI_PROJECT_DIR}/images/${ARCH}/'
+  PACKNAME: "GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}"
+
+.mingw-w64-vars: &mingw-w64-vars
+  TOOLCHAIN: 'x86_64-w64-mingw32'
+  ARCH: 'win64'
+  DEPLOYTARGET: '${CI_PROJECT_DIR}/images/${ARCH}/'
+  PACKNAME: "GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}"
+
+.ubuntu-vars: &ubuntu-vars
+  DEPLOYTARGET: '${CI_PROJECT_DIR}/images/linux/'
+  PACKNAME: 'GraphicsRulesMaker-${CI_BUILD_REF_SLUG}'
+
+.src-vars: &src-vars
+  DEPLOYTARGET: '${CI_PROJECT_DIR}/images/src/'
+  PACKNAME: 'GraphicsRulesMaker-${CI_BUILD_REF_SLUG}'
 
 build:ubuntu-18.04:debug:
-  image: haffmans/cmake-qt5:18.04
-  artifacts:
-    paths:
-    - build/ubuntu-18.04/debug
-    expire_in: 30 days
-  script:
-  - mkdir -p build/ubuntu-18.04/debug
-  - cd build/ubuntu-18.04/debug
-  - cmake
-    -DCMAKE_BUILD_TYPE=Debug
-    -DCMAKE_INSTALL_PREFIX=/usr
-    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
-    ${CI_PROJECT_DIR}
-  - make -j4
-  stage: build
+  <<: *build-ubuntu
+  variables:
+    UBUNTU_VERSION: '18.04'
+    BUILD_TYPE: 'Debug'
+    LOWER_BUILD_TYPE: 'debug'
 
 build:ubuntu-18.04:release:
-  image: haffmans/cmake-qt5:18.04
-  artifacts:
-    paths:
-    - build/ubuntu-18.04/release
-    expire_in: 30 days
-  script:
-  - mkdir -p build/ubuntu-18.04/release
-  - cd build/ubuntu-18.04/release
-  - cmake
-    -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_INSTALL_PREFIX=/usr
-    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
-    ${CI_PROJECT_DIR}
-  - make -j4
-  stage: build
+  <<: *build-ubuntu
+  variables:
+    UBUNTU_VERSION: '18.04'
+    BUILD_TYPE: 'Release'
+    LOWER_BUILD_TYPE: 'release'
 
 build:win32:release:
-  image: haffmans/mingw-qt5:qt5
-  artifacts:
-    paths:
-    - build/win32/release
-    expire_in: 30 days
-  script:
-  - TOOLCHAIN=i686-w64-mingw32
-  - ARCH=win32
-  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-
-  - mkdir -p build/${ARCH}/release
-  - cd build/${ARCH}/release
-  - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
-    -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
-    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
-    -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
-    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
-    ${CI_PROJECT_DIR}
-  - make -j4
-  stage: build
+  <<: *build-windows
+  variables:
+    <<: *mingw-w32-vars
+    BUILD_TYPE: 'Release'
+    LOWER_BUILD_TYPE: 'release'
 
 build:win64:release:
-  image: haffmans/mingw-qt5:qt5
-  artifacts:
-    paths:
-    - build/win64/release
-    expire_in: 30 days
-  script:
-  - TOOLCHAIN=x86_64-w64-mingw32
-  - ARCH=win64
-  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-
-  - mkdir -p build/${ARCH}/release
-  - cd build/${ARCH}/release
-  - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=Release
-    -DCMAKE_TOOLCHAIN_FILE=/usr/share/mingw/toolchain-${TOOLCHAIN}.cmake
-    -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
-    -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
-    -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
-    -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
-    ${CI_PROJECT_DIR}
-  - make -j4
-  stage: build
+  <<: *build-windows
+  variables:
+    <<: *mingw-w64-vars
+    BUILD_TYPE: 'Release'
+    LOWER_BUILD_TYPE: 'release'
 
 package:ubuntu-18.04:
   image: haffmans/cmake-qt5:18.04
@@ -91,16 +95,14 @@ package:ubuntu-18.04:
     expire_in: 30 days
   dependencies:
   - build:ubuntu-18.04:release
+  variables:
+    <<: *ubuntu-vars
   script:
-  # Defaults
-  - TARGET="${CI_PROJECT_DIR}/images/linux/"
-  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_SLUG}"
-
   # Determine distribution name + release
   - if [ -f /etc/lsb-release ]; then
   -   '. /etc/lsb-release'
   -   DISTRIB_ID_LC=$(echo "$DISTRIB_ID" | tr "[:upper:]" "[:lower:]")
-  -   TARGET="${CI_PROJECT_DIR}/images/${DISTRIB_ID_LC}/${DISTRIB_CODENAME}/"
+  -   DEPLOYTARGET="${CI_PROJECT_DIR}/images/${DISTRIB_ID_LC}/${DISTRIB_CODENAME}/"
   - fi
 
   # Install to temporary directory
@@ -110,21 +112,21 @@ package:ubuntu-18.04:
 
   # Prepare target
   - cd "${CI_PROJECT_DIR}/package/ubuntu-18.04/${PACKNAME}"
-  - mkdir -p "$TARGET"
+  - mkdir -p "${DEPLOYTARGET}"
 
   # Create tar.gz and tar.bz2
-  - echo "Creating ${TARGET}${PACKNAME}.tar.gz..."
-  - tar -czpf "${TARGET}${PACKNAME}.tar.gz" *
-  - echo "Creating ${TARGET}${PACKNAME}.tar.bz2..."
-  - tar -cjpf "${TARGET}${PACKNAME}.tar.bz2" *
+  - echo "Creating ${DEPLOYTARGET}${PACKNAME}.tar.gz..."
+  - tar -czpf "${DEPLOYTARGET}${PACKNAME}.tar.gz" *
+  - echo "Creating ${DEPLOYTARGET}${PACKNAME}.tar.bz2..."
+  - tar -cjpf "${DEPLOYTARGET}${PACKNAME}.tar.bz2" *
 
   # Creating checksums
-  - cd "${TARGET}"
+  - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.md5"
   - sha1sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.sha1"
   - md5sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.md5"
   - sha1sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha1"
-  stage: deploy
+  stage: package
 
 package:src:
   image: haffmans/cmake-qt5:18.04
@@ -132,72 +134,53 @@ package:src:
     paths:
     - images
     expire_in: 30 days
+  variables:
+    <<: *src-vars
   script:
-  - TARGET="${CI_PROJECT_DIR}/images/src/"
-  - PACKNAME="GraphicsRulesMaker-${CI_BUILD_REF_SLUG}"
-  - mkdir -p "$TARGET"
+  - mkdir -p "${DEPLOYTARGET}"
 
-  - echo "Creating ${TARGET}${PACKNAME}.src.tar.gz..."
-  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | gzip > "${TARGET}${PACKNAME}.src.tar.gz"
+  - echo "Creating ${DEPLOYTARGET}${PACKNAME}.src.tar.gz..."
+  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | gzip > "${DEPLOYTARGET}${PACKNAME}.src.tar.gz"
 
-  - echo "Creating ${TARGET}${PACKNAME}.src.tar.bz2..."
-  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | bzip2 > "${TARGET}${PACKNAME}.src.tar.bz2"
+  - echo "Creating ${DEPLOYTARGET}${PACKNAME}.src.tar.bz2..."
+  - git archive --prefix=${PACKNAME}/ ${CI_COMMIT_SHA} | bzip2 > "${DEPLOYTARGET}${PACKNAME}.src.tar.bz2"
 
   # Creating checksums
-  - cd "${TARGET}"
+  - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.md5"
   - sha1sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.sha1"
   - md5sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.md5"
   - sha1sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha1"
-  stage: deploy
+  stage: package
+
+.package-windows: &package-windows
+  image: haffmans/mingw-qt5:qt5
+  artifacts:
+    paths:
+    - images
+    expire_in: 30 days
+  script:
+  - cd build/${ARCH}/release
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
+
+  # Creating checksums
+  - cd "${DEPLOYTARGET}"
+  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
+  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
+  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
+  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
+  stage: package
 
 package:win32:
-  image: haffmans/mingw-qt5:qt5
-  artifacts:
-    paths:
-    - images
-    expire_in: 30 days
+  <<: *package-windows
   dependencies:
   - build:win32:release
-  script:
-  - TOOLCHAIN=i686-w64-mingw32
-  - ARCH=win32
-  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}
-
-  - cd build/${ARCH}/release
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
-
-  # Creating checksums
-  - cd "${DEPLOYTARGET}"
-  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
-  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
-  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
-  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
-  stage: deploy
+  variables:
+    <<: *mingw-w32-vars
 
 package:win64:
-  image: haffmans/mingw-qt5:qt5
-  artifacts:
-    paths:
-    - images
-    expire_in: 30 days
+  <<: *package-windows
   dependencies:
   - build:win64:release
-  script:
-  - TOOLCHAIN=x86_64-w64-mingw32
-  - ARCH=win64
-  - DEPLOYTARGET="${CI_PROJECT_DIR}/images/${ARCH}/"
-  - PACKNAME=GraphicsRulesMaker-${CI_BUILD_REF_SLUG}-${ARCH}
-
-  - cd build/${ARCH}/release
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${CI_BUILD_REF_SLUG}
-
-  # Creating checksums
-  - cd "${DEPLOYTARGET}"
-  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
-  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
-  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
-  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
-  stage: deploy
-
+  variables:
+    <<: *mingw-w64-vars
