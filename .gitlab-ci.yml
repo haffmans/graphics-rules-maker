@@ -32,7 +32,7 @@ variables:
   image: haffmans/mingw-qt5:qt5
   artifacts:
     paths:
-    - build/win32/${LOWER_BUILD_TYPE}
+    - build/${ARCH}/${LOWER_BUILD_TYPE}
     expire_in: 30 days
   script:
   - mkdir -p build/${ARCH}/${LOWER_BUILD_TYPE}
