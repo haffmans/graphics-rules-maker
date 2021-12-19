@@ -1,4 +1,5 @@
 stages:
+- environment
 - build
 - test
 - package
@@ -11,12 +12,19 @@ variables:
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}"
   DEPLOY_DIR: '${CI_PROJECT_DIR}/images'
 
-# Partial script to update the PACKAGE_VERSION in a better format (preserves dots for version numbers,
-# otherwise very similar to CI_COMMIT_REF_SLUG).
-.slug-version: &slug-version
-  - export PACKAGE_VERSION="$(echo ${CI_COMMIT_REF_NAME} | iconv -t ascii//TRANSLIT | sed -r -e 's/[^\.a-zA-Z0-9]+/-/g' -e 's/^-+\|-+$//g' | cut -c -63 | tr A-Z a-z)"
-  - export PACKAGE_REGISTRY_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}"
-  - export PACKNAME="${PACKAGE_NAME}-${PACKAGE_VERSION}${PACKNAME_SUFFIX}"
+environment:
+  stage: environment
+  # ArchLinux seems to best support the necessary iconv stuff
+  image: archlinux:latest
+  # Partial script to update the PACKAGE_VERSION in a better format (preserves dots for version numbers,
+  # otherwise very similar to CI_COMMIT_REF_SLUG).
+  script:
+    - echo "PACKAGE_VERSION=$(echo ${CI_COMMIT_REF_NAME} | iconv -t ascii//TRANSLIT | sed -r -e 's/[^\.a-zA-Z0-9]+/-/g' -e 's/^-+\|-+$//g' | cut -c -63 | tr A-Z a-z)" > build.env
+    - echo "PACKAGE_REGISTRY_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}" >> build.env
+    - echo "PACKNAME=${PACKAGE_NAME}-${PACKAGE_VERSION}" >> build.env
+  artifacts:
+    reports:
+      dotenv: build.env
 
 .build-ubuntu: &build-ubuntu
   image: haffmans/cmake-qt5:${UBUNTU_VERSION}
@@ -24,8 +32,9 @@ variables:
     paths:
     - build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
     expire_in: 30 days
+  dependencies:
+  - environment
   script:
-  - *slug-version
   - mkdir -p build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
   - cd build/ubuntu-${UBUNTU_VERSION}/${LOWER_BUILD_TYPE}
   - cmake
@@ -42,8 +51,9 @@ variables:
     paths:
     - build/${ARCH}/${LOWER_BUILD_TYPE}
     expire_in: 30 days
+  dependencies:
+  - environment
   script:
-  - *slug-version
   - mkdir -p build/${ARCH}/${LOWER_BUILD_TYPE}
   - cd build/${ARCH}/${LOWER_BUILD_TYPE}
   - ${TOOLCHAIN}-cmake -DCMAKE_BUILD_TYPE=${BUILD_TYPE}
@@ -60,12 +70,10 @@ variables:
   TOOLCHAIN: 'i686-w64-mingw32'
   ARCH: 'win32'
   DEPLOYTARGET: '${DEPLOY_DIR}/${ARCH}/'
-  PACKNAME_SUFFIX: "-${ARCH}"
 
 .mingw-w64-vars: &mingw-w64-vars
   TOOLCHAIN: 'x86_64-w64-mingw32'
   ARCH: 'win64'
-  PACKNAME_SUFFIX: "-${ARCH}"
   DEPLOYTARGET: '${DEPLOY_DIR}/${ARCH}/'
 
 .ubuntu-vars: &ubuntu-vars
@@ -110,10 +118,10 @@ package:ubuntu-18.04:
     expire_in: 30 days
   dependencies:
   - build:ubuntu-18.04:release
+  - environment
   variables:
     <<: *ubuntu-vars
   script:
-  - *slug-version
   # Determine distribution name + release
   - if [ -f /etc/lsb-release ]; then
   -   '. /etc/lsb-release'
@@ -152,8 +160,9 @@ package:src:
     expire_in: 30 days
   variables:
     <<: *src-vars
+  dependencies:
+  - environment
   script:
-  - *slug-version
   - mkdir -p "${DEPLOYTARGET}"
 
   - echo "Creating ${DEPLOYTARGET}${PACKNAME}.src.tar.gz..."
@@ -176,17 +185,18 @@ package:src:
     paths:
     - images
     expire_in: 30 days
+  dependencies:
+  - environment
   script:
-  - *slug-version
   - cd build/${ARCH}/release
   - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
 
   # Creating checksums
   - cd "${DEPLOYTARGET}"
-  - md5sum "${PACKNAME}.exe" > "${PACKNAME}.exe.md5"
-  - sha1sum "${PACKNAME}.exe" > "${PACKNAME}.exe.sha1"
-  - md5sum "${PACKNAME}.zip" > "${PACKNAME}.zip.md5"
-  - sha1sum "${PACKNAME}.zip" > "${PACKNAME}.zip.sha1"
+  - md5sum "${PACKNAME}-${ARCH}.exe" > "${PACKNAME}-${ARCH}.exe.md5"
+  - sha1sum "${PACKNAME}-${ARCH}.exe" > "${PACKNAME}-${ARCH}.exe.sha1"
+  - md5sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.md5"
+  - sha1sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.sha1"
   stage: package
 
 package:win32:
@@ -207,6 +217,7 @@ upload:
   stage: upload
   image: curlimages/curl:latest
   dependencies:
+  - environment
   - package:src
   - package:ubuntu-18.04
   - package:win32
@@ -214,7 +225,6 @@ upload:
   rules:
   - if: $CI_COMMIT_TAG
   script:
-  - *slug-version
   # Note: these uploads rely on e.g. specific Ubuntu version knowledge and filename details.
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.exe"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe"'
@@ -231,9 +241,9 @@ release:
   rules:
   - if: $CI_COMMIT_TAG
   dependencies:
+  - environment
   - upload
   script:
-  - *slug-version
   # Source packages are created by Gitlab itself, so excluded from the links.
   - |
     release-cli create --name "Release ${CI_COMMIT_NAME}" --tag-name "${CI_COMMIT_TAG}" \
