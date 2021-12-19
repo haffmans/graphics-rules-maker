@@ -20,7 +20,7 @@ environment:
   # otherwise very similar to CI_COMMIT_REF_SLUG).
   script:
     - echo "PACKAGE_VERSION=$(echo ${CI_COMMIT_REF_NAME} | iconv -t ascii//TRANSLIT | sed -r -e 's/[^\.a-zA-Z0-9]+/-/g' -e 's/^-+\|-+$//g' | cut -c -63 | tr A-Z a-z)" > build.env
-    - echo "PACKAGE_REGISTRY_URL="${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}" >> build.env
+    - echo "PACKAGE_REGISTRY_URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}" >> build.env
     - echo "PACKNAME=${PACKAGE_NAME}-${PACKAGE_VERSION}" >> build.env
   artifacts:
     reports:
