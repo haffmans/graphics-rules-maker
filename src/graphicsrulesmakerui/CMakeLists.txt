@@ -12,7 +12,6 @@ find_package(Qt5LinguistTools)
 if (NOT GraphicsRulesMaker_FULL_BUILD)
     find_package(GraphicsRulesMaker REQUIRED)
 endif (NOT GraphicsRulesMaker_FULL_BUILD)
-find_package(ImageMagick REQUIRED COMPONENTS convert)
 
 if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
     # This will put only this subproject's translations in a subdir within this project
@@ -32,36 +31,6 @@ qt5_wrap_ui(GraphicsRulesMakerUi_UIS
     aboutdialog.ui
 )
 
-qt5_add_resources(GraphicsRulesMakerUi_RCCS
-    icon.qrc
-)
-
-# Create icon from icon.png
-add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
-    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 48x48 "${PROJECT_BINARY_DIR}/icon-48.png"
-    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 32x32 "${PROJECT_BINARY_DIR}/icon-32.png"
-    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${PROJECT_SOURCE_DIR}/icon.png" -resize 16x16 "${PROJECT_BINARY_DIR}/icon-16.png"
-    COMMENT "Resizing icon"
-    MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
-)
-
-add_custom_command(OUTPUT "icon.ico"
-    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE}
-        "${PROJECT_SOURCE_DIR}/icon.png"
-        "icon-48.png"
-        "icon-32.png"
-        "icon-16.png"
-        "icon.ico"
-    COMMENT "Creating final icon"
-    MAIN_DEPENDENCY "${PROJECT_SOURCE_DIR}/icon.png"
-    DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
-)
-
-set(GraphicsRulesMakerUi_Ico "${PROJECT_BINARY_DIR}/icon.ico")
-
-configure_file(graphicsrulesmakerui.rc.in
-    ${PROJECT_BINARY_DIR}/graphicsrulesmakerui.rc)
-
 # GraphicsRulesMaker UI
 set(GraphicsRulesMakerUi_SRCS
     main.cpp
@@ -70,8 +39,7 @@ set(GraphicsRulesMakerUi_SRCS
     aboutdialog.cpp
     ${GraphicsRulesMakerUi_UIS}
     ${GraphicsRulesMakerUi_RCCS}
-    ${GraphicsRulesMakerUi_Ico}
-    ${PROJECT_BINARY_DIR}/graphicsrulesmakerui.rc
+    $<TARGET_OBJECTS:GraphicsRulesMaker_Icon>
 )
 
 # Translations

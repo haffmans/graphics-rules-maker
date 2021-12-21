@@ -34,6 +34,45 @@ else(WIN32 AND NOT CYGWIN)
     set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
 endif(WIN32 AND NOT CYGWIN)
 
+find_package(Qt5 5.7 REQUIRED COMPONENTS Core)
+find_package(ImageMagick REQUIRED COMPONENTS convert)
+
+# Create icon from icon.png
+add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 48x48 "${CMAKE_CURRENT_BINARY_DIR}/icon-48.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 32x32 "${CMAKE_CURRENT_BINARY_DIR}/icon-32.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 16x16 "${CMAKE_CURRENT_BINARY_DIR}/icon-16.png"
+    COMMENT "Resizing icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+)
+
+add_custom_command(OUTPUT "icon.ico"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE}
+        "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+        "icon-48.png"
+        "icon-32.png"
+        "icon-16.png"
+        "icon.ico"
+    COMMENT "Creating final icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+    DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
+)
+
+set(GraphicsRulesMaker_Ico "${CMAKE_CURRENT_BINARY_DIR}/icon.ico")
+
+qt5_add_resources(GraphicsRulesMaker_IconRCC
+    icon.qrc
+)
+
+configure_file(graphicsrulesmakerico.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+)
+set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc APPEND PROPERTY OBJECT_DEPENDS ${GraphicsRulesMaker_Ico})
+
+add_library(GraphicsRulesMaker_Icon OBJECT
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+    ${GraphicsRulesMaker_IconRCC}
+)
 
 # Add modules
 add_subdirectory(src/graphicsrulesmaker)
@@ -46,7 +85,7 @@ if(WIN32)
 
     # Generate NSIS Header
     install(CODE "message(STATUS \"Creating NSIS Header: \\\"${PROJECT_BINARY_DIR}/header.bmp\\\" \")
-              execute_process(COMMAND \"${IMAGEMAGICK_CONVERT_EXECUTABLE}\" \"${PROJECT_SOURCE_DIR}/src/graphicsrulesmakerui/icon.png\" -resize x48 -gravity EAST -extent 150x57 \"BMP3:${PROJECT_BINARY_DIR}/header.bmp\" )"
+              execute_process(COMMAND \"${IMAGEMAGICK_CONVERT_EXECUTABLE}\" \"${PROJECT_SOURCE_DIR}/icon.png\" -resize x48 -gravity EAST -extent 150x57 \"BMP3:${PROJECT_BINARY_DIR}/header.bmp\" )"
         COMPONENT application)
 
     # Generate SimsNetwork.com icon
