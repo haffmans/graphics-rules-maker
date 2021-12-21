@@ -56,21 +56,24 @@ int main(int argc, char *argv[])
     model->load();
     pluginFactory->loadPlugins();
 
-    // MainWindow must be created prior to showing any messages, otherwise they won't be translated
-    MainWindow window(model.get(), database.get(), pluginFactory.get());
+    int result = 0;
+    {
+        // MainWindow must be created prior to showing any messages, otherwise they won't be translated
+        MainWindow window(model.get(), database.get(), pluginFactory.get());
 
-    if (pluginFactory->plugins().size() == 0) {
-        QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
-        return 1;
+        if (pluginFactory->plugins().size() == 0) {
+            QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
+            return 1;
+        }
+        if (model->rowCount() == 0) {
+            QMessageBox::warning(0, QObject::tr("No Graphics Card"),
+                QObject::tr("No DirectX supported graphics card detected. Please install the latest drivers for your graphics card. Graphics Rules Maker may not function correctly."));
+        }
+
+        window.show();
+
+        result = app.exec();
     }
-    if (model->rowCount() == 0) {
-        QMessageBox::warning(0, QObject::tr("No Graphics Card"),
-            QObject::tr("No DirectX supported graphics card detected. Please install the latest drivers for your graphics card. Graphics Rules Maker may not function correctly."));
-    }
-
-    window.show();
-
-    int result = app.exec();
 
     model.reset();
     database.reset();

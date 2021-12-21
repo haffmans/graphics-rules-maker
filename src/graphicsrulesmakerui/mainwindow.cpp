@@ -808,5 +808,9 @@ MainWindow::~MainWindow()
         s.setValue("game/id", m_currentPlugin->id());
     }
     saveWidgetSettings();
+
+    // Prevent the destruction of the settings widget going back into replaceWidget()
+    disconnect(m_currentGameSettingsWidget, nullptr, this, nullptr);
+
     delete ui;
 }
