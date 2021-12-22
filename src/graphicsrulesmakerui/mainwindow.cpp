@@ -36,34 +36,36 @@
 #include "graphicsrulesmaker/videocarddatabase.h"
 #include "graphicsrulesmaker/gamewriterinterface.h"
 #include "graphicsrulesmaker/gamewriterfactory.h"
+#include "graphicsrulesmaker/graphicsruleswriter.h"
 #include "graphicsrulesmaker/graphicsrulesmaker_config.h"
 
 #include "manualsaveconfirmationbox.h"
 #include "aboutdialog.h"
 
-MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory *gamePlugins)
+MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, GraphicsRulesWriter *graphicsRulesWriter)
     : QMainWindow(0, Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint | Qt::WindowSystemMenuHint)
     , ui(new Ui::MainWindow)
     , m_model(model)
-    , m_videoCardDatabase(videoCardDatabase)
     , m_gamePlugins(gamePlugins)
-    , m_currentPlugin(nullptr)
     , m_currentGameSettingsWidget(nullptr)
+    , m_graphicsRulesWriter(graphicsRulesWriter)
 {
     ui->setupUi(this);
 
     connect(ui->deviceSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectCard);
     connect(ui->mainTabs, &QTabWidget::currentChanged, this, &MainWindow::tabOpen);
     connect(ui->gameSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
-    connect(ui->gamePath, &QLineEdit::textChanged, this, &MainWindow::locateGameFiles);
+    connect(ui->gamePath, &QLineEdit::textChanged, m_graphicsRulesWriter, &GraphicsRulesWriter::setGamePath);
+    connect(m_graphicsRulesWriter, &GraphicsRulesWriter::gamePathChanged, this, &MainWindow::locateGameFiles);
+
     connect(ui->browseFilesButton, &QPushButton::clicked, this, &MainWindow::browseGame);
     connect(ui->saveAll, &QPushButton::clicked, this, &MainWindow::save);
     connect(ui->graphicsRulesSave, &QPushButton::clicked, this, &MainWindow::saveGraphicRules);
     connect(ui->videoCardsSave, &QPushButton::clicked, this, &MainWindow::saveVideoCards);
     connect(ui->cardInDb, &QLabel::linkActivated, this, &MainWindow::addDeviceLink);
-    connect(videoCardDatabase, &VideoCardDatabase::rowsInserted, this, &MainWindow::updateDeviceStatus);
-    connect(videoCardDatabase, &VideoCardDatabase::rowsRemoved, this, &MainWindow::updateDeviceStatus);
-    connect(videoCardDatabase, &VideoCardDatabase::modelReset, this, &MainWindow::updateDeviceStatus);
+    connect(m_graphicsRulesWriter->videoCardDatabase(), &VideoCardDatabase::rowsInserted, this, &MainWindow::updateDeviceStatus);
+    connect(m_graphicsRulesWriter->videoCardDatabase(), &VideoCardDatabase::rowsRemoved, this, &MainWindow::updateDeviceStatus);
+    connect(m_graphicsRulesWriter->videoCardDatabase(), &VideoCardDatabase::modelReset, this, &MainWindow::updateDeviceStatus);
     connect(ui->donateAction, &QAction::triggered, this, []() { QDesktopServices::openUrl(QUrl("https://www.simsnetwork.com/donate")); });
     connect(ui->aboutAction, &QAction::triggered, this, &MainWindow::about);
     connect(ui->locateGameAction, &QAction::triggered, this, &MainWindow::locateGame);
@@ -77,7 +79,7 @@ MainWindow::MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase,
         ui->deviceStack->setCurrentWidget(ui->noDevicesWarning);
     }
 
-    ui->videoCardsView->setModel(m_videoCardDatabase);
+    ui->videoCardsView->setModel(m_graphicsRulesWriter->videoCardDatabase());
     foreach(GameWriterInterface* plugin, m_gamePlugins->plugins()) {
         ui->gameSelect->addItem(plugin->displayName(), plugin->id());
     }
@@ -156,8 +158,8 @@ void MainWindow::addDeviceLink(const QString& link)
         // Row id is in cap(1) - we can convert because it's a \d+ match.
         int row = linkCheck.cap(1).toInt();
         GraphicsDevice dev = m_model->device(row);
-        if (!m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
-            m_videoCardDatabase->addDevice(dev.vendorId, dev.deviceId, dev.name);
+        if (!m_graphicsRulesWriter->videoCardDatabase()->contains(dev.vendorId, dev.deviceId)) {
+            m_graphicsRulesWriter->videoCardDatabase()->addDevice(dev.vendorId, dev.deviceId, dev.name);
         }
     }
 
@@ -173,7 +175,7 @@ void MainWindow::updateDeviceStatus()
         GraphicsDevice dev = m_model->device(row);
 
         qDebug() << "- Querying video cards database";
-        if (m_videoCardDatabase->contains(dev.vendorId, dev.deviceId)) {
+        if (m_graphicsRulesWriter->videoCardDatabase()->contains(dev.vendorId, dev.deviceId)) {
             qDebug() << "- Card is in database";
             ui->cardInDb->setText("<font style=\"color: green\">" + tr("Yes") + "</font>");
         }
@@ -191,7 +193,7 @@ void MainWindow::browseGame()
 {
     QString dir = QFileDialog::getExistingDirectory(
         this,
-        tr("Find the installation path of %1").arg(m_currentPlugin->displayName()),
+        tr("Find the installation path of %1").arg(m_graphicsRulesWriter->plugin()->displayName()),
         ui->gamePath->text()
     );
 
@@ -206,17 +208,17 @@ void MainWindow::selectGame(int row)
 
     // Save path of current selection first
     QSettings s;
-    if (m_currentPlugin) {
-        s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
+    if (m_graphicsRulesWriter->plugin()) {
+        s.setValue(m_graphicsRulesWriter->plugin()->id() + "/path", ui->gamePath->text());
         saveWidgetSettings();
-        qDebug() << "- Settings for" << m_currentPlugin->id() << "saved";
+        qDebug() << "- Settings for" << m_graphicsRulesWriter->plugin()->id() << "saved";
     }
 
     // Load plugin
     QString id = ui->gameSelect->currentData().toString();
     qDebug() << "- New id:" << id;
-    m_currentPlugin = m_gamePlugins->plugin(id);
-    if (!m_currentPlugin) {
+    m_graphicsRulesWriter->loadPlugin(id);
+    if (!m_graphicsRulesWriter->plugin()) {
         return;
     }
 
@@ -230,15 +232,15 @@ void MainWindow::selectGame(int row)
 
     // Determine game path - use previous setting if possible
     QString oldPath = ui->gamePath->text();
-    if (s.contains(m_currentPlugin->id() + "/path")) {
-        qDebug() << "- Use path from saved settings:" << s.value(m_currentPlugin->id() + "/path").toString();
-        ui->gamePath->setText(s.value(m_currentPlugin->id() + "/path").toString());
+    if (s.contains(id + "/path")) {
+        qDebug() << "- Use path from saved settings:" << s.value(id + "/path").toString();
+        ui->gamePath->setText(s.value(id + "/path").toString());
     }
     else {
         // We don't use this as s.value()'s default, to avoid searching the
         // game every time.
         qDebug() << "- Search for game";
-        ui->gamePath->setText(QDir::toNativeSeparators(m_currentPlugin->findGameDirectory().absolutePath()));
+        ui->gamePath->setText(QDir::toNativeSeparators(m_graphicsRulesWriter->plugin()->findGameDirectory().absolutePath()));
     }
 
     if (ui->gamePath->text() == oldPath) {
@@ -249,8 +251,8 @@ void MainWindow::selectGame(int row)
     }
 
     // Translation
-    QString pluginFile = m_gamePlugins->translationFilename(m_currentPlugin->id());
-    QString pluginDir = m_gamePlugins->translationDirectory(m_currentPlugin->id());
+    QString pluginFile = m_gamePlugins->translationFilename(id);
+    QString pluginDir = m_gamePlugins->translationDirectory(id);
     QStringList dirs = QStringList() << pluginDir << translationDirectories();
     foreach(QString dir, dirs) {
         qDebug() << "Plugin translation loading attempt: " << pluginFile << " in " << dir << " locale " << QLocale::languageToString(m_locale.language());
@@ -261,9 +263,9 @@ void MainWindow::selectGame(int row)
 
     // Set preview tab names
     int index = ui->mainTabs->indexOf(ui->graphicsRulesTab);
-    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->rulesFileName()));
+    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_graphicsRulesWriter->plugin()->rulesFileName()));
     index = ui->mainTabs->indexOf(ui->videoCardsTab);
-    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_currentPlugin->databaseFileName()));
+    ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_graphicsRulesWriter->plugin()->databaseFileName()));
 }
 
 void MainWindow::replaceWidget()
@@ -273,12 +275,12 @@ void MainWindow::replaceWidget()
     // switched locales). Settings are usually saved on the destruction of the
     // widget, hence it's in the destroyed() slot.
     qDebug() << "SETTING WIDGET";
-    if (!m_currentPlugin) {
+    if (!m_graphicsRulesWriter->plugin()) {
         qDebug() << "No plugin loaded";
         return;
     }
 
-    m_currentGameSettingsWidget = m_currentPlugin->settingsWidget(m_model, m_videoCardDatabase, ui->settingsBox);
+    m_currentGameSettingsWidget = m_graphicsRulesWriter->plugin()->settingsWidget(m_model, m_graphicsRulesWriter->videoCardDatabase(), ui->settingsBox);
     loadWidgetSettings();
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
     connect(m_currentGameSettingsWidget, &QWidget::destroyed, this, &MainWindow::replaceWidget);
@@ -287,7 +289,7 @@ void MainWindow::replaceWidget()
 void MainWindow::locateGame()
 {
     qDebug() << "Auto-locating game";
-    QDir gameDir = m_currentPlugin->findGameDirectory();
+    QDir gameDir = m_graphicsRulesWriter->plugin()->findGameDirectory();
     if (gameDir != QDir()) {
         ui->gamePath->setText(QDir::toNativeSeparators(gameDir.absolutePath()));
     }
@@ -296,21 +298,20 @@ void MainWindow::locateGame()
     }
 }
 
-void MainWindow::locateGameFiles(const QString& directory)
+void MainWindow::locateGameFiles(const QDir& directory)
 {
     qDebug() << "LOCATING game in directory " << directory;
-    if (!m_currentPlugin) {
+    if (!m_graphicsRulesWriter->plugin()) {
         setStatus(tr("No game selected"), false);
         return;
     }
 
-    QDir gameDirectory(directory);
-    if (!gameDirectory.exists()) {
+    if (!directory.exists()) {
         setStatus(tr("Directory does not exist."), false);
         return;
     }
 
-    QFileInfo gameExeFile = m_currentPlugin->gameExecutable(gameDirectory);
+    QFileInfo gameExeFile = m_graphicsRulesWriter->plugin()->gameExecutable(directory);
     if (!gameExeFile.exists()) {
         setStatus(tr("Cannot find game application."), false);
         return;
@@ -320,7 +321,7 @@ void MainWindow::locateGameFiles(const QString& directory)
         return;
     }
 
-    QFileInfo graphicsRulesFile = m_currentPlugin->rulesFileName(gameDirectory);
+    QFileInfo graphicsRulesFile = m_graphicsRulesWriter->plugin()->rulesFileName(directory);
     if (!graphicsRulesFile.exists()) {
         setStatus(tr("Cannot find Graphics Rules files."), false);
         return;
@@ -330,7 +331,7 @@ void MainWindow::locateGameFiles(const QString& directory)
         return;
     }
 
-    QFileInfo videoCardsFile = m_currentPlugin->databaseFileName(gameDirectory);
+    QFileInfo videoCardsFile = m_graphicsRulesWriter->plugin()->databaseFileName(directory);
     if (!videoCardsFile.exists()) {
         setStatus(tr("Cannot find Video Cards database."), false);
         return;
@@ -340,12 +341,12 @@ void MainWindow::locateGameFiles(const QString& directory)
         return;
     }
 
-    m_videoCardDatabase->loadFrom(videoCardsFile.absoluteFilePath());
+    m_graphicsRulesWriter->videoCardDatabase()->loadFrom(videoCardsFile.absoluteFilePath());
     setStatus(tr("Game found, video cards database loaded."), true);
 
     // Save path to settings
     QSettings s;
-    s.setValue(m_currentPlugin->id() + "/path", ui->gamePath->text());
+    s.setValue(m_graphicsRulesWriter->plugin()->id() + "/path", ui->gamePath->text());
 }
 
 void MainWindow::setStatus(const QString& text, bool allok)
@@ -360,10 +361,10 @@ void MainWindow::tabOpen(int tabIndex)
 {
     Q_UNUSED(tabIndex);
 
-    if (ui->mainTabs->currentWidget() == ui->graphicsRulesTab && m_currentPlugin) {
+    if (ui->mainTabs->currentWidget() == ui->graphicsRulesTab && m_graphicsRulesWriter->plugin()) {
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly | QIODevice::Text);
-        m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &buffer);
+        m_graphicsRulesWriter->plugin()->write(m_currentGameSettingsWidget->settings(), &buffer);
         QString plainText(buffer.data());
         buffer.close();
 
@@ -372,7 +373,7 @@ void MainWindow::tabOpen(int tabIndex)
     else if (ui->mainTabs->currentWidget() == ui->videoCardsTab) {
         QBuffer buffer;
         buffer.open(QIODevice::WriteOnly | QIODevice::Text);
-        m_videoCardDatabase->write(&buffer);
+        m_graphicsRulesWriter->videoCardDatabase()->write(&buffer);
         QString plainText(buffer.data());
         buffer.close();
 
@@ -382,13 +383,13 @@ void MainWindow::tabOpen(int tabIndex)
 
 void MainWindow::loadWidgetSettings()
 {
-    if (!m_currentPlugin || !m_currentGameSettingsWidget) {
+    if (!m_graphicsRulesWriter->plugin() || !m_currentGameSettingsWidget) {
         return;
     }
 
     QSettings s;
     QVariantMap map;
-    s.beginGroup(m_currentPlugin->id());
+    s.beginGroup(m_graphicsRulesWriter->plugin()->id());
     map = recursiveLoadSettings(&s);
     s.endGroup();
 
@@ -414,14 +415,14 @@ QVariantMap MainWindow::recursiveLoadSettings(QSettings* settings)
 
 void MainWindow::saveWidgetSettings() const
 {
-    if (!m_currentPlugin || !m_currentGameSettingsWidget) {
+    if (!m_graphicsRulesWriter->plugin() || !m_currentGameSettingsWidget) {
         return;
     }
 
     QVariantMap map = m_currentGameSettingsWidget->settings();
 
     QSettings s;
-    s.beginGroup(m_currentPlugin->id());
+    s.beginGroup(m_graphicsRulesWriter->plugin()->id());
     recursiveSaveSettings(map, &s);
     s.endGroup();
 }
@@ -458,35 +459,19 @@ void MainWindow::save()
     bool manualSave = false;
 
     QDir gameDirectory(ui->gamePath->text());
-    QFileInfo graphicsRulesFile(m_currentPlugin->rulesFileName(gameDirectory));
-    QFileInfo graphicsRulesBackup = graphicsRulesFile.absoluteFilePath() + bakSuffix;
-    QFileInfo graphicsRulesDir(graphicsRulesFile.absolutePath());
-    QFileInfo videoCardsFile = m_currentPlugin->databaseFileName(gameDirectory);
-    QFileInfo videoCardsFileBackup = videoCardsFile.absoluteFilePath() + bakSuffix;
-    QFileInfo videoCardsDir(videoCardsFile.absolutePath());
+    QFileInfo graphicsRulesDir = m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory).absolutePath();
+    QFileInfo videoCardsDir = m_graphicsRulesWriter->plugin()->databaseFileName(gameDirectory).absolutePath();
 
     if (!graphicsRulesDir.isWritable() || !videoCardsDir.isWritable()) {
         manualSave = true;
     }
 
     if (!manualSave) {
-        // Create backups if they don't exist yet (we won't overwrite files)
-        // Note: QFile::copy() will not overwrite files, but it does return false
-        //       if the file exists. Hence we check ourselves.
-        bool backupOk = true;
-        if (!graphicsRulesBackup.exists()) {
-            qDebug() << "- Creating Graphics Rules backup";
-            backupOk = backupOk && QFile::copy(graphicsRulesFile.absoluteFilePath(), graphicsRulesBackup.absoluteFilePath());
-        }
-        if (!videoCardsFileBackup.exists()) {
-            qDebug() << "- Creating Video Cards backup";
-            backupOk = backupOk && QFile::copy(videoCardsFile.absoluteFilePath(), videoCardsFileBackup.absoluteFilePath());
-        }
-
-        if (!backupOk) {
-            manualSave = true;
-        }
+        // Save manually if back-ups fail
+        manualSave = !m_graphicsRulesWriter->createBackups();
     }
+
+    bool result = true;
 
     if (manualSave) { // Not 'else' -> manualSave may have been toggled by the back-up process
         qDebug() << "- Prompt to save to location";
@@ -513,77 +498,38 @@ void MainWindow::save()
         }
         gameDirectory = QDir(tempDirInfo.filePath());
 
-        // Make Graphics Rules file backup
-        if (graphicsRulesBackup.exists()) {
-            // Copy original back-up so all files are together
-            qDebug() << "- Copying Graphics Rules backup to destination";
-            QFile::copy(graphicsRulesBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
-        }
-        else {
-            // Copy original file as backup
-            qDebug() << "- Creating Graphics Rules backup in destination";
-            QFile::copy(graphicsRulesFile.absoluteFilePath(), gameDirectory.absoluteFilePath(graphicsRulesBackup.fileName()));
-        }
-        // We want to write to the temporary directory
-        graphicsRulesFile = QFileInfo(gameDirectory.absoluteFilePath(graphicsRulesFile.fileName()));
+        m_graphicsRulesWriter->createBackupsAt(gameDirectory);
 
-        // Make Video Cards file backup
-        if (videoCardsFileBackup.exists()) {
-            // Copy original back-up so all files are together
-            qDebug() << "- Copying Video Cards backup to destination";
-            QFile::copy(videoCardsFileBackup.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
+        if (m_graphicsRulesWriter->writeFiles(gameDirectory, m_currentGameSettingsWidget->settings())) {
+            qDebug() << "- Files saved; show confirmation";
+
+            ManualSaveConfirmationBox *confirmation = new ManualSaveConfirmationBox(this);
+            connect(confirmation, &ManualSaveConfirmationBox::finished, confirmation, &ManualSaveConfirmationBox::deleteLater);
+            connect(confirmation, &ManualSaveConfirmationBox::openDestinationDirectory, this, &MainWindow::openDestinationDirectory);
+            connect(confirmation, &ManualSaveConfirmationBox::openTemporaryDirectory, this, &MainWindow::openTemporaryDirectory);
+            confirmation->open();
         }
-        else {
-            // Copy original file as backup
-            qDebug() << "- Creating Video Cards backup in destination";
-            QFile::copy(videoCardsFile.absoluteFilePath(), gameDirectory.absoluteFilePath(videoCardsFileBackup.fileName()));
-        }
-        // We want to write to the temporary directory
-        videoCardsFile = QFileInfo(gameDirectory.absoluteFilePath(videoCardsFile.fileName()));
-    }
-
-    // Backup made, file info point to correct path now. Write files.
-    qDebug() << "- Open Graphics Rules file" << graphicsRulesFile.absoluteFilePath();
-    QFile graphicsRulesOut(graphicsRulesFile.absoluteFilePath());
-    if (!graphicsRulesOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("Error"), tr("Could not open Graphic Rules file for writing."));
-        return;
-    }
-    qDebug() << "- Call plugin to write contents";
-    m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &graphicsRulesOut);
-    graphicsRulesOut.close();
-
-    qDebug() << "- Open Video Cards file" << videoCardsFile.absoluteFilePath();
-    QFile videoCardsOut(videoCardsFile.absoluteFilePath());
-    if (!videoCardsOut.open(QIODevice::Truncate | QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, tr("Error"), tr("Could not open Video Cards file for writing."));
-        return;
-    }
-    qDebug() << "- Call cards database to write contents";
-    m_videoCardDatabase->write(&videoCardsOut);
-    videoCardsOut.close();
-
-    qDebug() << "- Files saved; show confirmation";
-    if (!manualSave) {
-        QMessageBox::information(this, tr("Files Saved"),
-            tr("The files have been saved. You can now run your game using the new settings.")
-        );
     }
     else {
-        ManualSaveConfirmationBox *confirmation = new ManualSaveConfirmationBox(this);
-        connect(confirmation, &ManualSaveConfirmationBox::finished, confirmation, &ManualSaveConfirmationBox::deleteLater);
-        connect(confirmation, &ManualSaveConfirmationBox::openDestinationDirectory, this, &MainWindow::openDestinationDirectory);
-        connect(confirmation, &ManualSaveConfirmationBox::openTemporaryDirectory, this, &MainWindow::openTemporaryDirectory);
-        confirmation->open();
+        if (m_graphicsRulesWriter->writeFiles(m_currentGameSettingsWidget->settings())) {
+            qDebug() << "- Files saved; show confirmation";
+            QMessageBox::information(this, tr("Files Saved"),
+                tr("The files have been saved. You can now run your game using the new settings.")
+            );
+        }
+        else {
+            qWarning() << "- Files saved; show confirmation";
+            QMessageBox::critical(this, tr("Error"), tr("Could not save files."));
+        }
     }
 }
 
 void MainWindow::saveGraphicRules()
 {
     QDir gameDirectory(ui->gamePath->text());
-    QFileInfo gameFile = m_currentPlugin->rulesFileName(gameDirectory);
+    QFileInfo gameFile = m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory);
     QString startDir = gameFile.absoluteFilePath();
-    QString defaultName = m_currentPlugin->rulesFileName();
+    QString defaultName = m_graphicsRulesWriter->plugin()->rulesFileName();
     if (gameFile.exists()) {
         defaultName = gameFile.fileName();
     }
@@ -607,7 +553,7 @@ void MainWindow::saveGraphicRules()
         return;
     }
 
-    m_currentPlugin->write(m_currentGameSettingsWidget->settings(), &dst);
+    m_graphicsRulesWriter->plugin()->write(m_currentGameSettingsWidget->settings(), &dst);
     dst.close();
 
     QMessageBox::information(this, tr("File saved"), tr("Graphics rules saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
@@ -616,9 +562,9 @@ void MainWindow::saveGraphicRules()
 void MainWindow::saveVideoCards()
 {
     QDir gameDirectory(ui->gamePath->text());
-    QFileInfo gameFile = m_currentPlugin->databaseFileName(gameDirectory);
+    QFileInfo gameFile = m_graphicsRulesWriter->plugin()->databaseFileName(gameDirectory);
     QString startDir = gameFile.absoluteFilePath();
-    QString defaultName = m_currentPlugin->databaseFileName();
+    QString defaultName = m_graphicsRulesWriter->plugin()->databaseFileName();
     if (gameFile.exists()) {
         defaultName = gameFile.fileName();
     }
@@ -642,7 +588,7 @@ void MainWindow::saveVideoCards()
         return;
     }
 
-    m_videoCardDatabase->write(&dst);
+    m_graphicsRulesWriter->videoCardDatabase()->write(&dst);
     dst.close();
 
     QMessageBox::information(this, tr("File saved"), tr("Video cards database saved to '%1'.").arg(QDir::toNativeSeparators(destination)));
@@ -652,7 +598,7 @@ void MainWindow::openDestinationDirectory()
 {
     // Game dir
     QDir gameDirectory(ui->gamePath->text());
-    QFileInfo graphicsRulesFile(m_currentPlugin->rulesFileName(gameDirectory));
+    QFileInfo graphicsRulesFile(m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory));
     // Use "path()" here for the directory containing the file
     QUrl fileUrl = QUrl::fromLocalFile(graphicsRulesFile.path());
     QDesktopServices::openUrl(fileUrl);
@@ -672,7 +618,7 @@ void MainWindow::askAddDevices()
     QStringList missingDeviceNames;
     for (int i = 0; i < m_model->rowCount(); ++i) {
         GraphicsDevice device = m_model->device(i);
-        if (!m_videoCardDatabase->contains(device.vendorId, device.deviceId)) {
+        if (!m_graphicsRulesWriter->videoCardDatabase()->contains(device.vendorId, device.deviceId)) {
             qDebug() << "  - Missing device:" << qPrintable(formatId(device.vendorId)) << "/" << qPrintable(formatId(device.deviceId)) << ":" << device.name;
             missingDevices.append(device);
             missingDeviceNames.append(device.name);
@@ -693,7 +639,7 @@ void MainWindow::askAddDevices()
     if (result == QMessageBox::Yes) {
         foreach(const GraphicsDevice &device, missingDevices) {
             qDebug() << "- Adding device" << qPrintable(formatId(device.vendorId)) << "/" << qPrintable(formatId(device.deviceId)) << ":" << device.name;
-            m_videoCardDatabase->addDevice(device.vendorId, device.deviceId, device.name);
+            m_graphicsRulesWriter->videoCardDatabase()->addDevice(device.vendorId, device.deviceId, device.name);
         }
     }
 }
@@ -804,8 +750,8 @@ MainWindow::~MainWindow()
     s.setValue("window/locale", m_locale);
     s.setValue("videocards/splitterstate", ui->videoCardsSplitter->saveState());
     s.setValue("videocards/treeviewheaderstate", ui->videoCardsView->header()->saveState());
-    if (m_currentPlugin) {
-        s.setValue("game/id", m_currentPlugin->id());
+    if (m_graphicsRulesWriter->plugin()) {
+        s.setValue("game/id", m_graphicsRulesWriter->plugin()->id());
     }
     saveWidgetSettings();
 

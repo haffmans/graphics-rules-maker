@@ -23,7 +23,7 @@
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
 #include <QtCore/QVariantMap>
-#include <QtCore/QSettings>
+#include <QtCore/QDir>
 
 namespace Ui {
 class MainWindow;
@@ -33,16 +33,18 @@ class AbstractSettingsWidget;
 class DeviceModel;
 class GameWriterFactory;
 class GameWriterInterface;
+class GraphicsRulesWriter;
 class VideoCardDatabase;
 class QAbstractButton;
 class QMessageBox;
+class QSettings;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(DeviceModel* model, VideoCardDatabase* videoCardDatabase, GameWriterFactory* gamePlugins);
+    MainWindow(DeviceModel* model, GameWriterFactory* gamePlugins, GraphicsRulesWriter *graphicsRulesWriter);
     ~MainWindow();
 
 private slots:
@@ -50,7 +52,7 @@ private slots:
     void selectGame(int row = 0);
     void tabOpen(int tabIndex = 0);
     void locateGame();
-    void locateGameFiles(const QString &directory);
+    void locateGameFiles(const QDir& directory);
     void setStatus(const QString &text, bool allok);
     void browseGame();
     void save();
@@ -74,10 +76,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     DeviceModel *m_model;
-    VideoCardDatabase *m_videoCardDatabase;
     GameWriterFactory *m_gamePlugins;
-    GameWriterInterface *m_currentPlugin;
     AbstractSettingsWidget *m_currentGameSettingsWidget;
+    GraphicsRulesWriter *m_graphicsRulesWriter;
 
     QTranslator m_libraryTranslator;
     QTranslator m_uiTranslator;

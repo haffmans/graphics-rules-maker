@@ -24,12 +24,14 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 
+#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+
 class QIODevice;
 class AbstractSettingsWidget;
 class DeviceModel;
 class VideoCardDatabase;
 
-class GameWriterInterface
+class GRAPHICSRULESMAKER_EXPORT GameWriterInterface
 {
 public:
     /**

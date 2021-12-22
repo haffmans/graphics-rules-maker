@@ -27,6 +27,7 @@
 #include "graphicsrulesmaker/devicemodel.h"
 #include "graphicsrulesmaker/videocarddatabase.h"
 #include "graphicsrulesmaker/gamewriterfactory.h"
+#include "graphicsrulesmaker/graphicsruleswriter.h"
 #include "graphicsrulesmaker/messagehandler.h"
 
 #include "mainwindow.h"
@@ -52,6 +53,7 @@ int main(int argc, char *argv[])
     auto model = std::make_unique<DeviceModel>();
     auto database = std::make_unique<VideoCardDatabase>();
     auto pluginFactory = std::make_unique<GameWriterFactory>();
+    auto writer = std::make_unique<GraphicsRulesWriter>(pluginFactory.get(), database.get());
 
     model->load();
     pluginFactory->loadPlugins();
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
     int result = 0;
     {
         // MainWindow must be created prior to showing any messages, otherwise they won't be translated
-        MainWindow window(model.get(), database.get(), pluginFactory.get());
+        MainWindow window(model.get(), pluginFactory.get(), writer.get());
 
         if (pluginFactory->plugins().size() == 0) {
             QMessageBox::critical(0, QObject::tr("Error"), QObject::tr("No game plugins found. Please re-install the application."));
@@ -75,6 +77,7 @@ int main(int argc, char *argv[])
         result = app.exec();
     }
 
+    writer.reset();
     model.reset();
     database.reset();
     pluginFactory.reset();

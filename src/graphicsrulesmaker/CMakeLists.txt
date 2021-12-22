@@ -28,6 +28,7 @@ endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 set(GraphicsRulesMaker_SRCS
     abstractsettingswidget.cpp
     gamewriterfactory.cpp
+    graphicsruleswriter.cpp
     videocarddatabase.cpp
     devicemodel.cpp
     messagehandler.cpp
@@ -38,6 +39,7 @@ set(GraphicsRulesMaker_HDRS
     videocarddatabase.h
     gamewriterfactory.h
     gamewriterinterface.h
+    graphicsruleswriter.h
     abstractsettingswidget.h
     messagehandler.h
     ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h
