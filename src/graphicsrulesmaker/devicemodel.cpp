@@ -232,7 +232,7 @@ bool DeviceModel::loadDxDgi()
             dev.name = QString::fromWCharArray(description.Description);
             dev.deviceId = description.DeviceId;
             dev.vendorId = description.VendorId;
-            dev.memory = description.DedicatedVideoMemory + description.DedicatedSystemMemory + description.SharedSystemMemory;
+            dev.memory = description.DedicatedVideoMemory;
             qDebug() << "Found graphics card: " << qPrintable(dev.name) << "; Vendor " << description.VendorId << "; Device" << description.DeviceId;
 
             dev.driver = "WDDM Driver";
