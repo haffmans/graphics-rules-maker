@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014-2021 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2014-2023 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 
 #include <QtCore/QSettings>
 #include <QMessageBox>
+
+#include <algorithm>
 
 #ifdef Q_OS_WIN32
 #include <windows.h>
@@ -46,10 +48,24 @@ SimsLSSettings::SimsLSSettings(DeviceModel *devices, VideoCardDatabase *database
     QMap<QString, QSize> resolutions;
     QSize previousSize;
 
-    foreach(const GraphicsMode &mode, devices->allModes()) {
-        // We don't care about refresh rates - i.e. avoid duplicates from the list. Also ignore anything below 800x600.
+    QList<GraphicsMode> validModes = devices->allModes();
+    // Remove too low resolutions
+    validModes.erase(std::remove_if(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.width < 800 || mode.height < 600; }),
+                     validModes.end());
+
+    bool have60HzMode = std::any_of(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.refreshRate == 60; });
+    ui->no60HzAvailable->setVisible(!have60HzMode);
+
+    if (have60HzMode) {
+        // Remove all non-60hz modes
+        validModes.erase(std::remove_if(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.refreshRate != 60; }),
+                     validModes.end());
+    }
+
+    foreach(const GraphicsMode &mode, validModes) {
         QSize size(mode.width, mode.height);
-        if (size != previousSize && size.width() >= 800 && size.height() >= 600) {
+
+        if (size != previousSize) {
             previousSize = size;
 
             QString text = QString("%1x%2").arg(size.width()).arg(size.height());

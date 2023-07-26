@@ -162,32 +162,37 @@
         <translation>Ondersteun VSync op Intel</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="193"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="197"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no 60hz display mode available on your system. You may have to define a 60hz custom resolution (using other software), or the game may not work correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Er is geen 60hz schermmodus beschikbaar op je systeem. Je moet mogelijk een aangepaste 60hz-resolutie definiëren (met andere software) om het spel correct te laten werken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="212"/>
         <source>&amp;Auto-detect</source>
         <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="203"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="222"/>
         <source>Disable all tweaks and restore default values.</source>
         <translation>Zet alle instellingen terug naar de standaardwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="206"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="225"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zet alle instellingen terug naar de standaardwaarden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="209"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.ui" line="228"/>
         <source>&amp;Default Settings</source>
         <translation>Standaard&amp;instellingen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="134"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="150"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="135"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="151"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!
