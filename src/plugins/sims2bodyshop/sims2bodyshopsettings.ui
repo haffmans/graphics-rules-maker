@@ -82,6 +82,22 @@
     </widget>
    </item>
    <item row="3" column="1">
+    <widget class="QCheckBox" name="ignoreNvidiaDriverVersion">
+     <property name="toolTip">
+      <string>Ignore a low driver version of Nvidia.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;New drivers of Nvidia sometimes report a low version number. This can lower some quality settings, even though the driver is new enough to support the better quality settings. This tweak disables some checks based on the version number of the driver, and picks the best possible options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Ignore Nvidia driver version</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
     <widget class="QCheckBox" name="radeonHd7000Fix">
      <property name="toolTip">
       <string>Do not force low quality on Radeon HD 7000 series graphics cards (as opposed to the older Radeon 7000 series).</string>
@@ -97,7 +113,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
+   <item row="5" column="1">
     <widget class="QCheckBox" name="intelHigh">
      <property name="toolTip">
       <string>Allow high quality graphics for most recent Intel Graphics cards.</string>
@@ -113,7 +129,7 @@
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="6" column="1">
     <widget class="QCheckBox" name="intelVsync">
      <property name="toolTip">
       <string>Enable VSync for Intel Graphics cards. May cause (or solve) flickering graphics and/or UI.</string>
@@ -129,7 +145,7 @@
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="7" column="1">
     <layout class="QHBoxLayout" name="defaultsLayout" stretch="0,0">
      <item>
       <widget class="QPushButton" name="autodetect">
@@ -162,6 +178,7 @@
   <tabstop>forceMem</tabstop>
   <tabstop>disableTexMemEstimateAdjustment</tabstop>
   <tabstop>enableDriverMemoryManager</tabstop>
+  <tabstop>ignoreNvidiaDriverVersion</tabstop>
   <tabstop>radeonHd7000Fix</tabstop>
   <tabstop>intelHigh</tabstop>
   <tabstop>intelVsync</tabstop>

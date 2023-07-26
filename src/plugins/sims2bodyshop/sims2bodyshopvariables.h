@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2021 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2021-2023 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ struct Sims2BodyShopVariables
         : forceMemory(map.value("forceMemory", 0).toUInt())
         , disableTexMemEstimateAdjustment(map.value("disableTexMemEstimateAdjustment", false).toBool())
         , enableDriverMemoryManager(map.value("enableDriverMemoryManager", false).toBool())
+        , ignoreNvidiaDriverVersion(map.value("ignoreNvidiaDriverVersion", false).toBool())
         , radeonHd7000Fix(map.value("radeonHd7000Fix", false).toBool())
         , intelHigh(map.value("intelHigh", false).toBool())
         , intelVsync(map.value("intelVsync", false).toBool())
@@ -39,6 +40,7 @@ struct Sims2BodyShopVariables
             { "forceMemory", forceMemory },
             { "disableTexMemEstimateAdjustment", disableTexMemEstimateAdjustment },
             { "enableDriverMemoryManager", enableDriverMemoryManager },
+            { "ignoreNvidiaDriverVersion", ignoreNvidiaDriverVersion },
             { "radeonHd7000Fix", radeonHd7000Fix },
             { "intelHigh", intelHigh },
             { "intelVsync", intelVsync }
@@ -48,6 +50,7 @@ struct Sims2BodyShopVariables
     quint16 forceMemory;
     bool disableTexMemEstimateAdjustment;
     bool enableDriverMemoryManager;
+    bool ignoreNvidiaDriverVersion;
     bool radeonHd7000Fix;
     bool intelHigh;
     bool intelVsync;

@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014-2021 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2014-2023 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@ QVariantMap Sims2BodyShopSettings::settings() const
     result.forceMemory = ui->forceMem->value();
     result.disableTexMemEstimateAdjustment = ui->disableTexMemEstimateAdjustment->isChecked();
     result.enableDriverMemoryManager = ui->enableDriverMemoryManager->isChecked();
+    result.ignoreNvidiaDriverVersion = ui->ignoreNvidiaDriverVersion->isChecked();
     result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
     result.intelHigh = ui->intelHigh->isChecked();
     result.intelVsync = ui->intelVsync->isChecked();
@@ -63,6 +64,7 @@ void Sims2BodyShopSettings::setSettings(const QVariantMap& settings)
     ui->forceMem->setValue(result.forceMemory);
     ui->disableTexMemEstimateAdjustment->setChecked(result.disableTexMemEstimateAdjustment);
     ui->enableDriverMemoryManager->setChecked(result.enableDriverMemoryManager);
+    ui->ignoreNvidiaDriverVersion->setChecked(result.ignoreNvidiaDriverVersion);
     ui->radeonHd7000Fix->setChecked(result.radeonHd7000Fix);
     ui->intelHigh->setChecked(result.intelHigh);
     ui->intelVsync->setChecked(result.intelVsync);
@@ -109,6 +111,9 @@ void Sims2BodyShopSettings::autodetect()
 #else
     ui->enableDriverMemoryManager->setChecked(false);
 #endif
+
+    // Ignore Nvidia driver version: only for Nvidia
+    ui->ignoreNvidiaDriverVersion->setChecked(hasNvidia);
 
     // Radeon HD 7000 tweak
     bool applyRadeonTweak = false;

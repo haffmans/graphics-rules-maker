@@ -86,6 +86,7 @@ QVariantMap SimsPSSettings::settings() const
     result.disableTexMemEstimateAdjustment = ui->disableTexMemEstimateAdjustment->isChecked();
     result.enableDriverMemoryManager = ui->enableDriverMemoryManager->isChecked();
     result.disableSimShadows = ui->disableSimShadows->isChecked();
+    result.ignoreNvidiaDriverVersion = ui->ignoreNvidiaDriverVersion->isChecked();
     result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
     result.intelHigh = ui->intelHigh->isChecked();
     result.intelVsync = ui->intelVsync->isChecked();
@@ -111,6 +112,7 @@ void SimsPSSettings::setSettings(const QVariantMap& settings)
     ui->disableTexMemEstimateAdjustment->setChecked(result.disableTexMemEstimateAdjustment);
     ui->enableDriverMemoryManager->setChecked(result.enableDriverMemoryManager);
     ui->disableSimShadows->setChecked(result.disableSimShadows);
+    ui->ignoreNvidiaDriverVersion->setChecked(result.ignoreNvidiaDriverVersion);
     ui->radeonHd7000Fix->setChecked(result.radeonHd7000Fix);
     ui->intelHigh->setChecked(result.intelHigh);
     ui->intelVsync->setChecked(result.intelVsync);
@@ -188,6 +190,9 @@ void SimsPSSettings::autodetect()
 #else
     ui->disableSimShadows->setChecked(false);
 #endif
+
+    // Ignore Nvidia driver version: only for Nvidia
+    ui->ignoreNvidiaDriverVersion->setChecked(hasNvidia);
 
     // Radeon HD 7000 tweak
     bool applyRadeonTweak = false;

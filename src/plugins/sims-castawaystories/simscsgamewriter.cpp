@@ -1,6 +1,6 @@
 /*
  * Graphics Rules Maker
- * Copyright (C) 2014-2021 Wouter Haffmans <wouter@simply-life.net>
+ * Copyright (C) 2014-2023 Wouter Haffmans <wouter@simply-life.net>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -351,9 +351,24 @@ if (not $useSoftwareRasterizer)
    endif
 
    if (match("${cardVendor}", "NVIDIA"))
+)EOF";
+
+      if (options.ignoreNvidiaDriverVersion) {
+          stream << R"EOF(
+      # GraphicsRulesMaker Tweak: Ignore Nvidia driver version
+      #if ($driverBuild <= 7776)
+      #   boolProp vs2LoopsFunctional true
+      #endif
+)EOF";
+      }
+      else {
+          stream << R"EOF(
       if ($driverBuild <= 7776)
          boolProp vs2LoopsFunctional true
       endif
+)EOF";
+      }
+    stream << R"EOF(
 
       # on NVidia cards, create a dummy texture on device creation to prevent BSODs
       boolProp createNVidiaWorkaroundTexture true
@@ -445,7 +460,28 @@ if (not $useSoftwareRasterizer)
             endif
          endif
       endif
+)EOF";
 
+      if (options.ignoreNvidiaDriverVersion) {
+          stream << R"EOF(
+      # GraphicsRulesMaker Tweak: Ignore Nvidia driver version
+      #if ($driverBuild <= 5216)
+      #   # turn off antialiasing to avoid BSODs on older drivers
+      #   boolProp enumerateMultisampleLevels false
+      #
+      #   log $logGroup $logLevelInfo "Driver is too old. Disabling AA on this device."
+      #endif
+
+      #if (($driverBuild < 5212) and ($maxPixelProgramVersionMajor < 2))
+      #   # turn off cinematics on older drivers with DX8 cards to avoid failed copies
+      #   setb supportsSpecialEventCamera false
+      #
+      #   log $logGroup $logLevelInfo "Driver is too old. Disabling SpecialEventCameras on this device."
+      #endif
+)EOF";
+      }
+      else {
+          stream << R"EOF(
       if ($driverBuild <= 5216)
          # turn off antialiasing to avoid BSODs on older drivers
          boolProp enumerateMultisampleLevels false
@@ -459,6 +495,9 @@ if (not $useSoftwareRasterizer)
 
          log $logGroup $logLevelInfo "Driver is too old. Disabling SpecialEventCameras on this device."
       endif
+)EOF";
+      }
+      stream << R"EOF(
 
       if ($maxVertexProgramVersionHWMajor = 0)
          boolProp skipValidateDevice true
@@ -466,6 +505,22 @@ if (not $useSoftwareRasterizer)
          log $logGroup $logLevelInfo "Enabling D3DERR_CONFLICTINGRENDERSTATE validation workaround"
       endif
 
+)EOF";
+
+      if (options.ignoreNvidiaDriverVersion) {
+          stream << R"EOF(
+      # GraphicsRulesMaker Tweak: Ignore Nvidia driver version
+      #if ($driverBuild > 5216 and $driverBuild < 6176)
+      #   # force SWVP on 2D vertex shader to work around UI and shadow rendering
+      #   # bugs; known to occur on GeForce4, Quadro4, and FX5200 on driver versions
+      #   # 56.56 and 56.72; known not to occur with FX5800+ or with 52.16 or
+      #   # 61.76 drivers.
+      #   boolProp draw2DForceSWVP true
+      #endif
+)EOF";
+      }
+      else {
+          stream << R"EOF(
       if ($driverBuild > 5216 and $driverBuild < 6176)
          # force SWVP on 2D vertex shader to work around UI and shadow rendering
          # bugs; known to occur on GeForce4, Quadro4, and FX5200 on driver versions
@@ -473,6 +528,9 @@ if (not $useSoftwareRasterizer)
          # 61.76 drivers.
          boolProp draw2DForceSWVP true
       endif
+)EOF";
+      }
+      stream << R"EOF(
 
    elseif (match("${cardVendor}", "ATI"))
       # loops support broken in 6458. Fixed in catalyst 4.9 (6476) but we require 4.10 to be safe.
@@ -696,6 +754,7 @@ logSystemInfo "=== Graphics Rules Maker Configuration ==="
     stream <<     "logSystemInfo \"Disable Texture Memory Estimate Adjustment: " << (options.disableTexMemEstimateAdjustment ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Enable Driver Memory Manager: " << (options.enableDriverMemoryManager ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Disable Sims Shadows: " << (options.disableSimShadows ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Ignore Nvidia driver version: " << (options.ignoreNvidiaDriverVersion ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel V-Sync:         " << (options.intelVsync ? "Yes" : "No") << "\"\n"

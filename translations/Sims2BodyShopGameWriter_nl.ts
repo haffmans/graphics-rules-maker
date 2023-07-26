@@ -32,7 +32,7 @@
         <translation> Mb</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="87"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="103"/>
         <source>Do not force low quality on Radeon HD 7000 series graphics cards (as opposed to the older Radeon 7000 series).</source>
         <translation>Forceer geen lage kwaliteit op de serie Radeon HD 7000 grafische kaarten (in tegenstelling tot de oudere Radeon 7000 serie).</translation>
     </message>
@@ -52,62 +52,77 @@
         <translation>Pas de hoeveelheid textuurgeheugen niet aan in het spel, om de stabiliteit te verbeteren (vooral met nVidia kaarten)</translation>
     </message>
     <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="87"/>
+        <source>Ignore a low driver version of Nvidia.</source>
+        <translation>Negeer een laag versienummer van Nvidia drivers.</translation>
+    </message>
+    <message>
         <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="90"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;New drivers of Nvidia sometimes report a low version number. This can lower some quality settings, even though the driver is new enough to support the better quality settings. This tweak disables some checks based on the version number of the driver, and picks the best possible options.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nieuwe drivers van Nvidia identificeren zich met een laag versienummer. Dit kan sommige instellingen verslechteren, ook al is de driver nieuw genoeg om de betere instellingen te ondersteunen. Deze tweak schakelt sommige controles op het versienummer van de driver uit, en verkiest de betere instellingen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="93"/>
+        <source>Ignore Nvidia driver version</source>
+        <translation>Negeer Nvidia driverversie</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="106"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use this if you have a graphics card in the &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; series.&lt;/p&gt;&lt;p&gt;The detection in the default code overlaps with the older &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; series, and forces the settings to a low quality code. Apply this tweak to make sure the detection only picks out the old graphics cards, but not the newer &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; ones.&lt;/p&gt;&lt;p&gt;If you do not have an ATI/AMD graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Gebruik dit als je een grafische kaart hebt in de &lt;span style=&quot; font-weight:600;&quot;&gt;ATI Radeon HD 7000&lt;/span&gt; serie.&lt;/p&gt;&lt;p&gt;De detectie in het spel overlapt met de oudere &lt;span style=&quot; font-weight:600;&quot;&gt;Radeon 7000&lt;/span&gt; serie en forceert daardoor lage kwaliteitsinstellingen. Deze instelling toepassen zorgt ervoor dat dit alleen bij de oudere kaarten gebeurt, maar niet bij de nieuwere &lt;span style=&quot; font-weight:600;&quot;&gt;HD&lt;/span&gt; varianten.&lt;/p&gt;&lt;p&gt;Als je geen ATI/AMD kaart hebt, heeft deze instelling geen effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="93"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="109"/>
         <source>Fix AMD Radeon HD 7000 series recognition</source>
         <translation>Repareer AMD Radeon HD 7000 serie herkenning</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="103"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="119"/>
         <source>Allow high quality graphics for most recent Intel Graphics cards.</source>
         <translation>Gebruik hoge kwaliteit graphics voor recente Intel Graphics kaarten.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="106"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="122"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable high quality graphics for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. If you have a fairly recent Intel graphics card, you may enable this tweak to increase graphics quality (at the cost of performance).&lt;/p&gt;&lt;p&gt;If your game runs choppy or slow after applying this tweak, disable it again.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Schakel hoge kwaliteit graphics in voor &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; kaarten. Als je een redelijk recente Intel Graphics kaart hebt, kun je deze instelling toepassen om de grafische kwaliteit te verbeteren (ten koste van prestaties).&lt;/p&gt;&lt;p&gt;Als je spel schokkerig of langzaam loopt na het toepassen van deze instellingen, schakel deze dan weer uit.&lt;/p&gt;&lt;p&gt;Als je geen Intel grafische kaart gebruikt, heeft deze optie geen effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="109"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="125"/>
         <source>High Quality on Intel Graphics</source>
         <translation>Hoge Kwaliteit op Intel Graphics</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="119"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="135"/>
         <source>Enable VSync for Intel Graphics cards. May cause (or solve) flickering graphics and/or UI.</source>
         <translation>Schakel verticale synchronisatie in voor Intel Graphics kaarten. Kan flikkerende graphics en/of UI veroorzaken (of oplossen).</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="122"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="138"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable VSync for &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; cards. VSync is disabled by default, because with some driver versions and some cards this caused a flickering UI.&lt;/p&gt;&lt;p&gt;If you experience flickering graphics or UI in the Sims 2, enabling or disabling this tweak may help.&lt;/p&gt;&lt;p&gt;If you do not use an Intel graphics card, this option does nothing.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Schakel verticale synchronisatie in voor &lt;span style=&quot; font-weight:600;&quot;&gt;Intel HD Graphics&lt;/span&gt; kaarten. Verticale synchronisatie staat standaard uitgeschakeld, omdat sommige driver-versies problemen als een flikkerende interface veroorzaakte.&lt;/p&gt;&lt;p&gt;Als je flikkerende graphics of interface hebt in de Sims 2, kan het helpen om deze instelling aan of juist uit te zetten.&lt;/p&gt;&lt;p&gt;Als je geen Intel Graphics kaart hebtm, heeft deze optie geen effect.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="125"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="141"/>
         <source>Support VSync on Intel</source>
         <translation>Ondersteun VSync op Intel</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="137"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="153"/>
         <source>&amp;Auto-detect</source>
         <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="147"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="163"/>
         <source>Disable all tweaks and restore default values.</source>
         <translation>Zet alle instellingen terug naar de standaardwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="150"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="166"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zet alle instellingen terug naar de standaardwaarden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="153"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="169"/>
         <source>&amp;Default Settings</source>
         <translation>Standaard&amp;instellingen</translation>
     </message>
@@ -137,12 +152,12 @@
         <translation>Geen aanpassing van schatting van textuurgeheugen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="78"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="80"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="79"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="81"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

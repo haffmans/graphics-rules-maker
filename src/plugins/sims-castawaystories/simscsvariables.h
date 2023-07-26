@@ -30,6 +30,7 @@ struct SimsCSVariables
         , disableTexMemEstimateAdjustment(map.value("disableTexMemEstimateAdjustment", false).toBool())
         , enableDriverMemoryManager(map.value("enableDriverMemoryManager", false).toBool())
         , disableSimShadows(map.value("disableSimShadows", false).toBool())
+        , ignoreNvidiaDriverVersion(map.value("ignoreNvidiaDriverVersion", false).toBool())
         , radeonHd7000Fix(map.value("radeonHd7000Fix", false).toBool())
         , intelHigh(map.value("intelHigh", false).toBool())
         , intelVsync(map.value("intelVsync", false).toBool())
@@ -65,6 +66,7 @@ struct SimsCSVariables
             { "disableTexMemEstimateAdjustment", disableTexMemEstimateAdjustment },
             { "enableDriverMemoryManager", enableDriverMemoryManager },
             { "disableSimShadows", disableSimShadows },
+            { "ignoreNvidiaDriverVersion", ignoreNvidiaDriverVersion },
             { "radeonHd7000Fix", radeonHd7000Fix },
             { "intelHigh", intelHigh },
             { "intelVsync", intelVsync },
@@ -77,6 +79,7 @@ struct SimsCSVariables
     bool disableTexMemEstimateAdjustment;
     bool enableDriverMemoryManager;
     bool disableSimShadows;
+    bool ignoreNvidiaDriverVersion;
     bool radeonHd7000Fix;
     bool intelHigh;
     bool intelVsync;
