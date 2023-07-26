@@ -44,8 +44,22 @@ QDir SimCity4GameWriter::findGameDirectory() const
 {
 #ifdef Q_OS_WIN32
     QString result;
+#ifdef _WIN64
     QSettings s("HKEY_LOCAL_MACHINE\\Software\\Maxis\\SimCity 4", QSettings::NativeFormat);
+#else
+    QSettings s("HKEY_LOCAL_MACHINE\\Software\\WOW6432Node\\Maxis\\SimCity 4", QSettings::NativeFormat);
+#endif
     result = s.value("Install Dir").toString();
+
+#ifdef _WIN64
+    // On win64, fallback to the 32 bit key if no result is found
+    if (result.isEmpty()) {
+        // Try the
+        QSettings settingsWin32("HKEY_LOCAL_MACHINE\\Software\\Maxis\\SimCity 4", QSettings::NativeFormat);
+        result = settingsWin32.value("Install Dir").toString();
+    }
+#endif
+
     // Name is likely to be short - change into long name (i.e. no "~1" abbreviations)
     const LPCWSTR resultUtf16 = reinterpret_cast<LPCWSTR>(result.utf16());
     const DWORD length = GetLongPathNameW(resultUtf16, NULL, 0);
