@@ -45,9 +45,9 @@ QDir SimCity4GameWriter::findGameDirectory() const
 #ifdef Q_OS_WIN32
     QString result;
 #ifdef _WIN64
-    QSettings s("HKEY_LOCAL_MACHINE\\Software\\Maxis\\SimCity 4", QSettings::NativeFormat);
-#else
     QSettings s("HKEY_LOCAL_MACHINE\\Software\\WOW6432Node\\Maxis\\SimCity 4", QSettings::NativeFormat);
+#else
+    QSettings s("HKEY_LOCAL_MACHINE\\Software\\Maxis\\SimCity 4", QSettings::NativeFormat);
 #endif
     result = s.value("Install Dir").toString();
 
