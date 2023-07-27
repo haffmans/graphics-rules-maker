@@ -71,7 +71,8 @@ private slots:
 
     void about();
 
-    void replaceWidget();
+    void loadWidget();
+    void unloadWidget();
 
 private:
     Ui::MainWindow *ui;
@@ -91,9 +92,6 @@ private:
 
     void loadWidgetSettings();
     void saveWidgetSettings() const;
-
-    QVariantMap recursiveLoadSettings(QSettings* settings);
-    void recursiveSaveSettings(const QVariantMap& map, QSettings* settings) const;
 
     void setLocale(const QLocale &locale, const QString &prefix, QTranslator *translator);
     QLocale m_locale;

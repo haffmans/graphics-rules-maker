@@ -1,6 +1,7 @@
 #include "graphicsruleswriter.h"
 
 #include <QtDebug>
+#include <QSettings>
 
 #include "gamewriterfactory.h"
 #include "gamewriterinterface.h"
@@ -14,7 +15,7 @@ GraphicsRulesWriter::GraphicsRulesWriter(GameWriterFactory* factory, VideoCardDa
 {
 }
 
-GraphicsRulesWriter::~GraphicsRulesWriter() noexcept
+GraphicsRulesWriter::~GraphicsRulesWriter()
 {
 }
 
@@ -28,7 +29,7 @@ bool GraphicsRulesWriter::loadPlugin(const QString& gameId)
     auto result = m_factory->plugin(gameId);
     if (result != nullptr) {
         m_plugin = result;
-        setGamePath(m_plugin->findGameDirectory());
+        loadSettings();
         emit pluginLoaded(gameId);
         return true;
     }
@@ -59,6 +60,92 @@ void GraphicsRulesWriter::setGamePath(const QDir& path)
     }
 }
 
+QVariantMap GraphicsRulesWriter::currentSettings() const
+{
+    return m_currentSettings;
+}
+
+void GraphicsRulesWriter::loadSettings()
+{
+    if (m_plugin == nullptr) {
+        return;
+    }
+
+    QSettings s;
+    QVariantMap map;
+    s.beginGroup(m_plugin->id());
+    map = recursiveLoadSettings(&s);
+    s.endGroup();
+
+    // Special treatment for the installation (game) path
+    if (map.contains("path")) {
+        auto gameDir = map["path"].toString();
+        qDebug() << "Use path from saved settings:" << gameDir;
+        setGamePath(gameDir);
+        map.remove("path");
+    }
+    else {
+        // Auto-locate game
+        qDebug() << "Locate game";
+        setGamePath(m_plugin->findGameDirectory());
+    }
+
+    m_currentSettings = map;
+    emit currentSettingsChanged(m_currentSettings);
+}
+
+QVariantMap GraphicsRulesWriter::recursiveLoadSettings(QSettings* settings)
+{
+    QVariantMap result;
+
+    for(const auto& item: settings->childKeys()) {
+        result[item] = settings->value(item);
+    }
+
+    for(const auto& group: settings->childGroups()) {
+        settings->beginGroup(group);
+        result[group] = recursiveLoadSettings(settings);
+        settings->endGroup();
+    }
+
+    return result;
+}
+
+void GraphicsRulesWriter::saveSettings(const QVariantMap& settings)
+{
+    if (m_plugin == nullptr) {
+        return;
+    }
+
+    m_currentSettings = settings;
+
+    auto persistSettings = settings;
+    persistSettings["path"] = QDir::toNativeSeparators(m_gamePath.absolutePath()); // force this, regardless of input
+
+    QSettings s;
+    s.beginGroup(m_plugin->id());
+    recursiveSaveSettings(persistSettings, &s);
+    s.endGroup();
+
+    emit currentSettingsChanged(m_currentSettings);
+}
+
+void GraphicsRulesWriter::recursiveSaveSettings(const QVariantMap& map, QSettings* settings) const
+{
+    for (auto item = map.cbegin(); item != map.cend(); ++item) {
+        auto& key = item.key();
+        auto& value = item.value();
+
+        if (value.type() == QVariant::Map) {
+            settings->beginGroup(key);
+            recursiveSaveSettings(value.toMap(), settings);
+            settings->endGroup();
+        }
+        else {
+            settings->setValue(key, value);
+        }
+    }
+}
 bool GraphicsRulesWriter::createBackups()
 {
     const QDir graphicsRulesDestination = m_plugin->rulesFileName(gamePath()).dir();
@@ -113,6 +200,8 @@ bool GraphicsRulesWriter::writeFiles(const QVariantMap& settings)
 {
     const QDir graphicsRulesDestination = m_plugin->rulesFileName(gamePath()).dir();
     const QDir videoCardsDestination = m_plugin->databaseFileName(gamePath()).dir();
+
+    saveSettings(settings);
 
     return writeFilesTo(graphicsRulesDestination, videoCardsDestination, settings);
 }

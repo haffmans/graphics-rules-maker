@@ -56,7 +56,11 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     connect(ui->mainTabs, &QTabWidget::currentChanged, this, &MainWindow::tabOpen);
     connect(ui->gameSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
     connect(ui->gamePath, &QLineEdit::textChanged, m_graphicsRulesWriter, &GraphicsRulesWriter::setGamePath);
+    connect(m_graphicsRulesWriter, &GraphicsRulesWriter::gamePathChanged, ui->gamePath, [this](const QDir& dir) {
+        ui->gamePath->setText(QDir::toNativeSeparators(dir.absolutePath()));
+    });
     connect(m_graphicsRulesWriter, &GraphicsRulesWriter::gamePathChanged, this, &MainWindow::locateGameFiles);
+    connect(m_graphicsRulesWriter, &GraphicsRulesWriter::currentSettingsChanged, this, &MainWindow::loadWidgetSettings);
 
     connect(ui->browseFilesButton, &QPushButton::clicked, this, &MainWindow::browseGame);
     connect(ui->saveAll, &QPushButton::clicked, this, &MainWindow::save);
@@ -135,7 +139,7 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());
 
     // Call this once to set up the initial widget
-    replaceWidget();
+    loadWidget();
 }
 
 void MainWindow::selectCard(int row)
@@ -207,13 +211,7 @@ void MainWindow::selectGame(int row)
 {
     qDebug() << "Selected game @ index " << row;
 
-    // Save path of current selection first
-    QSettings s;
-    if (m_graphicsRulesWriter->plugin()) {
-        s.setValue(m_graphicsRulesWriter->plugin()->id() + "/path", ui->gamePath->text());
-        saveWidgetSettings();
-        qDebug() << "- Settings for" << m_graphicsRulesWriter->plugin()->id() << "saved";
-    }
+    unloadWidget(); // Will save settings
 
     // Load plugin
     QString id = ui->gameSelect->currentData().toString();
@@ -223,33 +221,11 @@ void MainWindow::selectGame(int row)
         return;
     }
 
-    qDebug() << "- Plugin loaded";
-    // Load settings widget - this will trigger the replaceWidget() slot a bit later
-    if (m_currentGameSettingsWidget) {
-        qDebug() << "- Unloading old settings widget";
-        ui->settingsBox->layout()->removeWidget(m_currentGameSettingsWidget);
-        m_currentGameSettingsWidget->deleteLater();
-    }
+    qDebug() << "- Load widget";
+    loadWidget();
 
-    // Determine game path - use previous setting if possible
-    QString oldPath = ui->gamePath->text();
-    if (s.contains(id + "/path")) {
-        qDebug() << "- Use path from saved settings:" << s.value(id + "/path").toString();
-        ui->gamePath->setText(s.value(id + "/path").toString());
-    }
-    else {
-        // We don't use this as s.value()'s default, to avoid searching the
-        // game every time.
-        qDebug() << "- Search for game";
-        ui->gamePath->setText(QDir::toNativeSeparators(m_graphicsRulesWriter->plugin()->findGameDirectory().absolutePath()));
-    }
-
-    if (ui->gamePath->text() == oldPath) {
-        qDebug() << "- Force locate game files";
-        // Force update of status text, even though change signal didn't trigger.
-        // This avoids the default "Directory not found" message after changing locales (caused by retranslateUi).
-        locateGameFiles(ui->gamePath->text());
-    }
+    qDebug() << "- Locate game files";
+    locateGameFiles(ui->gamePath->text());
 
     // Translation
     QString pluginFile = m_gamePlugins->translationFilename(id);
@@ -269,22 +245,37 @@ void MainWindow::selectGame(int row)
     ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_graphicsRulesWriter->plugin()->databaseFileName()));
 }
 
-void MainWindow::replaceWidget()
+void MainWindow::loadWidget()
 {
-    // We do this after the widget is deleted, to make sure settings are kept if we
-    // replace it with the widget from the same plugin (e.g. because we've just
-    // switched locales). Settings are usually saved on the destruction of the
-    // widget, hence it's in the destroyed() slot.
     qDebug() << "SETTING WIDGET";
     if (!m_graphicsRulesWriter->plugin()) {
         qDebug() << "No plugin loaded";
         return;
     }
 
+    if (m_currentGameSettingsWidget != nullptr) {
+        unloadWidget();
+    }
+
     m_currentGameSettingsWidget = m_graphicsRulesWriter->plugin()->settingsWidget(m_model, m_graphicsRulesWriter->videoCardDatabase(), ui->settingsBox);
     loadWidgetSettings();
     ui->settingsBox->layout()->addWidget(m_currentGameSettingsWidget);
-    connect(m_currentGameSettingsWidget, &QWidget::destroyed, this, &MainWindow::replaceWidget);
+}
+
+void MainWindow::unloadWidget()
+{
+    if (m_currentGameSettingsWidget == nullptr) {
+        return;
+    }
+
+    if (m_graphicsRulesWriter->plugin()) {
+        saveWidgetSettings();
+        qDebug() << "- Settings for" << m_graphicsRulesWriter->plugin()->id() << "saved";
+    }
+
+    ui->settingsBox->layout()->removeWidget(m_currentGameSettingsWidget);
+    m_currentGameSettingsWidget->deleteLater();
+    m_currentGameSettingsWidget = nullptr;
 }
 
 void MainWindow::locateGame()
@@ -292,7 +283,7 @@ void MainWindow::locateGame()
     qDebug() << "Auto-locating game";
     QDir gameDir = m_graphicsRulesWriter->plugin()->findGameDirectory();
     if (gameDir != QDir()) {
-        ui->gamePath->setText(QDir::toNativeSeparators(gameDir.absolutePath()));
+        m_graphicsRulesWriter->setGamePath(gameDir);
     }
     else {
         QMessageBox::critical(this, tr("Locate Game"), tr("Could not find the game automatically. Please manually enter the game installation path."));
@@ -344,10 +335,6 @@ void MainWindow::locateGameFiles(const QDir& directory)
 
     m_graphicsRulesWriter->videoCardDatabase()->loadFrom(videoCardsFile.absoluteFilePath());
     setStatus(tr("Game found, video cards database loaded."), true);
-
-    // Save path to settings
-    QSettings s;
-    s.setValue(m_graphicsRulesWriter->plugin()->id() + "/path", ui->gamePath->text());
 }
 
 void MainWindow::setStatus(const QString& text, bool allok)
@@ -388,30 +375,7 @@ void MainWindow::loadWidgetSettings()
         return;
     }
 
-    QSettings s;
-    QVariantMap map;
-    s.beginGroup(m_graphicsRulesWriter->plugin()->id());
-    map = recursiveLoadSettings(&s);
-    s.endGroup();
-
-    m_currentGameSettingsWidget->setSettings(map);
-}
-
-QVariantMap MainWindow::recursiveLoadSettings(QSettings* settings)
-{
-    QVariantMap result;
-
-    for(const auto& item: settings->childKeys()) {
-        result[item] = settings->value(item);
-    }
-
-    for(const auto& group: settings->childGroups()) {
-        settings->beginGroup(group);
-        result[group] = recursiveLoadSettings(settings);
-        settings->endGroup();
-    }
-
-    return result;
+    m_currentGameSettingsWidget->setSettings(m_graphicsRulesWriter->currentSettings());
 }
 
 void MainWindow::saveWidgetSettings() const
@@ -420,29 +384,7 @@ void MainWindow::saveWidgetSettings() const
         return;
     }
 
-    QVariantMap map = m_currentGameSettingsWidget->settings();
-
-    QSettings s;
-    s.beginGroup(m_graphicsRulesWriter->plugin()->id());
-    recursiveSaveSettings(map, &s);
-    s.endGroup();
-}
-
-void MainWindow::recursiveSaveSettings(const QVariantMap& map, QSettings* settings) const
-{
-    for (auto item = map.cbegin(); item != map.cend(); ++item) {
-        auto& key = item.key();
-        auto& value = item.value();
-
-        if (value.type() == QVariant::Map) {
-            settings->beginGroup(key);
-            recursiveSaveSettings(value.toMap(), settings);
-            settings->endGroup();
-        }
-        else {
-            settings->setValue(key, value);
-        }
-    }
+    m_graphicsRulesWriter->saveSettings(m_currentGameSettingsWidget->settings());
 }
 
 void MainWindow::save()
@@ -754,10 +696,7 @@ MainWindow::~MainWindow()
     if (m_graphicsRulesWriter->plugin()) {
         s.setValue("game/id", m_graphicsRulesWriter->plugin()->id());
     }
-    saveWidgetSettings();
-
-    // Prevent the destruction of the settings widget going back into replaceWidget()
-    disconnect(m_currentGameSettingsWidget, nullptr, this, nullptr);
+    unloadWidget(); // Also saves widget's settings
 
     delete ui;
 }
