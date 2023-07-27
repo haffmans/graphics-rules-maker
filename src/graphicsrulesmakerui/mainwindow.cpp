@@ -147,6 +147,7 @@ void MainWindow::selectCard(int row)
         ui->deviceId->setText(formatId(dev.deviceId));
         ui->driver->setText(dev.driver);
         ui->memory->setText(tr("%1 Mb").arg(dev.memory / (1024*1024)));
+        ui->sharedMemory->setText(tr("%1 Mb").arg(dev.sharedMemory / (1024*1024)));
         updateDeviceStatus();
     }
 }

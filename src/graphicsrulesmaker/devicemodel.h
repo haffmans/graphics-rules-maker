@@ -41,6 +41,7 @@ struct GraphicsDevice
     QString driver;
     QString display;
     quint64 memory;
+    quint64 sharedMemory;
     quint16 vendorId;
     quint16 deviceId;
     QList<GraphicsMode> modes;

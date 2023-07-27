@@ -260,7 +260,7 @@
             <item row="5" column="1">
              <widget class="QLabel" name="memory">
               <property name="text">
-               <string>-1 MB</string>
+               <string>-1 Mb</string>
               </property>
               <property name="textFormat">
                <enum>Qt::PlainText</enum>
@@ -268,13 +268,27 @@
              </widget>
             </item>
             <item row="6" column="0">
+             <widget class="QLabel" name="sharedMemoryLabel">
+              <property name="text">
+               <string>Shared Memory</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QLabel" name="sharedMemory">
+              <property name="text">
+               <string>-1 Mb</string>
+              </property>
+             </widget>
+            </item>
+            <item row="7" column="0">
              <widget class="QLabel" name="cardInDbLabel">
               <property name="text">
                <string>In Database:</string>
               </property>
              </widget>
             </item>
-            <item row="6" column="1">
+            <item row="7" column="1">
              <widget class="QLabel" name="cardInDb">
               <property name="text">
                <string>&lt;font style=&quot;color: red;&quot;&gt;No!&lt;/font&gt;</string>
@@ -441,7 +455,7 @@
      <x>0</x>
      <y>0</y>
      <width>709</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="fileMenu">

@@ -144,6 +144,7 @@ bool DeviceModel::loadD3d9() {
             qDebug() << "Device created";
             UINT availableTextureMem  = d3dDevice->GetAvailableTextureMem();
             dev.memory = availableTextureMem;
+            dev.sharedMemory = 0;
 
             for (int iFormat = 0; iFormat < formatCount; ++iFormat) {
                 D3DFORMAT format = modeFormats[iFormat];
@@ -233,6 +234,7 @@ bool DeviceModel::loadDxDgi()
             dev.deviceId = description.DeviceId;
             dev.vendorId = description.VendorId;
             dev.memory = description.DedicatedVideoMemory;
+            dev.sharedMemory = description.SharedSystemMemory;
             qDebug() << "Found graphics card: " << qPrintable(dev.name) << "; Vendor " << description.VendorId << "; Device" << description.DeviceId;
 
             dev.driver = "WDDM Driver";
