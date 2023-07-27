@@ -420,6 +420,20 @@ void MainWindow::save()
         manualSave = !m_graphicsRulesWriter->createBackups();
     }
 
+    if (!manualSave) {
+        // Try to write files; this may fail if back-ups already exist but the files cannot be written due to admin
+        // permissions
+        if (m_graphicsRulesWriter->writeFiles(m_currentGameSettingsWidget->settings())) {
+            qDebug() << "- Files saved; show confirmation";
+            QMessageBox::information(this, tr("Files Saved"),
+                                     tr("The files have been saved. You can now run your game using the new settings.")
+                                     );
+        }
+        else {
+            manualSave = true;
+        }
+    }
+
     bool result = true;
 
     if (manualSave) { // Not 'else' -> manualSave may have been toggled by the back-up process
@@ -458,17 +472,9 @@ void MainWindow::save()
             connect(confirmation, &ManualSaveConfirmationBox::openTemporaryDirectory, this, &MainWindow::openTemporaryDirectory);
             confirmation->open();
         }
-    }
-    else {
-        if (m_graphicsRulesWriter->writeFiles(m_currentGameSettingsWidget->settings())) {
-            qDebug() << "- Files saved; show confirmation";
-            QMessageBox::information(this, tr("Files Saved"),
-                tr("The files have been saved. You can now run your game using the new settings.")
-            );
-        }
         else {
-            qWarning() << "- Files saved; show confirmation";
-            QMessageBox::critical(this, tr("Error"), tr("Could not save files."));
+            QMessageBox::critical(this, tr("Error"), tr("Could not save files to temporary location.\n"
+                                                        "Try running Graphics Rules Maker as administrator."));
         }
     }
 }
