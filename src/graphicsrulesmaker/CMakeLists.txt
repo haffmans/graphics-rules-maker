@@ -11,13 +11,13 @@ find_package(Qt5Widgets 5.7 REQUIRED)
 find_package(Qt5LinguistTools)
 
 if(WIN32)
-    find_package(DirectX REQUIRED)
-    include_directories(${DirectX_INCLUDE_DIR})
+    find_package(DirectX9 REQUIRED)
+    include_directories(${DirectX9_INCLUDE_DIR})
 
-    if(DEFINED DirectX_DXGI_LIBRARY)
-        message(STATUS "DXGI Library found at " ${DirectX_DXGI_LIBRARY})
+    if(DirectX9_DXGI_LIBRARY)
+        message(STATUS "DXGI Library found at " ${DirectX9_DXGI_LIBRARY})
         add_definitions(-DDXGI)
-    endif(DEFINED DirectX_DXGI_LIBRARY)
+    endif(DirectX9_DXGI_LIBRARY)
 endif(WIN32)
 
 if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
@@ -107,8 +107,8 @@ add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRules
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
 target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
 if(WIN32)
-    # NOTE: ${DirectX_DXGI_LIBRARY} is removed; we load it dynamically at runtime
-    target_link_libraries(GraphicsRulesMaker ${DirectX_LIBRARY} )
+    # NOTE: ${DirectX9_DXGI_LIBRARY} is removed; we load it dynamically at runtime
+    target_link_libraries(GraphicsRulesMaker ${DirectX9_LIBRARY} )
 endif(WIN32)
 
 if(WIN32)
