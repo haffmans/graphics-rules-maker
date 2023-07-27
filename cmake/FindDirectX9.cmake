@@ -111,17 +111,17 @@ if(WIN32) # The only platform it makes sense to check for DirectX9 SDK
                   )
                 endif ()
                 if (DirectX9_D3DX9_LIBRARY)
-                        set(DirectX9_d3d9_LIBRARIES ${DirectX9_d3d9_LIBRARIES} ${DirectX9_D3DX9_LIBRARY})
+                        set(DirectX9_D3D9_LIBRARIES ${DirectX9_D3D9_LIBRARIES} ${DirectX9_D3DX9_LIBRARY})
                 endif ()
                 if (DirectX9_DXERR_LIBRARY)
-                        set(DirectX9_d3d9_LIBRARIES ${DirectX9_d3d9_LIBRARIES} ${DirectX9_DXERR_LIBRARY})
+                        set(DirectX9_D3D9_LIBRARIES ${DirectX9_D3D9_LIBRARIES} ${DirectX9_DXERR_LIBRARY})
                 endif ()
 
                 set(DirectX9_LIBRARY
-                        ${DirectX9_d3d9_LIBRARIES}
+                        ${DirectX9_D3D9_LIBRARIES}
                 )
 
-                mark_as_advanced(DirectX9_d3d9_LIBRARY
+                mark_as_advanced(DirectX9_D3D9_LIBRARY
                                                  DirectX9_D3DX9_LIBRARY
                                                  DirectX9_DXERR_LIBRARY
                                                  DirectX9_DXGUID_LIBRARY
