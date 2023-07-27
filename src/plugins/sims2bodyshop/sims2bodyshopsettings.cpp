@@ -91,7 +91,12 @@ void Sims2BodyShopSettings::autodetect()
     quint64 maxMemory = 0;
     for (int i = 0; i < deviceCount; ++i) {
         auto device = m_devices->device(i);
-        maxMemory = std::max<quint64>(maxMemory, device.memory);
+        // If the card has 256Mb+ dedicated memory, limit to that (assuming a dedicated graphics card)
+        // Otherwise assume an integrated card, and also use its available shared memory (up to 4Gb)
+        auto memory = device.memory >= 256*1024*1024
+                    ? device.memory
+                    : std::min<quint64>(device.memory + device.sharedMemory, 4096*1024*1024);
+        maxMemory = std::max<quint64>(maxMemory, memory);
     }
     int maxMemoryMb = static_cast<int>(maxMemory / (1024*1024));
     ui->forceMem->setValue(std::min<int>(ui->forceMem->maximum(), maxMemoryMb));
