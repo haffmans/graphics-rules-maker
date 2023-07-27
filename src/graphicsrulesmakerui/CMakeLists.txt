@@ -89,11 +89,26 @@ if(WIN32)
         "platforms/qwindows.dll"
     )
 
+    set(_pluginSourcePaths
+        "${_qt5Core_install_prefix}/lib/qt/plugins"
+        "${_qt5Core_install_prefix}/plugins"
+    )
+
+    foreach(_basePath ${_pluginSourcePaths})
+        if(EXISTS ${_basePath})
+            set(_pluginBasePath ${_basePath})
+        endif()
+    endforeach()
+
+    if (NOT _pluginBasePath)
+        message(FATAL_ERROR "Could not detect Qt plugin base directory from: ${_qt5Core_install_prefix}")
+    endif()
+
     foreach(_plugin ${_plugins})
         message(STATUS "Plugin: ${_plugin}")
         get_filename_component(_plugin_dir ${_plugin} DIRECTORY)
 
-        install(FILES ${_qt5Core_install_prefix}/lib/qt/plugins/${_plugin}
+        install(FILES ${_pluginBasePath}/${_plugin}
                 DESTINATION bin/${_plugin_dir}
                 COMPONENT application
         )
