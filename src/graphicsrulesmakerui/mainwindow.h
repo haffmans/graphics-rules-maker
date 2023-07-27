@@ -38,6 +38,7 @@ class VideoCardDatabase;
 class QAbstractButton;
 class QMessageBox;
 class QSettings;
+class QTemporaryDir;
 
 class MainWindow : public QMainWindow
 {
@@ -80,6 +81,7 @@ private:
     GameWriterFactory *m_gamePlugins;
     AbstractSettingsWidget *m_currentGameSettingsWidget;
     GraphicsRulesWriter *m_graphicsRulesWriter;
+    QList<QTemporaryDir*> m_createdTempDirs;
 
     QTranslator m_libraryTranslator;
     QTranslator m_uiTranslator;

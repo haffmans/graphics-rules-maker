@@ -25,6 +25,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QSettings>
 #include <QtCore/QDebug>
+#include <QtCore/QTemporaryDir>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDirModel>
@@ -407,7 +408,7 @@ void MainWindow::save()
     QString bakSuffix = ".bak";
     bool manualSave = false;
 
-    QDir gameDirectory(ui->gamePath->text());
+    QDir gameDirectory = m_graphicsRulesWriter->gamePath();
     QFileInfo graphicsRulesDir = m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory).absolutePath();
     QFileInfo videoCardsDir = m_graphicsRulesWriter->plugin()->databaseFileName(gameDirectory).absolutePath();
 
@@ -449,21 +450,17 @@ void MainWindow::save()
             return;
         }
 
-        gameDirectory = QDir::temp();
-        if (!gameDirectory.mkpath("GraphicsRulesMaker")) {
+        // Destination directory is deleted from MainWindow destructor (which will clean up files)
+        QTemporaryDir* destinationDirectory = new QTemporaryDir(QDir::temp().filePath("GraphicsRulesMaker_XXXXXX"));
+        m_createdTempDirs.append(destinationDirectory);
+        if (!destinationDirectory->isValid()) {
             QMessageBox::critical(this, tr("Error"), tr("Could not create temporary location for files."));
             return;
         }
-        QFileInfo tempDirInfo = QFileInfo(gameDirectory.absoluteFilePath("GraphicsRulesMaker"));
-        if (!tempDirInfo.isDir() || !tempDirInfo.isWritable()) {
-            QMessageBox::critical(this, tr("Error"), tr("Could not write to temporary location."));
-            return;
-        }
-        gameDirectory = QDir(tempDirInfo.filePath());
 
-        m_graphicsRulesWriter->createBackupsAt(gameDirectory);
+        m_graphicsRulesWriter->createBackupsAt(destinationDirectory->path());
 
-        if (m_graphicsRulesWriter->writeFiles(gameDirectory, m_currentGameSettingsWidget->settings())) {
+        if (m_graphicsRulesWriter->writeFiles(destinationDirectory->path(), m_currentGameSettingsWidget->settings())) {
             qDebug() << "- Files saved; show confirmation";
 
             ManualSaveConfirmationBox *confirmation = new ManualSaveConfirmationBox(this);
@@ -561,7 +558,8 @@ void MainWindow::openDestinationDirectory()
 
 void MainWindow::openTemporaryDirectory()
 {
-    QFileInfo tempDirInfo = QFileInfo(QDir::temp().absoluteFilePath("GraphicsRulesMaker"));
+    // Open the last created temporary directory
+    QFileInfo tempDirInfo = QFileInfo(m_createdTempDirs.last()->path());
     QUrl tempDirUrl = QUrl::fromLocalFile(tempDirInfo.absoluteFilePath());
     QDesktopServices::openUrl(tempDirUrl);
 }
@@ -709,6 +707,8 @@ MainWindow::~MainWindow()
         s.setValue("game/id", m_graphicsRulesWriter->plugin()->id());
     }
     unloadWidget(); // Also saves widget's settings
+
+    qDeleteAll(m_createdTempDirs);
 
     delete ui;
 }
