@@ -95,6 +95,8 @@ private:
 
     void setLocale(const QLocale &locale, const QString &prefix, QTranslator *translator);
     QLocale m_locale;
+
+    bool m_initializing;
 };
 
 #endif // MAINWINDOW_H

@@ -49,6 +49,7 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     , m_gamePlugins(gamePlugins)
     , m_currentGameSettingsWidget(nullptr)
     , m_graphicsRulesWriter(graphicsRulesWriter)
+    , m_initializing(true)
 {
     ui->setupUi(this);
 
@@ -138,8 +139,9 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     qApp->installTranslator(&m_pluginTranslator);
     setLocale(s.value("window/locale", QLocale(QLocale::English, QLocale::UnitedStates)).toLocale());
 
-    // Call this once to set up the initial widget
-    loadWidget();
+    // Finally - once - select the game with !m_initializing to load the plugin and widget
+    m_initializing = false;
+    selectGame(gameRow);
 }
 
 void MainWindow::selectCard(int row)
@@ -209,6 +211,10 @@ void MainWindow::browseGame()
 
 void MainWindow::selectGame(int row)
 {
+    if (m_initializing) {
+        return;
+    }
+
     qDebug() << "Selected game @ index " << row;
 
     unloadWidget(); // Will save settings
