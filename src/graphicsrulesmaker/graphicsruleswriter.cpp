@@ -163,12 +163,12 @@ bool GraphicsRulesWriter::backupTo(const QDir& graphicsRulesDestinationDir, cons
 {
     const QString bakSuffix(".bak");
 
-    // Either copy existing (in the source directory) back-up files,
-    const QFileInfo graphicsRulesFile(m_plugin->rulesFileName(graphicsRulesDestinationDir));
+    // Either copy existing (in the source directory) back-up files, or create one of the original file
+    const QFileInfo graphicsRulesFile(m_plugin->rulesFileName(m_gamePath));
     const QFileInfo graphicsRulesBackup = graphicsRulesFile.absoluteFilePath() + bakSuffix;
     const QFileInfo graphicsRulesDestination = graphicsRulesDestinationDir.absoluteFilePath(graphicsRulesBackup.fileName());
 
-    const QFileInfo videoCardsFile = m_plugin->databaseFileName(videoCardsDestinationDir);
+    const QFileInfo videoCardsFile = m_plugin->databaseFileName(m_gamePath);
     const QFileInfo videoCardsBackup = videoCardsFile.absoluteFilePath() + bakSuffix;
     const QFileInfo videoCardsDestination = videoCardsDestinationDir.absoluteFilePath(videoCardsBackup.fileName());
 
