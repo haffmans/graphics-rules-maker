@@ -1,0 +1,34 @@
+{
+    "name": "Graphics Rules Maker",
+    "dockerFile": "Dockerfile",
+
+    // Configure tool-specific properties.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "twxs.cmake",
+                "ms-vscode.cmake-tools"
+            ],
+            "settings": {
+                "cmake.additionalKits": [
+                    "${containerWorkspaceFolder}/.devcontainer/cmake-kits.json"
+                ],
+                "cmake.configureSettings": {
+                    "ImageMagick_convert_EXECUTABLE": "/usr/bin/convert"
+                },
+                "cmake.buildDirectory": "/home/devel/build/${localWorkspaceFolderBasename}",
+                "cmake.installPrefix": "/home/devel/install"
+            }
+        }
+    },
+
+    "remoteUser": "devel",
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/devel/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+    "workspaceFolder": "/home/devel/${localWorkspaceFolderBasename}",
+    "mounts": [
+        "type=volume,source=mingw-qt5-build,target=/home/devel/build",
+        "type=bind,source=${localWorkspaceFolder}/install,target=/home/devel/install,consistency=cached"
+    ]
+}

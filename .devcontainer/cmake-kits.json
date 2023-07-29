@@ -1,0 +1,30 @@
+[
+    {
+      "name": "Mingw x64 GCC",
+      "environmentSetupScript": "/usr/bin/mingw-env x86-64-w64-mingw32",
+      "cmakeSettings": {
+        "CMAKE_INSTALL_LIBDIR": "lib",
+        "CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES": "/usr/x86_64-w64-mingw32/include",
+        "CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES": "/usr/x86_64-w64-mingw32/include",
+        "CMAKE_BUILD_TYPE": "None",
+        "BUILD_SHARED_LIBS": "ON",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "/usr/bin/x86_64-w64-mingw32-wine"
+      },
+      "toolchainFile": "/usr/share/mingw/toolchain-x86_64-w64-mingw32.cmake",
+      "isTrusted": true
+    },
+    {
+      "name": "Mingw i686 GCC",
+      "environmentSetupScript": "/usr/bin/mingw-env i686-w64-mingw32",
+      "cmakeSettings": {
+        "CMAKE_INSTALL_LIBDIR": "lib",
+        "CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES": "/usr/i686-w64-mingw32/include",
+        "CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES": "/usr/i686-w64-mingw32/include",
+        "CMAKE_BUILD_TYPE": "None",
+        "BUILD_SHARED_LIBS": "ON",
+        "CMAKE_CROSSCOMPILING_EMULATOR": "/usr/bin/i686-w64-mingw32-wine"
+      },
+      "toolchainFile": "/usr/share/mingw/toolchain-i686-w64-mingw32.cmake",
+      "isTrusted": true
+    }
+  ]

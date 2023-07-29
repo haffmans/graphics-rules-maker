@@ -8,3 +8,5 @@
 *.kdev4
 *.ts
 !translations/*.ts
+build/
+install/
