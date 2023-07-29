@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.24)
 project(GraphicsRulesMakerUi)
 
 # Find other dependencies
@@ -85,9 +85,31 @@ if(WIN32)
     get_target_property(Qt5Core_Location Qt5::Core LOCATION)
     get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
 
-    set(_plugins
-        "platforms/qwindows.dll"
-    )
+    if (TARGET Qt5::QWindowsIntegrationPlugin)
+        # For MSVC (as generator), there's no active build config; the configuration is determined
+        # at build time instead of configure time. So: if there are imported configurations, use a
+        # generator expression to have the correct file deployed at install time; otherwise fallback
+        # to the default.
+        get_target_property(_qwindows_configs Qt5::QWindowsIntegrationPlugin IMPORTED_CONFIGURATIONS)
+        if (_qwindows_configs)
+            message(STATUS "Qt5 Windows integration plugin: FOUND, using imported location")
+            set(_plugins
+                "$<TARGET_FILE:Qt5::QWindowsIntegrationPlugin>"
+            )
+        else()
+            message(STATUS "Qt5 Windows integration plugin: FOUND, using default path")
+            set(_plugins
+                "platforms/qwindows.dll"
+            )
+        endif()
+
+    else()
+        # Integration plugin target not defined - just hardcode it
+        message(STATUS "Windows integration plugin not found; assuming default path")
+        set(_plugins
+            "platforms/qwindows.dll"
+        )
+    endif()
 
     set(_pluginSourcePaths
         "${_qt5Core_install_prefix}/lib/qt/plugins"
@@ -105,11 +127,14 @@ if(WIN32)
     endif()
 
     foreach(_plugin ${_plugins})
-        message(STATUS "Plugin: ${_plugin}")
-        get_filename_component(_plugin_dir ${_plugin} DIRECTORY)
+        # Some broken up generator expressions (for readability)
+        set(_plugin_is_relative "$<PATH:IS_RELATIVE,${_plugin}>")
+        set(_plugin_made_relative "$<PATH:RELATIVE_PATH,${_plugin},${_pluginBasePath}>")
+        set(_plugin_relative "$<IF:${_plugin_is_relative},${_plugin},${_plugin_made_relative}>")
+        set(_plugin_relative_dir "$<PATH:REMOVE_FILENAME,${_plugin_relative}>")
 
-        install(FILES ${_pluginBasePath}/${_plugin}
-                DESTINATION bin/${_plugin_dir}
+        install(FILES "$<PATH:ABSOLUTE_PATH,${_plugin},${_pluginBasePath}>"
+                DESTINATION "bin/${_plugin_relative_dir}"
                 COMPONENT application
         )
     endforeach()
