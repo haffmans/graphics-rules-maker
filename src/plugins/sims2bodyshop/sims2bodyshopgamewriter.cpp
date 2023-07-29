@@ -152,8 +152,8 @@ QFileInfo Sims2BodyShopGameWriter::databaseFileName(const QDir& gameDirectory) c
 QFileInfo Sims2BodyShopGameWriter::findFile(QDir baseDir, QStringList options) const
 {
     foreach(const QString &option, options) {
-        QString path = baseDir.absoluteFilePath(option);
-        if (QFileInfo::exists(path)) {
+        auto path = QFileInfo(baseDir.absoluteFilePath(option));
+        if (path.exists()) {
             qDebug() << "Sims 2 Body Shop: File" << path << " FOUND";
             return path;
         }

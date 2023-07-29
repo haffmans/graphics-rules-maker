@@ -31,7 +31,7 @@ class ManualSaveConfirmationBox : public QDialog
     Q_OBJECT
 public:
     ~ManualSaveConfirmationBox();
-    ManualSaveConfirmationBox(QWidget* parent = 0, Qt::WindowFlags f = 0);
+    ManualSaveConfirmationBox(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
 signals:
     void openTemporaryDirectory();

@@ -9,37 +9,37 @@
         <translation>[Niet aangesloten]</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="466"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="467"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="468"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="469"/>
         <source>Vendor ID</source>
         <translation>Fabrikant ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="470"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="471"/>
         <source>Device ID</source>
         <translation>Apparaat ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="472"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="473"/>
         <source>Display</source>
         <translation>Monitor</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="474"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="475"/>
         <source>Driver name</source>
         <translation>Drivernaam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="476"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="477"/>
         <source>Texture Memory (bytes)</source>
         <translation>Textuurgeheugen (bytes)</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="478"/>
+        <location filename="../src/graphicsrulesmaker/devicemodel.cpp" line="479"/>
         <source>Available Modes</source>
         <translation>Beschikbare Modes</translation>
     </message>
@@ -47,22 +47,22 @@
 <context>
     <name>VideoCardDatabase</name>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="150"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="151"/>
         <source>Vendor Name</source>
         <translation>Fabrikantnaam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="152"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="153"/>
         <source>Vendor Id</source>
         <translation>Fabrikant ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="154"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="155"/>
         <source>Card Name</source>
         <translation>Naam van Grafische Kaart</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="156"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="157"/>
         <source>Card Id</source>
         <translation>ID van Grafische Kaart</translation>
     </message>

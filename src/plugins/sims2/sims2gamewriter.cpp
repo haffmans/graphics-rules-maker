@@ -167,8 +167,8 @@ QFileInfo Sims2GameWriter::databaseFileName(const QDir& gameDirectory) const
 QFileInfo Sims2GameWriter::findFile(QDir baseDir, QStringList options) const
 {
     foreach(const QString &option, options) {
-        QString path = baseDir.absoluteFilePath(option);
-        if (QFileInfo::exists(path)) {
+        auto path = QFileInfo(baseDir.absoluteFilePath(option));
+        if (path.exists()) {
             qDebug() << "Sims 2: File" << path << " FOUND";
             return path;
         }

@@ -136,7 +136,7 @@ void GraphicsRulesWriter::recursiveSaveSettings(const QVariantMap& map, QSetting
         auto& key = item.key();
         auto& value = item.value();
 
-        if (value.type() == QVariant::Map) {
+        if (value.typeId() == QMetaType::QVariantMap) {
             settings->beginGroup(key);
             recursiveSaveSettings(value.toMap(), settings);
             settings->endGroup();
@@ -165,12 +165,12 @@ bool GraphicsRulesWriter::backupTo(const QDir& graphicsRulesDestinationDir, cons
 
     // Either copy existing (in the source directory) back-up files, or create one of the original file
     const QFileInfo graphicsRulesFile(m_plugin->rulesFileName(m_gamePath));
-    const QFileInfo graphicsRulesBackup = graphicsRulesFile.absoluteFilePath() + bakSuffix;
-    const QFileInfo graphicsRulesDestination = graphicsRulesDestinationDir.absoluteFilePath(graphicsRulesBackup.fileName());
+    const QFileInfo graphicsRulesBackup = QFileInfo(graphicsRulesFile.absoluteFilePath() + bakSuffix);
+    const QFileInfo graphicsRulesDestination = QFileInfo(graphicsRulesDestinationDir.absoluteFilePath(graphicsRulesBackup.fileName()));
 
     const QFileInfo videoCardsFile = m_plugin->databaseFileName(m_gamePath);
-    const QFileInfo videoCardsBackup = videoCardsFile.absoluteFilePath() + bakSuffix;
-    const QFileInfo videoCardsDestination = videoCardsDestinationDir.absoluteFilePath(videoCardsBackup.fileName());
+    const QFileInfo videoCardsBackup = QFileInfo(videoCardsFile.absoluteFilePath() + bakSuffix);
+    const QFileInfo videoCardsDestination = QFileInfo(videoCardsDestinationDir.absoluteFilePath(videoCardsBackup.fileName()));
 
     // Copy existing back-up files if they exist; the original Graphics Rules file otherwise
     const auto graphicsRulesSource = (graphicsRulesBackup.exists()) ? graphicsRulesBackup : graphicsRulesFile;
@@ -213,8 +213,8 @@ bool GraphicsRulesWriter::writeFiles(const QDir& destination, const QVariantMap&
 
 bool GraphicsRulesWriter::writeFilesTo(const QDir& graphicsRulesDestinationDir, const QDir& videoCardsDestinationDir, const QVariantMap& settings)
 {
-    const QFileInfo graphicsRulesDestination = graphicsRulesDestinationDir.absoluteFilePath(m_plugin->rulesFileName());
-    const QFileInfo videoCardsDestination = videoCardsDestinationDir.absoluteFilePath(m_plugin->databaseFileName());
+    const auto graphicsRulesDestination = QFileInfo(graphicsRulesDestinationDir.absoluteFilePath(m_plugin->rulesFileName()));
+    const auto videoCardsDestination = QFileInfo(videoCardsDestinationDir.absoluteFilePath(m_plugin->databaseFileName()));
 
     qDebug() << "- Open Graphics Rules file" << graphicsRulesDestination.absoluteFilePath();
     QFile graphicsRulesOut(graphicsRulesDestination.absoluteFilePath());

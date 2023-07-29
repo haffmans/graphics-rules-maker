@@ -95,7 +95,7 @@ void Sims2BodyShopSettings::autodetect()
         // Otherwise assume an integrated card, and also use its available shared memory (up to 4Gb)
         auto memory = device.memory >= 256*1024*1024
                     ? device.memory
-                    : std::min<quint64>(device.memory + device.sharedMemory, 4096*1024*1024);
+                    : std::min<quint64>(device.memory + device.sharedMemory, 4096ll*1024ll*1024ll);
         maxMemory = std::max<quint64>(maxMemory, memory);
     }
     int maxMemoryMb = static_cast<int>(maxMemory / (1024*1024));

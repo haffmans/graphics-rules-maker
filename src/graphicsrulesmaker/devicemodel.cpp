@@ -187,7 +187,7 @@ bool DeviceModel::loadD3d9() {
 bool DeviceModel::loadDxDgi()
 {
     // Attempt to load dxgi.dll - this won't exist on Windows XP!
-    HMODULE dxgi = LoadLibrary("dxgi.dll");
+    HMODULE dxgi = LoadLibraryA("dxgi.dll");
 
     if (dxgi == NULL) {
         qDebug() << "DXGI module not found...";
@@ -415,7 +415,8 @@ QList<GraphicsMode> DeviceModel::allModes()
 {
     QSet<GraphicsMode> modes;
     foreach(const GraphicsDevice &dev, m_devices) {
-        modes.unite(dev.modes.toSet());
+        const QSet<GraphicsMode> deviceModes(dev.modes.begin(), dev.modes.end());
+        modes.unite(deviceModes);
     }
 
     auto result = modes.values();

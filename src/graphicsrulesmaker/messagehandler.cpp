@@ -90,7 +90,7 @@ void MessageHandler::rotate(int keep)
     QFileInfo destInfo = currentInfo;
 
     for (int i = keep - 1; i >= 0; --i) {
-        currentInfo = backupFile(i);
+        currentInfo = QFileInfo(backupFile(i));
         if (currentInfo.exists()) {
             QFile::rename(currentInfo.filePath(), destInfo.filePath());
         }

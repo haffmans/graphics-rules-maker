@@ -28,9 +28,9 @@
 #include <QtCore/QTemporaryDir>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
-#include <QtWidgets/QDirModel>
 #include <QtWidgets/QCompleter>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QFileSystemModel>
 
 #include "graphicsrulesmaker/abstractsettingswidget.h"
 #include "graphicsrulesmaker/devicemodel.h"
@@ -90,7 +90,7 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
         ui->gameSelect->addItem(plugin->displayName(), plugin->id());
     }
 
-    QDirModel *dirModel = new QDirModel(this);
+    QFileSystemModel *dirModel = new QFileSystemModel(this);
     dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
     QCompleter *completer = new QCompleter(dirModel, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -161,10 +161,11 @@ void MainWindow::selectCard(int row)
 
 void MainWindow::addDeviceLink(const QString& link)
 {
-    QRegExp linkCheck("addcard\\?row=(\\d+)", Qt::CaseSensitive);
-    if (linkCheck.exactMatch(link)) {
+    static const QRegularExpression linkCheck("addcard\\?row=(\\d+)", QRegularExpression::NoPatternOption);
+    auto linkMatch = linkCheck.match(link);
+    if (linkMatch.hasMatch()) {
         // Row id is in cap(1) - we can convert because it's a \d+ match.
-        int row = linkCheck.cap(1).toInt();
+        int row = linkMatch.capturedView(1).toInt();
         GraphicsDevice dev = m_model->device(row);
         if (!m_graphicsRulesWriter->videoCardDatabase()->contains(dev.vendorId, dev.deviceId)) {
             m_graphicsRulesWriter->videoCardDatabase()->addDevice(dev.vendorId, dev.deviceId, dev.name);
@@ -409,8 +410,8 @@ void MainWindow::save()
     bool manualSave = false;
 
     QDir gameDirectory = m_graphicsRulesWriter->gamePath();
-    QFileInfo graphicsRulesDir = m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory).absolutePath();
-    QFileInfo videoCardsDir = m_graphicsRulesWriter->plugin()->databaseFileName(gameDirectory).absolutePath();
+    auto graphicsRulesDir = QFileInfo(m_graphicsRulesWriter->plugin()->rulesFileName(gameDirectory).absolutePath());
+    auto videoCardsDir = QFileInfo(m_graphicsRulesWriter->plugin()->databaseFileName(gameDirectory).absolutePath());
 
     if (!graphicsRulesDir.isWritable() || !videoCardsDir.isWritable()) {
         manualSave = true;

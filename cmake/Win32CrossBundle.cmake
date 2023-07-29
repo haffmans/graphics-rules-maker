@@ -4,6 +4,7 @@ set(win32_system_libs
     user32.dll ws2_32.dll ole32.dll msvcrt.dll mscvrt.dll winmm.dll netapi32.dll uxtheme.dll
     iphlpapi.dll version.dll userenv.dll opengl32.dll dxgi.dll d3d9.dll d3d10.dll d3d11.dll d3d12.dll
     imm32.dll oleaut32.dll wtsapi32.dll
+    authz.dll dwrite.dll dcomp.dll api-ms-win-core-synch-l1-2-0.dll
 )
 
 function(_gp_is_win32_system_library library outvar)

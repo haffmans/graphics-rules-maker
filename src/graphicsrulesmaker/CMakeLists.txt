@@ -7,8 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5Widgets 5.7 REQUIRED)
-find_package(Qt5LinguistTools)
+find_package(Qt6Widgets 6.2 REQUIRED)
+find_package(Qt6LinguistTools)
 
 if(WIN32)
     find_package(DirectX9 REQUIRED)
@@ -46,14 +46,14 @@ set(GraphicsRulesMaker_HDRS
 )
 
 # Translations
-if(${Qt5LinguistTools_FOUND})
+if(${Qt6LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
-    qt5_create_translation(GraphicsRulesMaker_QMS
+    qt6_create_translation(GraphicsRulesMaker_QMS
         ${CMAKE_CURRENT_SOURCE_DIR}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
         OPTIONS -source-language "en_US"
     )
-endif(${Qt5LinguistTools_FOUND})
+endif(${Qt6LinguistTools_FOUND})
 
 # Determine installation path for CMake files
 if(WIN32 AND NOT CYGWIN)
@@ -105,7 +105,7 @@ configure_file(graphicsrulesmaker_config.h.cmake
 
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
-target_link_libraries(GraphicsRulesMaker Qt5::Widgets)
+target_link_libraries(GraphicsRulesMaker Qt6::Widgets)
 if(WIN32)
     # NOTE: ${DirectX9_DXGI_LIBRARY} is removed; we load it dynamically at runtime
     target_link_libraries(GraphicsRulesMaker ${DirectX9_LIBRARY} )

@@ -7,8 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools)
+find_package(Qt6Widgets REQUIRED)
+find_package(Qt6LinguistTools)
 if (NOT GraphicsRulesMaker_FULL_BUILD)
     find_package(GraphicsRulesMaker REQUIRED)
 endif (NOT GraphicsRulesMaker_FULL_BUILD)
@@ -25,7 +25,7 @@ endif(WIN32 AND NOT CYGWIN)
 
 include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
-qt5_wrap_ui(GraphicsRulesMakerUi_UIS
+qt6_wrap_ui(GraphicsRulesMakerUi_UIS
     mainwindow.ui
     manualsaveconfirmationbox.ui
     aboutdialog.ui
@@ -43,14 +43,14 @@ set(GraphicsRulesMakerUi_SRCS
 )
 
 # Translations
-if(${Qt5LinguistTools_FOUND})
+if(${Qt6LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
-    qt5_create_translation(GraphicsRulesMakerUi_QMS
+    qt6_create_translation(GraphicsRulesMakerUi_QMS
         ${CMAKE_CURRENT_SOURCE_DIR}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMakerUi_nl.ts"
         OPTIONS -source-language "en_US"
     )
-endif(${Qt5LinguistTools_FOUND})
+endif(${Qt6LinguistTools_FOUND})
 
 # Set some Win32 Specific Settings
 IF(WIN32)
@@ -62,7 +62,7 @@ IF (APPLE)
 ENDIF (APPLE)
 
 add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS} ${GraphicsRulesMakerUi_QMS})
-target_link_libraries(GraphicsRulesMakerUi GraphicsRulesMaker Qt5::Widgets)
+target_link_libraries(GraphicsRulesMakerUi GraphicsRulesMaker Qt6::Widgets)
 
 if(WIN32)
     target_link_libraries(GraphicsRulesMakerUi ${DirectX_LIBRARIES})
@@ -82,8 +82,8 @@ if(WIN32)
     include(InstallRequiredSystemLibraries)
 
     # Install dependencies (Qt) for Windows
-    get_target_property(Qt5Core_Location Qt5::Core LOCATION)
-    get_filename_component(Qt5Core_BinDir "${Qt5Core_Location}" DIRECTORY)
+    get_target_property(Qt6Core_Location Qt6::Core LOCATION)
+    get_filename_component(Qt6Core_BinDir "${Qt6Core_Location}" DIRECTORY)
 
     if (TARGET Qt5::QWindowsIntegrationPlugin)
         # For MSVC (as generator), there's no active build config; the configuration is determined
@@ -112,8 +112,8 @@ if(WIN32)
     endif()
 
     set(_pluginSourcePaths
-        "${_qt5Core_install_prefix}/lib/qt/plugins"
-        "${_qt5Core_install_prefix}/plugins"
+        "${QT6_INSTALL_PREFIX}/lib/qt6/plugins"
+        "${QT6_INSTALL_PREFIX}/plugins"
     )
 
     foreach(_basePath ${_pluginSourcePaths})
@@ -123,7 +123,7 @@ if(WIN32)
     endforeach()
 
     if (NOT _pluginBasePath)
-        message(FATAL_ERROR "Could not detect Qt plugin base directory from: ${_qt5Core_install_prefix}")
+        message(FATAL_ERROR "Could not detect Qt plugin base directory from: ${QT6_INSTALL_PREFIX}")
     endif()
 
     foreach(_plugin ${_plugins})
@@ -147,7 +147,8 @@ if(WIN32)
     set(BundleLibraryDirs
         "\${CMAKE_INSTALL_PREFIX}/bin/"
         "\${CMAKE_INSTALL_PREFIX}/bin/gamewriters"
-        ${Qt5Core_BinDir}
+        ${Qt6Core_BinDir}
+        ${CMAKE_FIND_ROOT_PATH}/bin
     )
 
     if (NOT "${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")

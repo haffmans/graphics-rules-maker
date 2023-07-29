@@ -34,7 +34,7 @@ else(WIN32 AND NOT CYGWIN)
     set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
 endif(WIN32 AND NOT CYGWIN)
 
-find_package(Qt5 5.7 REQUIRED COMPONENTS Core)
+find_package(Qt6 6.2 REQUIRED COMPONENTS Core)
 find_package(ImageMagick REQUIRED COMPONENTS convert)
 
 # Create icon from icon.png
@@ -60,7 +60,7 @@ add_custom_command(OUTPUT "icon.ico"
 
 set(GraphicsRulesMaker_Ico "${CMAKE_CURRENT_BINARY_DIR}/icon.ico")
 
-qt5_add_resources(GraphicsRulesMaker_IconRCC
+qt6_add_resources(GraphicsRulesMaker_IconRCC
     icon.qrc
 )
 
@@ -80,7 +80,7 @@ add_subdirectory(src/graphicsrulesmakerui)
 add_subdirectory(src/plugins)
 
 if(WIN32)
-    find_package(Qt5Widgets REQUIRED)
+    find_package(Qt6Widgets REQUIRED)
     find_package(ImageMagick REQUIRED COMPONENTS convert)
 
     # Generate NSIS Header

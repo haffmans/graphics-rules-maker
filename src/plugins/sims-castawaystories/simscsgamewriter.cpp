@@ -91,8 +91,8 @@ QFileInfo SimsCSGameWriter::databaseFileName(const QDir& gameDirectory) const
 QFileInfo SimsCSGameWriter::findFile(QDir baseDir, QStringList options) const
 {
     foreach(const QString &option, options) {
-        QString path = baseDir.absoluteFilePath(option);
-        if (QFileInfo::exists(path)) {
+        auto path = QFileInfo(baseDir.absoluteFilePath(option));
+        if (path.exists()) {
             return path;
         }
     }

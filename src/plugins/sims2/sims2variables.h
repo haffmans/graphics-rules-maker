@@ -39,21 +39,21 @@ struct Sims2Variables
         const QRegularExpression resolutionRegex("^(\\d+)x(\\d+)$");
 
         // Backwards compatibility: support loading resolution strings
-        if (map.contains("defaultResolution") && map.value("defaultResolution").type() == QVariant::String) {
+        if (map.contains("defaultResolution") && map.value("defaultResolution").typeId() == QMetaType::QString) {
             auto stringResolution = map.value("defaultResolution").toString();
             auto match = resolutionRegex.match(stringResolution);
             if (match.hasMatch()) {
-                defaultResolution.setWidth(match.capturedRef(1).toInt());
-                defaultResolution.setHeight(match.capturedRef(2).toInt());
+                defaultResolution.setWidth(match.capturedView(1).toInt());
+                defaultResolution.setHeight(match.capturedView(2).toInt());
             }
         }
 
-        if (map.contains("maximumResolution") && map.value("maximumResolution").type() == QVariant::String) {
+        if (map.contains("maximumResolution") && map.value("maximumResolution").typeId() == QMetaType::QString) {
             auto stringResolution = map.value("maximumResolution").toString();
             auto match = resolutionRegex.match(stringResolution);
             if (match.hasMatch()) {
-                maximumResolution.setWidth(match.capturedRef(1).toInt());
-                maximumResolution.setHeight(match.capturedRef(2).toInt());
+                maximumResolution.setWidth(match.capturedView(1).toInt());
+                maximumResolution.setHeight(match.capturedView(2).toInt());
             }
         }
     }

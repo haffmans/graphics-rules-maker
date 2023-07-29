@@ -66,7 +66,7 @@ QDir SimCity4GameWriter::findGameDirectory() const
     if (length != 0) {
         QScopedArrayPointer<WCHAR> buffer(new WCHAR[length]);
         GetLongPathNameW(resultUtf16, buffer.data(), length);
-        result = QString::fromUtf16(reinterpret_cast<const ushort *>(buffer.data()), length - 1);
+        result = QString::fromUtf16(reinterpret_cast<char16_t*>(buffer.data()), length - 1);
     }
 
     return QDir(result);
@@ -93,8 +93,8 @@ QFileInfo SimCity4GameWriter::databaseFileName(const QDir& gameDirectory) const
 
 QFileInfo SimCity4GameWriter::findFile(QDir baseDir, const QString& file) const
 {
-    QString path = baseDir.absoluteFilePath(file);
-    if (QFileInfo::exists(path)) {
+    auto path = QFileInfo(baseDir.absoluteFilePath(file));
+    if (path.exists()) {
         return path;
     }
 

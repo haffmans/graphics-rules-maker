@@ -7,8 +7,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5LinguistTools)
+find_package(Qt6Widgets REQUIRED)
+find_package(Qt6LinguistTools)
 if (NOT GraphicsRulesMaker_FULL_BUILD)
     find_package(GraphicsRulesMaker REQUIRED)
 endif (NOT GraphicsRulesMaker_FULL_BUILD)
@@ -20,7 +20,7 @@ if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
     set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
 endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
-qt5_wrap_ui(GraphicsRulesMaker_SimsCastawayStories_UIS simscssettings.ui)
+qt6_wrap_ui(GraphicsRulesMaker_SimsCastawayStories_UIS simscssettings.ui)
 
 SET(GraphicsRulesMaker_SimsCastawayStories_SRCS
     simscssettings.cpp
@@ -29,18 +29,18 @@ SET(GraphicsRulesMaker_SimsCastawayStories_SRCS
 )
 
 # Translations
-if(${Qt5LinguistTools_FOUND})
+if(${Qt6LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
-    qt5_create_translation(GraphicsRulesMaker_SimsCastawayStories_QMS
+    qt6_create_translation(GraphicsRulesMaker_SimsCastawayStories_QMS
         ${CMAKE_CURRENT_SOURCE_DIR}
         "${GraphicsRulesMaker_TRANSLATIONS_DIR}/SimsCastawayStoriesGameWriter_nl.ts"
         OPTIONS -source-language "en_US"
     )
-endif(${Qt5LinguistTools_FOUND})
+endif(${Qt6LinguistTools_FOUND})
 
 add_library(SimsCastawayStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsCastawayStories_SRCS} ${GraphicsRulesMaker_SimsCastawayStories_QMS})
 set_target_properties(SimsCastawayStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsCastawayStoriesGameWriter Qt5::Widgets GraphicsRulesMaker)
+target_link_libraries(SimsCastawayStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
 
 # Determine relative plugin path for CPACK
 file(RELATIVE_PATH PluginInstallDir "${CMAKE_INSTALL_PREFIX}" ${GraphicsRulesMaker_PLUGIN_PATH})

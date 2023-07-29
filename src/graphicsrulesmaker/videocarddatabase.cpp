@@ -20,7 +20,8 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QDebug>
-#include <QtCore/qsize.h>
+#include <QtCore/QSize>
+#include <QtCore/QRegularExpression>
 
 VideoCardDatabase::VideoCardDatabase(QObject *parent) :
     QAbstractItemModel(parent)
@@ -235,9 +236,9 @@ void VideoCardDatabase::loadFrom(QString fileName)
 
 void VideoCardDatabase::loadFrom(QIODevice* file)
 {
-    QRegExp vendorMatch("^\\s*vendor\\s+\"(.*)\"((\\s+0x[0-9A-F]{4})+)\\s*$", Qt::CaseInsensitive);
-    QRegExp idMatch("0x([0-9A-F]{4})", Qt::CaseInsensitive);
-    QRegExp cardMatch("^\\s*card\\s+0x([0-9A-F]{4})\\s+\"(.*)\"\\s*$", Qt::CaseInsensitive);
+    QRegularExpression vendorRe("^\\s*vendor\\s+\"(.*)\"((\\s+0x[0-9A-F]{4})+)\\s*$", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression idRe("0x([0-9A-F]{4})", QRegularExpression::CaseInsensitiveOption);
+    QRegularExpression cardRe("^\\s*card\\s+0x([0-9A-F]{4})\\s+\"(.*)\"\\s*$", QRegularExpression::CaseInsensitiveOption);
 
     // Open device if necessary, otherwise check that we can read it
     bool fileWasOpen = file->isOpen();
@@ -259,24 +260,26 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
     while (!stream.atEnd()) {
         QString line(stream.readLine());
 
-        if (vendorMatch.exactMatch(line)) {
-            qDebug() << "- Vendor" << vendorMatch.cap(1);
+        auto vendorMatch = vendorRe.match(line);
+        auto idMatch = idRe.match(line);
+        auto cardMatch = cardRe.match(line);
+
+        if (vendorMatch.hasMatch()) {
+            qDebug() << "- Vendor" << vendorMatch.captured(1);
             // Add new vendor
             vendor.insert(VideoCardVendor());
-            vendor.value().name = vendorMatch.cap(1);
+            vendor.value().name = vendorMatch.captured(1);
 
-            QString vendorIds = vendorMatch.cap(2);
-            int offset = 0;
-            while ((offset = idMatch.indexIn(vendorIds, offset)) != -1) {
-                vendor.value().vendorIds.append(idMatch.cap(1).toInt(0, 16));
-                offset += idMatch.matchedLength();
+            QString vendorIds = vendorMatch.captured(2);
+            for (const auto& id: idRe.globalMatch(vendorIds)) {
+                vendor.value().vendorIds.append(id.captured(1).toInt(0, 16));
             }
         }
         // Only check for card if we have a current vendor
-        else if (vendor.hasPrevious() && cardMatch.exactMatch(line)) {
+        if (vendor.hasPrevious() && cardMatch.hasMatch()) {
             VideoCard card;
-            card.name = cardMatch.cap(2);
-            card.deviceId = cardMatch.cap(1).toInt(0, 16);
+            card.name = cardMatch.captured(2);
+            card.deviceId = cardMatch.captured(1).toInt(0, 16);
             vendor.value().cards.append(card);
         }
     }
