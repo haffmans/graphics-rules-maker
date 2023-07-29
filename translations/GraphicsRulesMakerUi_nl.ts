@@ -302,8 +302,8 @@ Met dank aan: &lt;a href=&quot;https://www.simsnetwork.com/tools/graphics-rules-
         <translation>Kies het installatiepad van %1</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="250"/>
-        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="252"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="247"/>
+        <location filename="../src/graphicsrulesmakerui/mainwindow.cpp" line="249"/>
         <source>%1 Preview</source>
         <translation>%1 Voorbeeld</translation>
     </message>

@@ -228,9 +228,6 @@ void MainWindow::selectGame(int row)
         return;
     }
 
-    qDebug() << "- Load widget";
-    loadWidget();
-
     qDebug() << "- Locate game files";
     locateGameFiles(ui->gamePath->text());
 
@@ -250,6 +247,9 @@ void MainWindow::selectGame(int row)
     ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_graphicsRulesWriter->plugin()->rulesFileName()));
     index = ui->mainTabs->indexOf(ui->videoCardsTab);
     ui->mainTabs->setTabText(index, tr("%1 Preview").arg(m_graphicsRulesWriter->plugin()->databaseFileName()));
+
+    qDebug() << "- Load widget";
+    loadWidget();
 }
 
 void MainWindow::loadWidget()
