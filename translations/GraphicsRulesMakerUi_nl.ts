@@ -501,22 +501,22 @@ Het kan ook helpen om de Graphics Rules Maker als beheerder uit te voeren.</tran
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="67"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="76"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="67"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="76"/>
         <source>No game plugins found. Please re-install the application.</source>
         <translation>Geen spelplugins gevonden. Herinstalleer aub de applicatie.</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="71"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="80"/>
         <source>No Graphics Card</source>
         <translation>Geen Grafische Kaart</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmakerui/main.cpp" line="72"/>
+        <location filename="../src/graphicsrulesmakerui/main.cpp" line="81"/>
         <source>No DirectX supported graphics card detected. Please install the latest drivers for your graphics card. Graphics Rules Maker may not function correctly.</source>
         <translation>Geen DirectX grafische kaart gedetecteerd. Installeer de nieuwste drivers voor je grafische kaart. Graphics Rules Maker werkt mogelijk niet correct.</translation>
     </message>

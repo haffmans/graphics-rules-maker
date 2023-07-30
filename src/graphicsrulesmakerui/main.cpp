@@ -18,6 +18,8 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
+#include <QtGui/QPalette>
+#include <QtGui/QStyleHints>
 #include <QtCore/QDebug>
 #include <QtCore/QStandardPaths>
 
@@ -41,6 +43,15 @@ int main(int argc, char *argv[])
     app.setApplicationVersion(GRAPHICSRULESMAKER_VERSION);
     app.setOrganizationName("SimsNetwork");
     app.setOrganizationDomain("simsnetwork.com");
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+    // Link color is ugly by default in dark mode -> use bright text color instead
+    if (app.styleHints()->colorScheme() == Qt::ColorScheme::Dark) {
+        auto palette = app.palette();
+        palette.setColor(QPalette::Link, palette.brightText().color());
+        app.setPalette(palette);
+    }
+#endif
 
     MessageHandler::setMessagePattern();
     QDir appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
