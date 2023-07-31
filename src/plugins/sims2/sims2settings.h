@@ -47,6 +47,7 @@ public slots:
 
 private:
     void selectResolution(QComboBox* comboBox, const QSize& resolution);
+    bool shadowFixModInstalled() const;
     std::unique_ptr<Ui::Sims2Settings> ui;
     DeviceModel *m_devices;
 };
