@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6Widgets 6.2 REQUIRED)
-find_package(Qt6LinguistTools)
+find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 
 if(WIN32)
     find_package(DirectX9 REQUIRED)
