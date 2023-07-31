@@ -1,4 +1,4 @@
-Graphic Rules Maker 2.2.0
+Graphic Rules Maker 2.3.0
 
 Manipulate Graphics Rules files for Maxis games for better compatibility with newer systems.
 
@@ -12,4 +12,3 @@ Distributed under the GNU Public License version 3.0. See LICENSE.txt for detail
 This application is not endorsed by or affiliated with Electronic Arts, or its licensors.
 Trademarks are the property of their respective owners.
 Game content and materials copyright Electronic Arts Inc. and its licensors.
-
