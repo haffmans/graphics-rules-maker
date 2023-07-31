@@ -174,19 +174,12 @@ void Sims2Settings::autodetect()
     int maxMemoryMb = static_cast<int>(maxMemory / (1024*1024));
     ui->forceMem->setValue(std::min<int>(ui->forceMem->maximum(), maxMemoryMb));
 
-    // Disabling texture memory estimate adjustment: nVidia cards only for now
-    bool hasNvidia = false;
-    for (int i = 0; i < deviceCount; ++i) {
-        auto device = m_devices->device(i);
-        if (device.vendorId == 0x10de) {
-            hasNvidia = true;
-        }
-    }
-
-    ui->disableTexMemEstimateAdjustment->setChecked(hasNvidia);
 #ifdef Q_OS_WIN32
-    ui->enableDriverMemoryManager->setChecked(IsWindowsVistaOrGreater()); // turn on by default for Vista and later
+    // Use driver memory management on Vista and later
+    ui->disableTexMemEstimateAdjustment->setChecked(IsWindowsVistaOrGreater());
+    ui->enableDriverMemoryManager->setChecked(IsWindowsVistaOrGreater());
 #else
+    ui->disableTexMemEstimateAdjustment->setChecked(false);
     ui->enableDriverMemoryManager->setChecked(false);
 #endif
 

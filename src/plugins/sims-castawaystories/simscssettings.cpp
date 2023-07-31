@@ -175,7 +175,19 @@ void SimsCSSettings::autodetect()
     int maxMemoryMb = static_cast<int>(maxMemory / (1024*1024));
     ui->forceMem->setValue(std::min<int>(ui->forceMem->maximum(), maxMemoryMb));
 
-    // Disabling texture memory estimate adjustment: nVidia cards only for now
+#ifdef Q_OS_WIN32
+    // Use driver memory management on Vista and later
+    ui->disableTexMemEstimateAdjustment->setChecked(IsWindowsVistaOrGreater());
+    ui->enableDriverMemoryManager->setChecked(IsWindowsVistaOrGreater());
+    // Sim Shadows: Windows 8 and up
+    ui->disableSimShadows->setChecked(IsWindows8OrGreater());
+#else
+    ui->disableTexMemEstimateAdjustment->setChecked(false);
+    ui->enableDriverMemoryManager->setChecked(false);
+    ui->disableSimShadows->setChecked(false);
+#endif
+
+    // Ignore Nvidia driver version: only for Nvidia
     bool hasNvidia = false;
     for (int i = 0; i < deviceCount; ++i) {
         auto device = m_devices->device(i);
@@ -183,22 +195,6 @@ void SimsCSSettings::autodetect()
             hasNvidia = true;
         }
     }
-
-    ui->disableTexMemEstimateAdjustment->setChecked(hasNvidia);
-#ifdef Q_OS_WIN32
-    ui->enableDriverMemoryManager->setChecked(IsWindowsVistaOrGreater()); // turn on by default for Vista and later
-#else
-    ui->enableDriverMemoryManager->setChecked(false);
-#endif
-
-    // Sim Shadows: Windows 8 and up
-#ifdef Q_OS_WIN32
-    ui->disableSimShadows->setChecked(IsWindows8OrGreater());
-#else
-    ui->disableSimShadows->setChecked(false);
-#endif
-
-    // Ignore Nvidia driver version: only for Nvidia
     ui->ignoreNvidiaDriverVersion->setChecked(hasNvidia);
 
     // Radeon HD 7000 tweak
