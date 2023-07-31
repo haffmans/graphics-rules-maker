@@ -61,7 +61,7 @@ public:
     ~SimCity4GameWriter() override;
 
 private:
-    QFileInfo findFile(QDir baseDir, const QString& file) const;
+    QFileInfo findFile(QDir baseDir, QStringList options) const;
 };
 
 #endif // SIMS2GAMEWRITER_H

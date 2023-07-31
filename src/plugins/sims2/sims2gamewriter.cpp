@@ -121,6 +121,25 @@ QFileInfo Sims2GameWriter::gameExecutable(const QDir& gameDirectory) const
         << "TSBin/Sims2EP2.exe"
         << "TSBin/Sims2EP1.exe"
         << "TSBin/Sims2.exe"
+        // TSBin directory used to find game
+        << "Sims2SC.exe"
+        << "Sims2EP9.exe"
+        << "Sims2EP8.exe"
+        << "Sims2SP8.exe"
+        << "Sims2SP7.exe"
+        << "Sims2EP7.exe"
+        << "Sims2SP6.exe"
+        << "Sims2EP6.exe"
+        << "Sims2SP5.exe"
+        << "Sims2SP4.exe"
+        << "Sims2EP5.exe"
+        << "Sims2EP4.exe"
+        << "Sims2SP2.exe"
+        << "Sims2SP1.exe"
+        << "Sims2EP3.exe"
+        << "Sims2EP2.exe"
+        << "Sims2EP1.exe"
+        << "Sims2.exe"
     );
 }
 
@@ -141,6 +160,8 @@ QFileInfo Sims2GameWriter::rulesFileName(const QDir& gameDirectory) const
         << "SP8/TSData/Res/Config/Graphics Rules.sgr"
         // Directory to game/EP/SP installation directly
         << "TSData/Res/Config/Graphics Rules.sgr"
+        // Or from TSBin itself
+        << "../TSData/Res/Config/Graphics Rules.sgr"
     );
 }
 
@@ -161,6 +182,8 @@ QFileInfo Sims2GameWriter::databaseFileName(const QDir& gameDirectory) const
         << "SP8/TSData/Res/Config/Video Cards.sgr"
         // Directory to game/EP/SP installation directly
         << "TSData/Res/Config/Video Cards.sgr"
+        // Or from TSBin itself
+        << "../TSData/Res/Config/Video Cards.sgr"
     );
 }
 

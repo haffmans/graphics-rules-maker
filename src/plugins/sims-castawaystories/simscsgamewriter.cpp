@@ -70,6 +70,8 @@ QFileInfo SimsCSGameWriter::gameExecutable(const QDir& gameDirectory) const
     return findFile(gameDirectory, QStringList()
         // Disc version
         << "TSBin/SimsCS.exe"
+        // TSBin directory used to find game
+        << "SimsCS.exe"
     );
 }
 
@@ -77,6 +79,8 @@ QFileInfo SimsCSGameWriter::rulesFileName(const QDir& gameDirectory) const
 {
     return findFile(gameDirectory, QStringList()
         << "TSData/Res/Config/Graphics Rules.sgr"
+        // Or from TSBin itself
+        << "../TSData/Res/Config/Graphics Rules.sgr"
     );
 }
 
@@ -85,6 +89,8 @@ QFileInfo SimsCSGameWriter::databaseFileName(const QDir& gameDirectory) const
     return findFile(gameDirectory, QStringList()
         // Directory to game/EP/SP installation directly
         << "TSData/Res/Config/Video Cards.sgr"
+        // Or from TSBin itself
+        << "../TSData/Res/Config/Video Cards.sgr"
     );
 }
 

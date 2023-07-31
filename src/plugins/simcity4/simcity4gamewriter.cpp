@@ -22,6 +22,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
+#include <QtCore/QStringList>
 
 #ifdef Q_OS_WIN32
 #include <windows.h>
@@ -78,24 +79,35 @@ QDir SimCity4GameWriter::findGameDirectory() const
 
 QFileInfo SimCity4GameWriter::gameExecutable(const QDir& gameDirectory) const
 {
-    return findFile(gameDirectory, "Apps/SimCity 4.exe");
+    return findFile(gameDirectory, QStringList()
+        << "Apps/SimCity 4.exe"
+        << "SimCity 4.exe"
+    );
 }
 
 QFileInfo SimCity4GameWriter::rulesFileName(const QDir& gameDirectory) const
 {
-    return findFile(gameDirectory, "Graphics Rules.sgr");
+    return findFile(gameDirectory, QStringList()
+        << "Graphics Rules.sgr"
+        << "../Graphics Rules.sgr"
+    );
 }
 
 QFileInfo SimCity4GameWriter::databaseFileName(const QDir& gameDirectory) const
 {
-    return findFile(gameDirectory, "Video Cards.sgr");
+    return findFile(gameDirectory, QStringList()
+        << "Video Cards.sgr"
+        << "../Video Cards.sgr"
+    );
 }
 
-QFileInfo SimCity4GameWriter::findFile(QDir baseDir, const QString& file) const
+QFileInfo SimCity4GameWriter::findFile(QDir baseDir, QStringList options) const
 {
-    auto path = QFileInfo(baseDir.absoluteFilePath(file));
-    if (path.exists()) {
-        return path;
+    foreach(const QString &option, options) {
+        auto path = QFileInfo(baseDir.absoluteFilePath(option));
+        if (path.exists()) {
+            return path;
+        }
     }
 
     return QFileInfo();
