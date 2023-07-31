@@ -20,6 +20,8 @@
 #include "ui_simslssettings.h"
 
 #include <QtCore/QSettings>
+#include <QtCore/QDir>
+#include <QtCore/QStandardPaths>
 #include <QMessageBox>
 
 #include <algorithm>
@@ -180,7 +182,7 @@ void SimsLSSettings::autodetect()
     ui->disableTexMemEstimateAdjustment->setChecked(IsWindowsVistaOrGreater());
     ui->enableDriverMemoryManager->setChecked(IsWindowsVistaOrGreater());
     // Sim Shadows: Windows 8 and up
-    ui->disableSimShadows->setChecked(IsWindows8OrGreater());
+    ui->disableSimShadows->setChecked(IsWindows8OrGreater() && !shadowFixModInstalled());
 #else
     ui->disableTexMemEstimateAdjustment->setChecked(false);
     ui->enableDriverMemoryManager->setChecked(false);
@@ -232,6 +234,46 @@ void SimsLSSettings::autodetect()
     // Resolutions: just pick the last item
     ui->defaultResolution->setCurrentIndex(ui->defaultResolution->count() - 1);
     ui->maxResolution->setCurrentIndex(ui->maxResolution->count() - 1);
+}
+
+bool SimsLSSettings::shadowFixModInstalled() const
+{
+    const QStringList alternatives = {
+        "simNopke-simShadowFix0.2.package", "simNopke-simShadowFix0.3.package", "simNopke-simShadowFix0.4.package",
+        "simNopke-simShadowFix0.2reallyNotMisty.package", "simNopke-simShadowFix0.3reallyNotMisty.package", "simNopke-simShadowFix0.4reallyNotMisty.package"
+    };
+
+    // Fetch folder name from registry (Windows-only)
+#ifdef Q_OS_WIN32
+#ifdef _WIN64
+    QSettings ts2Settings("HKEY_LOCAL_MACHINE\\Software\\WOW6432Node\\EA GAMES\\The Sims 2", QSettings::NativeFormat);
+#else
+    QSettings ts2Settings("HKEY_LOCAL_MACHINE\\Software\\EA GAMES\\The Sims 2", QSettings::NativeFormat);
+#endif
+    const auto ts2DisplayName = ts2Settings.value("Display Name").toString();
+#else
+    const auto ts2DisplayName = QString("The Sims™ Life Stories");
+#endif
+
+    if (ts2DisplayName.isEmpty()) {
+        return false;
+    }
+
+    QString ts2DocumentsDirStr = QStandardPaths::locate(QStandardPaths::DocumentsLocation,
+                                                        QString("Electronic Arts") + QDir::separator() + ts2DisplayName,
+                                                        QStandardPaths::LocateDirectory);
+    if (ts2DocumentsDirStr.isEmpty()) {
+        return false; // Game save directory not found
+    }
+
+    QDir downloadsDir = QDir(ts2DocumentsDirStr).filePath("Downloads");
+
+    for (const auto& alternative: alternatives) {
+        if (downloadsDir.exists(alternative)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 SimsLSSettings::~SimsLSSettings()
