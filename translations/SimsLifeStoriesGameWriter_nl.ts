@@ -52,12 +52,12 @@
         <translation>Geen Sim-schaduw</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="177"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="193"/>
         <source>The initial resolution as applied by the game at first launch.</source>
         <translation>De oorspronkelijke resolutie die toegepast wordt bij de eerste start van het spel.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="180"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="196"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default resolution to use, if the game is in high quality mode. This only applies when first starting up the game; use the in-game settings to change the actual resolution.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De standaard resolutie om te gebruiken, mits het spel in hoge-kwaliteitsmodus start. Deze instelling werkt alleen bij de eerste start van het spel; gebruik de instellingen in het spel om de daadwerkelijke resolutie aan te passen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -67,22 +67,22 @@
         <translation>De Sims Levensverhalen Instellingen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="167"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="183"/>
         <source>&amp;Default resolution:</source>
         <translation>&amp;Standaard resolutie:</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="187"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="203"/>
         <source>Ma&amp;ximum resolution:</source>
         <translation>Ma&amp;ximale resolutie:</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="197"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="213"/>
         <source>The maximum available resolution (in high quality graphics mode only).</source>
         <translation>De maximale beschikbare resolutie (alleen in hoge-kwaliteitsmodus).</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="200"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="216"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The maximum available resolution (width/height) in the game, if the game is in high quality mode. &lt;/p&gt;&lt;p&gt;Change this to make higher resolutions available in the in-game settings.&lt;/p&gt;&lt;p&gt;If this tweak appears to have no effect, the game may not be running in high quality mode. Enabling other tweaks may help.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;De maximaal beschikbare resolutie (breedte/hoogte) in het spel, mits het spel in hoge-kwaliteitsmodus draait.&lt;/p&gt;&lt;p&gt;Kies dit om hogere resoluties beschikbaar te maken bij de instellingen in het spel.&lt;/p&gt;&lt;p&gt;Als deze instelling geen effect heeft, dan draait het spel niet in hoge-kwaliteitsmodus. Andere instellingen toepassen kan dan helpen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -177,37 +177,52 @@
         <translation>Ondersteun VSync op Intel</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="213"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="167"/>
+        <source>Disable Dirty Rectangle rendering optimizations.</source>
+        <translation>Schakel optimalisatie om alleen gewijzigde rechthoeken te renderen uit.</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="170"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This disables rendering only changed rectangles. These optimizations may cause graphical glitches on some cards, especially Intel integrated ones. They also prevents depth buffer shaders from other tools, like ReShade, from working.&lt;/p&gt;&lt;p&gt;To solve those problems you can enable this tweak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dit schakelt uit dat alleen gewijzigde rechthoeken worden getekend. Deze optimalisaties kunnen grafische problemen op sommige kaarten veroorzaken, met name bij Intel geïntegreerde chips. Deze optimalisaties verhinderen ook de correcte werking van depth buffer shaders van andere tools, zoals ReShade.&lt;/p&gt;&lt;p&gt;Om die problemen op te lossen kun je deze tweak inschakelen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="173"/>
+        <source>Disable Dirty Rectangle optimizations</source>
+        <translation>Render ongewijzigde rechthoeken</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="229"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no 60hz display mode available on your system. You may have to define a 60hz custom resolution (using other software), or the game may not work correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Er is geen 60hz schermmodus beschikbaar op je systeem. Je moet mogelijk een aangepaste 60hz-resolutie definiëren (met andere software) om het spel correct te laten werken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="228"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="244"/>
         <source>&amp;Auto-detect</source>
         <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="238"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="254"/>
         <source>Disable all tweaks and restore default values.</source>
         <translation>Zet alle instellingen terug naar de standaardwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="241"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="257"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zet alle instellingen terug naar de standaardwaarden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="244"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.ui" line="260"/>
         <source>&amp;Default Settings</source>
         <translation>Standaard&amp;instellingen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="152"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="154"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="153"/>
+        <location filename="../src/plugins/sims-lifestories/simslssettings.cpp" line="155"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

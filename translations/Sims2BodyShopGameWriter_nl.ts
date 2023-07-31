@@ -107,22 +107,37 @@
         <translation>Ondersteun VSync op Intel</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="153"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="151"/>
+        <source>Disable Dirty Rectangle rendering optimizations.</source>
+        <translation>Schakel optimalisatie om alleen gewijzigde rechthoeken te renderen uit.</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="154"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This disables rendering only changed rectangles. These optimizations may cause graphical glitches on some cards, especially Intel integrated ones. They also prevents depth buffer shaders from other tools, like ReShade, from working.&lt;/p&gt;&lt;p&gt;To solve those problems you can enable this tweak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dit schakelt uit dat alleen gewijzigde rechthoeken worden getekend. Deze optimalisaties kunnen grafische problemen op sommige kaarten veroorzaken, met name bij Intel geïntegreerde chips. Deze optimalisaties verhinderen ook de correcte werking van depth buffer shaders van andere tools, zoals ReShade.&lt;/p&gt;&lt;p&gt;Om die problemen op te lossen kun je deze tweak inschakelen.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="157"/>
+        <source>Disable Dirty Rectangle optimizations</source>
+        <translation>Render ongewijzigde rechthoeken</translation>
+    </message>
+    <message>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="169"/>
         <source>&amp;Auto-detect</source>
         <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="163"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="179"/>
         <source>Disable all tweaks and restore default values.</source>
         <translation>Zet alle instellingen terug naar de standaardwaarden.</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="166"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="182"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zet alle instellingen terug naar de standaardwaarden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="169"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.ui" line="185"/>
         <source>&amp;Default Settings</source>
         <translation>Standaard&amp;instellingen</translation>
     </message>
@@ -152,12 +167,12 @@
         <translation>Geen aanpassing van schatting van textuurgeheugen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="80"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="82"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="81"/>
+        <location filename="../src/plugins/sims2bodyshop/sims2bodyshopsettings.cpp" line="83"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!
