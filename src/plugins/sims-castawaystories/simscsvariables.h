@@ -34,6 +34,7 @@ struct SimsCSVariables
         , radeonHd7000Fix(map.value("radeonHd7000Fix", false).toBool())
         , intelHigh(map.value("intelHigh", false).toBool())
         , intelVsync(map.value("intelVsync", false).toBool())
+        , disableDirtyRects(map.value("disableDirtyRects", false).toBool())
         , defaultResolution(map.value("defaultResolution", QSize(1024, 768)).toSize())
         , maximumResolution(map.value("maximumResolution", QSize(1600, 1200)).toSize())
     {
@@ -70,6 +71,7 @@ struct SimsCSVariables
             { "radeonHd7000Fix", radeonHd7000Fix },
             { "intelHigh", intelHigh },
             { "intelVsync", intelVsync },
+            { "disableDirtyRects", disableDirtyRects },
             { "defaultResolution", defaultResolution },
             { "maximumResolution", maximumResolution }
         };
@@ -83,6 +85,7 @@ struct SimsCSVariables
     bool radeonHd7000Fix;
     bool intelHigh;
     bool intelVsync;
+    bool disableDirtyRects;
 
     QSize defaultResolution;
     QSize maximumResolution;

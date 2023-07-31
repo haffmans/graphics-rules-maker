@@ -53,6 +53,7 @@ QVariantMap Sims2BodyShopSettings::settings() const
     result.radeonHd7000Fix = ui->radeonHd7000Fix->isChecked();
     result.intelHigh = ui->intelHigh->isChecked();
     result.intelVsync = ui->intelVsync->isChecked();
+    result.disableDirtyRects = ui->disableDirtyRects->isChecked();
 
     return result;
 }
@@ -68,6 +69,7 @@ void Sims2BodyShopSettings::setSettings(const QVariantMap& settings)
     ui->radeonHd7000Fix->setChecked(result.radeonHd7000Fix);
     ui->intelHigh->setChecked(result.intelHigh);
     ui->intelVsync->setChecked(result.intelVsync);
+    ui->disableDirtyRects->setChecked(result.disableDirtyRects);
 }
 
 void Sims2BodyShopSettings::reset()
@@ -134,20 +136,23 @@ void Sims2BodyShopSettings::autodetect()
 
     // Intel High mode enabled for these series:
     // - "HD Graphics", "UHD Graphics",
-    // - "Iris Graphics", "Iris Plus Graphics", "Iris Pro Graphics"
+    // - "Iris Graphics", "Iris Plus Graphics", "Iris Pro Graphics", "Iris Xe Graphics"
+    // NB: Arc is excluded for now, assuming these tweaks aren't necessary; identification seems to contain "Arc(TM)"
     const QRegularExpression intelHdRegex("U?HD Graphics");
-    const QRegularExpression intelIrisRegex("Iris (Plus |Pro )?Graphics");
-    bool intelHigh = false;
+    const QRegularExpression intelIrisRegex("Iris (Plus |Pro |Xe )?Graphics");
+    bool hasIntelIntegrated = false;
     for (int i = 0; i < deviceCount; ++i) {
         auto device = m_devices->device(i);
-        if (device.name.contains(intelHdRegex) || device.name.contains(intelIrisRegex)) {
-            intelHigh = true;
+        if (device.vendorId == 0x8086 &&
+            (device.name.contains(intelHdRegex) || device.name.contains(intelIrisRegex))) {
+            hasIntelIntegrated = true;
             break;
         }
     }
     // Enable V-sync on these modern cards too
-    ui->intelVsync->setChecked(intelHigh);
-    ui->intelHigh->setChecked(intelHigh);
+    ui->intelVsync->setChecked(hasIntelIntegrated);
+    ui->intelHigh->setChecked(hasIntelIntegrated);
+    ui->disableDirtyRects->setChecked(hasIntelIntegrated);
 }
 
 Sims2BodyShopSettings::~Sims2BodyShopSettings()

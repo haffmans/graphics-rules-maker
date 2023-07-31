@@ -402,7 +402,15 @@ endif
 #  vs2LoopsFunctional
 
 setb textureMemorySizeOK        true
-setb supportsDirtyRect          true
+)EOF";
+    if (options.disableDirtyRects) {
+        stream << R"EOF(# GraphicsRulesMaker Tweak: Disable Dirty Rectangle optimizations
+setb supportsDirtyRect          false)EOF";
+    }
+    else {
+        stream << "setb supportsDirtyRect          true";
+    }
+    stream << R"EOF(
 setb supportsTurboRect          true
 setb supportsSpecialEventCamera true
 setb forceLowSettings           false
@@ -784,6 +792,7 @@ logSystemInfo "=== Graphics Rules Maker Configuration ==="
            <<     "logSystemInfo \"Radeon HD7000 fix:    " << (options.radeonHd7000Fix ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel High Quality:   " << (options.intelHigh ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Intel V-Sync:         " << (options.intelVsync ? "Yes" : "No") << "\"\n"
+           <<     "logSystemInfo \"Disable Dirty Rects:  " << (options.disableDirtyRects ? "Yes" : "No") << "\"\n"
            <<     "logSystemInfo \"Default Resolution:   " << options.defaultResolution.width() << "x" << options.defaultResolution.height() << "\"\n"
            <<     "logSystemInfo \"Maximum Resolution:   " << options.maximumResolution.width() << "x" << options.maximumResolution.height() << "\"\n";
 

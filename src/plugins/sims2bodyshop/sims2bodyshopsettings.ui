@@ -146,6 +146,22 @@
     </widget>
    </item>
    <item row="7" column="1">
+    <widget class="QCheckBox" name="disableDirtyRects">
+     <property name="toolTip">
+      <string>Disable Dirty Rectangle rendering optimizations.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This disables rendering only changed rectangles. These optimizations may cause graphical glitches on some cards, especially Intel integrated ones. They also prevents depth buffer shaders from other tools, like ReShade, from working.&lt;/p&gt;&lt;p&gt;To solve those problems you can enable this tweak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Disable Dirty Rectangle optimizations</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="1">
     <layout class="QHBoxLayout" name="defaultsLayout" stretch="0,0">
      <item>
       <widget class="QPushButton" name="autodetect">
@@ -182,6 +198,7 @@
   <tabstop>radeonHd7000Fix</tabstop>
   <tabstop>intelHigh</tabstop>
   <tabstop>intelVsync</tabstop>
+  <tabstop>disableDirtyRects</tabstop>
   <tabstop>autodetect</tabstop>
   <tabstop>resetDefaults</tabstop>
  </tabstops>

@@ -31,6 +31,7 @@ struct Sims2BodyShopVariables
         , radeonHd7000Fix(map.value("radeonHd7000Fix", false).toBool())
         , intelHigh(map.value("intelHigh", false).toBool())
         , intelVsync(map.value("intelVsync", false).toBool())
+        , disableDirtyRects(map.value("disableDirtyRects", false).toBool())
     {
     }
 
@@ -43,7 +44,8 @@ struct Sims2BodyShopVariables
             { "ignoreNvidiaDriverVersion", ignoreNvidiaDriverVersion },
             { "radeonHd7000Fix", radeonHd7000Fix },
             { "intelHigh", intelHigh },
-            { "intelVsync", intelVsync }
+            { "intelVsync", intelVsync },
+            { "disableDirtyRects", disableDirtyRects }
         };
     }
 
@@ -54,6 +56,7 @@ struct Sims2BodyShopVariables
     bool radeonHd7000Fix;
     bool intelHigh;
     bool intelVsync;
+    bool disableDirtyRects;
 };
 
 #endif // SIMS2_BODYSHOP_VARIABLES_H

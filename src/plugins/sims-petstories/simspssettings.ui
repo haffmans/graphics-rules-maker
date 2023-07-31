@@ -161,7 +161,23 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="8" column="1">
+    <widget class="QCheckBox" name="disableDirtyRects">
+     <property name="toolTip">
+      <string>Disable Dirty Rectangle rendering optimizations.</string>
+     </property>
+     <property name="whatsThis">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This disables rendering only changed rectangles. These optimizations may cause graphical glitches on some cards, especially Intel integrated ones. They also prevents depth buffer shaders from other tools, like ReShade, from working.&lt;/p&gt;&lt;p&gt;To solve those problems you can enable this tweak.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>Disable Dirty Rectangle optimizations</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
     <widget class="QLabel" name="defaultResolutionLabel">
      <property name="text">
       <string>&amp;Default resolution:</string>
@@ -171,7 +187,7 @@
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="9" column="1">
     <widget class="QComboBox" name="defaultResolution">
      <property name="toolTip">
       <string>The initial resolution as applied by the game at first launch.</string>
@@ -181,7 +197,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="10" column="0">
     <widget class="QLabel" name="maxResolutionLabel">
      <property name="text">
       <string>Ma&amp;ximum resolution:</string>
@@ -191,7 +207,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="1">
+   <item row="10" column="1">
     <widget class="QComboBox" name="maxResolution">
      <property name="toolTip">
       <string>The maximum available resolution (in high quality graphics mode only).</string>
@@ -201,7 +217,7 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="11" column="1">
     <widget class="QLabel" name="no60HzAvailable">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -220,7 +236,7 @@
      </property>
     </widget>
    </item>
-   <item row="11" column="1">
+   <item row="12" column="1">
     <layout class="QHBoxLayout" name="defaultsLayout" stretch="0,0">
      <item>
       <widget class="QPushButton" name="autodetect">
@@ -258,6 +274,7 @@
   <tabstop>radeonHd7000Fix</tabstop>
   <tabstop>intelHigh</tabstop>
   <tabstop>intelVsync</tabstop>
+  <tabstop>disableDirtyRects</tabstop>
   <tabstop>defaultResolution</tabstop>
   <tabstop>maxResolution</tabstop>
   <tabstop>autodetect</tabstop>
