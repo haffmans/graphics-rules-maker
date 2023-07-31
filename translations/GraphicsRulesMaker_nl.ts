@@ -47,22 +47,22 @@
 <context>
     <name>VideoCardDatabase</name>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="151"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="154"/>
         <source>Vendor Name</source>
         <translation>Fabrikantnaam</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="153"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="156"/>
         <source>Vendor Id</source>
         <translation>Fabrikant ID</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="155"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="158"/>
         <source>Card Name</source>
         <translation>Naam van Grafische Kaart</translation>
     </message>
     <message>
-        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="157"/>
+        <location filename="../src/graphicsrulesmaker/videocarddatabase.cpp" line="160"/>
         <source>Card Id</source>
         <translation>ID van Grafische Kaart</translation>
     </message>
