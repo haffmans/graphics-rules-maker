@@ -57,9 +57,15 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     connect(ui->deviceSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectCard);
     connect(ui->mainTabs, &QTabWidget::currentChanged, this, &MainWindow::tabOpen);
     connect(ui->gameSelect, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWindow::selectGame);
-    connect(ui->gamePath, &QLineEdit::textChanged, m_graphicsRulesWriter, &GraphicsRulesWriter::setGamePath);
+    connect(ui->gamePath, &QLineEdit::textChanged, m_graphicsRulesWriter, [this](const QString& newPath) {
+        if (!newPath.isEmpty()) {
+            m_graphicsRulesWriter->setGamePath(newPath);
+        }
+    });
     connect(m_graphicsRulesWriter, &GraphicsRulesWriter::gamePathChanged, ui->gamePath, [this](const QDir& dir) {
-        ui->gamePath->setText(QDir::toNativeSeparators(dir.absolutePath()));
+        if (!ui->gamePath->hasFocus()) {
+            ui->gamePath->setText(QDir::toNativeSeparators(dir.absolutePath()));
+        }
     });
     connect(m_graphicsRulesWriter, &GraphicsRulesWriter::gamePathChanged, this, &MainWindow::locateGameFiles);
     connect(m_graphicsRulesWriter, &GraphicsRulesWriter::currentSettingsChanged, this, &MainWindow::loadWidgetSettings);
@@ -91,7 +97,9 @@ MainWindow::MainWindow(DeviceModel* model, GameWriterFactory *gamePlugins, Graph
     }
 
     QFileSystemModel *dirModel = new QFileSystemModel(this);
-    dirModel->setFilter(QDir::Dirs | QDir::NoDotAndDotDot | QDir::Readable);
+    dirModel->setOptions(QFileSystemModel::DontWatchForChanges);
+    dirModel->setFilter(QDir::Dirs | QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Drives);
+    dirModel->setRootPath(QString());
     QCompleter *completer = new QCompleter(dirModel, this);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     ui->gamePath->setCompleter(completer);
