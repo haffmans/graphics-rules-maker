@@ -79,6 +79,7 @@ public slots:
     void loadFrom(QString fileName);
     void loadFrom(QIODevice *file);
 
+    void addVendor(quint16 vendorId);
     void addVendor(const QString &name, quint16 vendorId);
     virtual void addVendor(const QString &name, const QList<quint16> &vendorIds);
     virtual void addDevice(quint16 vendorId, quint16 deviceId, const QString &name);

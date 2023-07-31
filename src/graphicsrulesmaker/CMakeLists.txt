@@ -43,6 +43,7 @@ set(GraphicsRulesMaker_HDRS
     abstractsettingswidget.h
     messagehandler.h
     ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/pci.vendors.h
 )
 
 # Translations
@@ -54,6 +55,21 @@ if(${Qt6LinguistTools_FOUND})
         OPTIONS -source-language "en_US"
     )
 endif(${Qt6LinguistTools_FOUND})
+
+# PCI Vendor ID database
+add_custom_command(
+    OUTPUT pci.vendors.h
+    DEPENDS pci.ids pci.vendors.cmake
+    MAIN_DEPENDENCY pci.ids
+    COMMENT "Generating PCI vendors database"
+    COMMAND ${CMAKE_COMMAND}
+              "-DPCI_INPUT=${CMAKE_CURRENT_SOURCE_DIR}/pci.ids"
+              "-DPCI_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/pci.vendors.h"
+              "-DPCI_TEMPLATE=${CMAKE_CURRENT_SOURCE_DIR}/pci.vendors.h.in"
+              "-P" "${CMAKE_CURRENT_SOURCE_DIR}/pci.vendors.cmake"
+    VERBATIM
+)
+list(APPEND GraphicsRulesMaker_SRCS "pci.vendors.h")
 
 # Determine installation path for CMake files
 if(WIN32 AND NOT CYGWIN)

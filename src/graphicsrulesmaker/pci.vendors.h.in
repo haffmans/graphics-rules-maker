@@ -1,0 +1,14 @@
+#ifndef PCI_VENDORS_H
+#define PCI_VENDORS_H
+
+#include <QtCore/QMap>
+#include <QtCore/QString>
+
+namespace GraphicsRulesMaker
+{
+    const QMap<quint16, QString> vendorIds = {
+@PCI_VENDOR_LIST@
+    };
+}
+
+#endif

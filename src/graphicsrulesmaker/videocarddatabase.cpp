@@ -17,6 +17,9 @@
  */
 
 #include "videocarddatabase.h"
+
+#include "pci.vendors.h"
+
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QDebug>
@@ -294,6 +297,13 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
     }
 }
 
+void VideoCardDatabase::addVendor(quint16 vendorId)
+{
+    if (GraphicsRulesMaker::vendorIds.contains(vendorId)) {
+        addVendor(GraphicsRulesMaker::vendorIds.value(vendorId), vendorId);
+    }
+}
+
 void VideoCardDatabase::addVendor(const QString& name, quint16 vendorId)
 {
     addVendor(name, QList<quint16>() << vendorId);
@@ -322,8 +332,15 @@ void VideoCardDatabase::addDevice(quint16 vendorId, quint16 deviceId, const QStr
     // Find vendor
     int vendorIndex = indexOfVendor(vendorId);
     if (vendorIndex == -1) {
+        addVendor(vendorId);
+    }
+    // Try again
+    vendorIndex = indexOfVendor(vendorId);
+    if (vendorIndex == -1) {
+        // Adding must've failed -> abort
         return;
     }
+
     VideoCardVendor vendor = m_vendors.at(vendorIndex);
 
     // Find card in vendor
