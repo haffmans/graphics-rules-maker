@@ -217,12 +217,12 @@
         <translation>Standaard&amp;instellingen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="154"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="156"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="155"/>
+        <location filename="../src/plugins/sims-petstories/simspssettings.cpp" line="157"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

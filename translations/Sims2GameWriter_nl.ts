@@ -202,12 +202,12 @@
         <translation>Geen aanpassing van schatting van textuurgeheugen</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2/sims2settings.cpp" line="153"/>
+        <location filename="../src/plugins/sims2/sims2settings.cpp" line="155"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../src/plugins/sims2/sims2settings.cpp" line="154"/>
+        <location filename="../src/plugins/sims2/sims2settings.cpp" line="156"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!
