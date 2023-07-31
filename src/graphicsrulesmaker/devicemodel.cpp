@@ -30,6 +30,12 @@
 #define SAFE_RELEASE(p)      { if (p) { (p)->Release(); (p)=nullptr; } }
 #endif
 
+namespace
+{
+    const quint64 mb = 1024*1024;
+    const quint64 gb = 1024*mb;
+}
+
 uint qHash(GraphicsMode key, uint seed) {
     quint32 otherKey = (quint32)(
         (((key.width ^ key.refreshRate) << 16)
@@ -368,7 +374,8 @@ void DeviceModel::load()
     dev1.display = "\\\\.\\DISPLAY1";
     dev1.vendorId = 0x10b4;
     dev1.deviceId = 0xFFFF;
-    dev1.memory = 1024*1048576;
+    dev1.memory = 1024*mb;
+    dev1.sharedMemory = 0;
     dev1.modes << mode320_240_60 << mode640_480_60 << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1080_59 << mode1920_1080_60;
 
     GraphicsDevice dev2;
@@ -377,7 +384,8 @@ void DeviceModel::load()
     dev2.display = "\\\\.\\DISPLAY2";
     dev2.vendorId = 0x10de;
     dev2.deviceId = 0x1184;
-    dev2.memory = (quint64)4096 * (quint64)1048576;
+    dev2.memory = (quint64)4096 * mb;
+    dev2.sharedMemory = 32*gb;
     dev2.modes << mode800_600_60 << mode1024_768_50 << mode1600_1200_59 << mode1920_1200_60;
 
     GraphicsDevice dev3;
@@ -386,7 +394,8 @@ void DeviceModel::load()
     dev3.display = "\\\\.\\DISPLAY3";
     dev3.vendorId = 0x1002;
     dev3.deviceId = 0x6738;
-    dev3.memory = 64*1048576;
+    dev3.memory = 64*mb;
+    dev3.sharedMemory = 8*gb;
     dev3.modes << mode800_600_60 << mode1024_768_50 << mode1280_1024_75 << mode1600_1200_59;
 
     GraphicsDevice dev4;
@@ -395,7 +404,8 @@ void DeviceModel::load()
     dev4.display = "\\\\.\\DISPLAY4";
     dev4.vendorId = 0x8086;
     dev4.deviceId = 0x0F31;
-    dev4.memory = 32*1048576;
+    dev4.memory = 32*mb;
+    dev4.sharedMemory = 2*gb;
     dev4.modes << mode1680_1050_60 << mode1920_1080_59 << mode1920_1080_60 << mode1920_1200_60 << mode2560_1440_60;
 
     // Note: last parameter is "last row" (i.e. inclusive, hence +3 == 4-1)
