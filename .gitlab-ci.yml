@@ -231,8 +231,8 @@ upload:
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKNAME}.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.gz"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/bionic/${PACKNAME}.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.bz2"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/jammy/${PACKNAME}.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.gz"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/jammy/${PACKNAME}.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.bz2"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/src/${PACKNAME}.src.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-src.tar.gz"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/src/${PACKNAME}.src.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-src.tar.bz2"'
 
@@ -252,5 +252,5 @@ release:
       --assets-link "{\"name\":\"${PACKNAME}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-bionic.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.gz\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-bionic.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-bionic.tar.bz2\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.gz\"}" \
+      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.bz2\"}" \
