@@ -154,7 +154,7 @@ package:ubuntu-22.04:
   stage: package
 
 package:src:
-  image: haffmans/cmake-qt6:22.04
+  image: haffmans/git-minimal:latest
   artifacts:
     paths:
     - images
