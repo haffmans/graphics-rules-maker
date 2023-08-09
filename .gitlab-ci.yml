@@ -148,9 +148,9 @@ package:ubuntu-22.04:
   # Creating checksums
   - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.md5"
-  - sha1sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.sha1"
+  - sha256sum "${PACKNAME}.tar.gz" > "${PACKNAME}.tar.gz.sha256"
   - md5sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.md5"
-  - sha1sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha1"
+  - sha256sum "${PACKNAME}.tar.bz2" > "${PACKNAME}.tar.bz2.sha256"
   stage: package
 
 package:src:
@@ -175,9 +175,9 @@ package:src:
   # Creating checksums
   - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.md5"
-  - sha1sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.sha1"
+  - sha256sum "${PACKNAME}.src.tar.gz" > "${PACKNAME}.src.tar.gz.sha256"
   - md5sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.md5"
-  - sha1sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha1"
+  - sha256sum "${PACKNAME}.src.tar.bz2" > "${PACKNAME}.src.tar.bz2.sha256"
   stage: package
 
 .package-windows: &package-windows
@@ -193,9 +193,9 @@ package:src:
   # Creating checksums
   - cd "${DEPLOYTARGET}"
   - md5sum "${PACKNAME}-${ARCH}.exe" > "${PACKNAME}-${ARCH}.exe.md5"
-  - sha1sum "${PACKNAME}-${ARCH}.exe" > "${PACKNAME}-${ARCH}.exe.sha1"
+  - sha256sum "${PACKNAME}-${ARCH}.exe" > "${PACKNAME}-${ARCH}.exe.sha256"
   - md5sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.md5"
-  - sha1sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.sha1"
+  - sha256sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.sha256"
   stage: package
 
 package:win32:
