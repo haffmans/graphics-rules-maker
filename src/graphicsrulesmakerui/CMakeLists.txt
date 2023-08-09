@@ -85,19 +85,19 @@ if(WIN32)
     get_target_property(Qt6Core_Location Qt6::Core LOCATION)
     get_filename_component(Qt6Core_BinDir "${Qt6Core_Location}" DIRECTORY)
 
-    if (TARGET Qt5::QWindowsIntegrationPlugin)
+    if (TARGET Qt6::QWindowsIntegrationPlugin)
         # For MSVC (as generator), there's no active build config; the configuration is determined
         # at build time instead of configure time. So: if there are imported configurations, use a
         # generator expression to have the correct file deployed at install time; otherwise fallback
         # to the default.
-        get_target_property(_qwindows_configs Qt5::QWindowsIntegrationPlugin IMPORTED_CONFIGURATIONS)
+        get_target_property(_qwindows_configs Qt6::QWindowsIntegrationPlugin IMPORTED_CONFIGURATIONS)
         if (_qwindows_configs)
-            message(STATUS "Qt5 Windows integration plugin: FOUND, using imported location")
+            message(STATUS "Qt6 Windows integration plugin: FOUND, using imported location")
             set(_plugins
-                "$<TARGET_FILE:Qt5::QWindowsIntegrationPlugin>"
+                "$<TARGET_FILE:Qt6::QWindowsIntegrationPlugin>"
             )
         else()
-            message(STATUS "Qt5 Windows integration plugin: FOUND, using default path")
+            message(STATUS "Qt6 Windows integration plugin: FOUND, using default path")
             set(_plugins
                 "platforms/qwindows.dll"
             )
