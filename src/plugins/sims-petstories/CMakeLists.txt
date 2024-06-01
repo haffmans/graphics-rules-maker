@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(SimsPetStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsPetStories_SRCS} ${GraphicsRulesMaker_SimsPetStories_QMS})
-set_target_properties(SimsPetStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsPetStoriesGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(SimsPetStoriesGameWriter
+    ${GraphicsRulesMaker_SimsPetStories_SRCS}
+    ${GraphicsRulesMaker_SimsPetStories_QMS}
+)
 
 install(TARGETS SimsPetStoriesGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

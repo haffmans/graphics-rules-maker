@@ -178,10 +178,13 @@ configure_package_config_file(GraphicsRulesMakerConfig.cmake.in
 write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake"
     COMPATIBILITY ExactVersion
 )
+configure_file(GraphicsRulesMakerMacros.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerMacros.cmake COPYONLY)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerConfig.cmake"
   "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerMacros.cmake"
   DESTINATION "${GraphicsRulesMaker_INSTALL_CMAKE_DIR}"
   COMPONENT dev
 )

@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(SimCity4GameWriter MODULE ${GraphicsRulesMaker_SimCity4_SRCS} ${GraphicsRulesMaker_SimCity4_QMS})
-set_target_properties(SimCity4GameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimCity4GameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(SimCity4GameWriter
+    ${GraphicsRulesMaker_SimCity4_SRCS}
+    ${GraphicsRulesMaker_SimCity4_QMS}
+)
 
 install(TARGETS SimCity4GameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

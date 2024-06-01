@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(SimsCastawayStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsCastawayStories_SRCS} ${GraphicsRulesMaker_SimsCastawayStories_QMS})
-set_target_properties(SimsCastawayStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsCastawayStoriesGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(SimsCastawayStoriesGameWriter
+    ${GraphicsRulesMaker_SimsCastawayStories_SRCS}
+    ${GraphicsRulesMaker_SimsCastawayStories_QMS}
+)
 
 install(TARGETS SimsCastawayStoriesGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

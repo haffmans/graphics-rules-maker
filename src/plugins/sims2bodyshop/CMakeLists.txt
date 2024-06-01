@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(Sims2BodyShopGameWriter MODULE ${GraphicsRulesMaker_Sims2BodyShop_SRCS} ${GraphicsRulesMaker_Sims2BodyShop_QMS})
-set_target_properties(Sims2BodyShopGameWriter PROPERTIES PREFIX "")
-target_link_libraries(Sims2BodyShopGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(Sims2BodyShopGameWriter
+    ${GraphicsRulesMaker_Sims2BodyShop_SRCS}
+    ${GraphicsRulesMaker_Sims2BodyShop_QMS}
+)
 
 install(TARGETS Sims2BodyShopGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

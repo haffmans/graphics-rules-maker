@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(SimsLifeStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsLifeStories_SRCS} ${GraphicsRulesMaker_SimsLifeStories_QMS})
-set_target_properties(SimsLifeStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsLifeStoriesGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(SimsLifeStoriesGameWriter
+    ${GraphicsRulesMaker_SimsLifeStories_SRCS}
+    ${GraphicsRulesMaker_SimsLifeStories_QMS}
+)
 
 install(TARGETS SimsLifeStoriesGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

@@ -29,9 +29,10 @@ if(${Qt6LinguistTools_FOUND})
     )
 endif(${Qt6LinguistTools_FOUND})
 
-add_library(Sims2GameWriter MODULE ${GraphicsRulesMaker_Sims2_SRCS} ${GraphicsRulesMaker_Sims2_QMS})
-set_target_properties(Sims2GameWriter PROPERTIES PREFIX "")
-target_link_libraries(Sims2GameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
+graphicsrulesmaker_add_plugin(Sims2GameWriter
+    ${GraphicsRulesMaker_Sims2_SRCS}
+    ${GraphicsRulesMaker_Sims2_QMS}
+)
 
 install(TARGETS Sims2GameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
