@@ -36,12 +36,12 @@ set_target_properties(SimsLifeStoriesGameWriter PROPERTIES PREFIX "")
 target_link_libraries(SimsLifeStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimsLifeStoriesGameWriter
-    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
     COMPONENT simslifestories
 )
 install(
     FILES ${GraphicsRulesMaker_SimsLifeStories_QMS}
-    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT simslifestories
 )

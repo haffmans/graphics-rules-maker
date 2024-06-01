@@ -36,12 +36,12 @@ set_target_properties(SimsCastawayStoriesGameWriter PROPERTIES PREFIX "")
 target_link_libraries(SimsCastawayStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimsCastawayStoriesGameWriter
-    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
     COMPONENT simscastawaystories
 )
 install(
     FILES ${GraphicsRulesMaker_SimsCastawayStories_QMS}
-    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT simscastawaystories
 )

@@ -34,12 +34,12 @@ set_target_properties(SimCity4GameWriter PROPERTIES PREFIX "")
 target_link_libraries(SimCity4GameWriter Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimCity4GameWriter
-    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
     COMPONENT simcity4
 )
 install(
     FILES ${GraphicsRulesMaker_SimCity4_QMS}
-    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT simcity4
 )

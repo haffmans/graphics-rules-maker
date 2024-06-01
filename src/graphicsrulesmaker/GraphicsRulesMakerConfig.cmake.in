@@ -24,8 +24,8 @@ if(NOT TARGET GraphicsRulesMaker AND NOT GraphicsRulesMaker_BINARY_DIR)
 endif()
 
 # These are relative paths
-set(GraphicsRulesMaker_PLUGIN_PATH "@GraphicsRulesMaker_PLUGIN_INSTALL_DIR@")
-set(GraphicsRulesMaker_TRANSLATIONS_PATH "@TRANSLATIONS_INSTALL_DIR@")
+set(GraphicsRulesMaker_INSTALL_PLUGIN_DIR "@GraphicsRulesMaker_INSTALL_PLUGIN_DIR@")
+set(GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR "@GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR@")
 
 # Note: dependencies may mess up the package prefix and therefore paths used above -> do this last!
 include(CMakeFindDependencyMacro)

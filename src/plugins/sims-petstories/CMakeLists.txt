@@ -36,12 +36,12 @@ set_target_properties(SimsPetStoriesGameWriter PROPERTIES PREFIX "")
 target_link_libraries(SimsPetStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimsPetStoriesGameWriter
-    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
     COMPONENT simspetstories
 )
 install(
     FILES ${GraphicsRulesMaker_SimsPetStories_QMS}
-    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT simspetstories
 )

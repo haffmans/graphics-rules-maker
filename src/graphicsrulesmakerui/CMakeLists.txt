@@ -11,12 +11,6 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
-if(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/)
-else(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
-endif(WIN32 AND NOT CYGWIN)
-
 include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
 find_package(ImageMagick REQUIRED COMPONENTS convert)
@@ -107,7 +101,7 @@ install(TARGETS GraphicsRulesMakerUi
 )
 install(
     FILES ${GraphicsRulesMakerUi_QMS}
-    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT application
 )
 

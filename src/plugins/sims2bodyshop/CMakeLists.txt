@@ -36,12 +36,12 @@ set_target_properties(Sims2BodyShopGameWriter PROPERTIES PREFIX "")
 target_link_libraries(Sims2BodyShopGameWriter Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS Sims2BodyShopGameWriter
-    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
-    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
     COMPONENT sims2
 )
 install(
     FILES ${GraphicsRulesMaker_Sims2BodyShop_QMS}
-    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT sims2
 )
