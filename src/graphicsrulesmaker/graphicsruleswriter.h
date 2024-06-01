@@ -5,8 +5,8 @@
 #include <QDir>
 #include <memory>
 
-#include "graphicsrulesmaker/videocarddatabase.h"
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "videocarddatabase.h"
+#include "graphicsrulesmaker_config.h"
 
 class GameWriterInterface;
 class GameWriterFactory;

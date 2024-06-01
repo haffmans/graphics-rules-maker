@@ -20,7 +20,7 @@
 #define MESSAGEHANDLER_H
 
 #include <QtCore/QObject>
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker_config.h"
 
 /**
  * @todo write docs

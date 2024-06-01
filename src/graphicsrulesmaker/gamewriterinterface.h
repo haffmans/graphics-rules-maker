@@ -24,7 +24,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QDir>
 
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker_config.h"
 
 class QIODevice;
 class AbstractSettingsWidget;

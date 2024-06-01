@@ -23,8 +23,8 @@
 #include <QtCore/QPluginLoader>
 #include <QtCore/QtDebug>
 
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
-#include "graphicsrulesmaker/gamewriterinterface.h"
+#include "graphicsrulesmaker_config.h"
+#include "gamewriterinterface.h"
 
 
 GameWriterFactory::GameWriterFactory(QObject* parent)

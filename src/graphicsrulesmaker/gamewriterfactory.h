@@ -24,7 +24,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QDir>
 
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker_config.h"
 
 class GameWriterInterface;
 

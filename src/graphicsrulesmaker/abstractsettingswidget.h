@@ -20,7 +20,7 @@
 #define ABSTRACTSETTINGSWIDGET_H
 
 #include <QWidget>
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker_config.h"
 
 /**
  * The base for a Graphics Rules Maker settings widget.
