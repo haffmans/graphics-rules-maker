@@ -1,38 +1,21 @@
 cmake_minimum_required(VERSION 3.24)
 project(Sims2BodyShopGameWriter)
 
-# Find other dependencies
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6Widgets REQUIRED)
-find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
 qt6_wrap_ui(GraphicsRulesMaker_Sims2BodyShop_UIS sims2bodyshopsettings.ui)
 
-SET(GraphicsRulesMaker_Sims2BodyShop_SRCS
+graphicsrulesmaker_add_plugin(Sims2BodyShopGameWriter
     sims2bodyshopsettings.cpp
     sims2bodyshopgamewriter.cpp
     ${GraphicsRulesMaker_Sims2BodyShop_UIS}
 )
-
-# Translations
-if(${Qt6LinguistTools_FOUND})
-    message(STATUS "Qt Linguist found - will set up translations")
-    qt6_create_translation(GraphicsRulesMaker_Sims2BodyShop_QMS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        "${CMAKE_CURRENT_SOURCE_DIR}/translations/Sims2BodyShopGameWriter_nl.ts"
-        OPTIONS -source-language "en_US"
-    )
-endif(${Qt6LinguistTools_FOUND})
-
-graphicsrulesmaker_add_plugin(Sims2BodyShopGameWriter
-    ${GraphicsRulesMaker_Sims2BodyShop_SRCS}
-    ${GraphicsRulesMaker_Sims2BodyShop_QMS}
-)
+graphicsrulesmaker_translations(Sims2BodyShopGameWriter LANGUAGES nl)
 
 install(TARGETS Sims2BodyShopGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
@@ -40,7 +23,7 @@ install(TARGETS Sims2BodyShopGameWriter
     COMPONENT sims2
 )
 install(
-    FILES ${GraphicsRulesMaker_Sims2BodyShop_QMS}
+    FILES ${Sims2BodyShopGameWriter_TRANSLATIONS}
     DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT sims2
 )

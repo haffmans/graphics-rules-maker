@@ -11,3 +11,42 @@ macro(graphicsrulesmaker_add_plugin TARGET)
     set_target_properties(${TARGET} PROPERTIES PREFIX "")
     target_link_libraries(${TARGET} PUBLIC GraphicsRulesMaker Qt6::Widgets)
 endmacro()
+
+# Shorthand to set up translations for a plugin. They will be updated and created if
+# QtLinguistTools are found. The file names are based on the target name.
+#
+# Usage:
+#     graphicsrulesmaker_translations(<target> LANGUAGES <langcode1> [<langcode2> ...])
+#
+# Where the `langcode` arguments refer to language codes as understood by Qt (e.g. `nl`, `en`, `de`, etc).
+# A variable <TARGET>_TRANSLATIONS will be defined with paths to the .qm files.
+#
+# The translation sources (.ts files) will be updated in the source tree. The generated .qm files
+# are added to the given target. Installation rules are not created. Install them as FILES to
+# ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}:
+#
+# Example:
+#
+#     graphicsrulesmaker_translations(MyPlugin LANGUAGES nl)
+#     install(FILES ${MyPlugin_TRANSLATIONS}
+#             DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
+#             COMPONENT myplugin
+#     )
+#
+macro(graphicsrulesmaker_translations TARGET)
+    find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
+    cmake_parse_arguments(_grm_translations "" "" "LANGUAGES" ${ARGN})
+
+    if(${Qt6LinguistTools_FOUND})
+        message(STATUS "Qt Linguist found - will set up translations for ${TARGET}")
+        list(TRANSFORM _grm_translations_LANGUAGES PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/translations/${TARGET}_")
+        list(TRANSFORM _grm_translations_LANGUAGES APPEND ".ts")
+        qt6_create_translation(${TARGET}_TRANSLATIONS
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            ${_grm_translations_LANGUAGES}
+            OPTIONS -source-language "en_US"
+        )
+
+        target_sources(${TARGET} PRIVATE ${${TARGET}_TRANSLATIONS})
+    endif(${Qt6LinguistTools_FOUND})
+endmacro()

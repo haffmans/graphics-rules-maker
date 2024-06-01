@@ -25,7 +25,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 find_package(Qt6Widgets 6.2 REQUIRED)
-find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 
 if(WIN32)
     find_package(DirectX9 REQUIRED)
@@ -36,11 +35,6 @@ if(WIN32)
         add_definitions(-DDXGI)
     endif(DirectX9_DXGI_LIBRARY)
 endif(WIN32)
-
-if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-    # This will put only this subproject's translations in a subdir within this project
-    set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
 set(GraphicsRulesMaker_SRCS
     abstractsettingswidget.cpp
@@ -62,16 +56,6 @@ set(GraphicsRulesMaker_HDRS
     ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmaker_config.h
     ${CMAKE_CURRENT_BINARY_DIR}/pci.vendors.h
 )
-
-# Translations
-if(${Qt6LinguistTools_FOUND})
-    message(STATUS "Qt Linguist found - will set up translations")
-    qt6_create_translation(GraphicsRulesMaker_QMS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
-        OPTIONS -source-language "en_US"
-    )
-endif(${Qt6LinguistTools_FOUND})
 
 # PCI Vendor ID database
 add_custom_command(
@@ -110,12 +94,13 @@ if (NOT PROJECT_IS_TOP_LEVEL)
 endif()
 set(GraphicsRulesMaker_FULL_PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/${GraphicsRulesMaker_INSTALL_PLUGIN_DIR} )
 set(GraphicsRulesMaker_FULL_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR} )
+include(GraphicsRulesMakerMacros.cmake)
 
 # Configuration file
 configure_file(graphicsrulesmaker_config.h.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
 
-add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
+add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
 target_link_libraries(GraphicsRulesMaker PUBLIC Qt6::Widgets)
 target_include_directories(GraphicsRulesMaker INTERFACE
@@ -126,6 +111,8 @@ target_include_directories(GraphicsRulesMaker INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
 )
+graphicsrulesmaker_translations(GraphicsRulesMaker LANGUAGES nl)
+
 if(WIN32)
     # NOTE: ${DirectX9_DXGI_LIBRARY} is removed; we load it dynamically at runtime
     target_link_libraries(GraphicsRulesMaker PRIVATE ${DirectX9_LIBRARY} )
@@ -158,7 +145,7 @@ install(
     COMPONENT dev
 )
 install(
-    FILES ${GraphicsRulesMaker_QMS}
+    FILES ${GraphicsRulesMaker_TRANSLATIONS}
     DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT application
 )

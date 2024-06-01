@@ -7,8 +7,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6Widgets REQUIRED)
-find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
 find_package(ImageMagick REQUIRED COMPONENTS convert)
@@ -67,16 +65,6 @@ set(GraphicsRulesMakerUi_SRCS
     $<TARGET_OBJECTS:GraphicsRulesMaker_Icon>
 )
 
-# Translations
-if(${Qt6LinguistTools_FOUND})
-    message(STATUS "Qt Linguist found - will set up translations")
-    qt6_create_translation(GraphicsRulesMakerUi_QMS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        "${CMAKE_CURRENT_SOURCE_DIR}/translations/GraphicsRulesMakerUi_nl.ts"
-        OPTIONS -source-language "en_US"
-    )
-endif(${Qt6LinguistTools_FOUND})
-
 # Set some Win32 Specific Settings
 IF(WIN32)
     SET(GUI_TYPE WIN32)
@@ -88,13 +76,14 @@ ENDIF (APPLE)
 
 add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS} ${GraphicsRulesMakerUi_QMS})
 target_link_libraries(GraphicsRulesMakerUi PUBLIC GraphicsRulesMaker Qt6::Widgets)
+graphicsrulesmaker_translations(GraphicsRulesMakerUi LANGUAGES nl)
 
 install(TARGETS GraphicsRulesMakerUi
     RUNTIME DESTINATION bin
     COMPONENT application
 )
 install(
-    FILES ${GraphicsRulesMakerUi_QMS}
+    FILES ${GraphicsRulesMakerUi_TRANSLATIONS}
     DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT application
 )
