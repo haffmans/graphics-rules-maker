@@ -12,7 +12,6 @@ add_subdirectory(src/graphicsrulesmakerui)
 add_subdirectory(src/plugins)
 
 if(WIN32)
-    find_package(Qt6Widgets REQUIRED)
     find_package(ImageMagick REQUIRED COMPONENTS convert)
 
     # Generate NSIS Header

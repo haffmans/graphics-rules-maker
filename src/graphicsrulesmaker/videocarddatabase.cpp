@@ -274,7 +274,9 @@ void VideoCardDatabase::loadFrom(QIODevice* file)
             vendor.value().name = vendorMatch.captured(1);
 
             QString vendorIds = vendorMatch.captured(2);
-            for (const auto& id: idRe.globalMatch(vendorIds)) {
+            auto matchIterator = idRe.globalMatch(vendorIds);
+            while (matchIterator.hasNext()) {
+                auto id = matchIterator.next();
                 vendor.value().vendorIds.append(id.captured(1).toInt(0, 16));
             }
         }

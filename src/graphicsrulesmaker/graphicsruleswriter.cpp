@@ -136,7 +136,11 @@ void GraphicsRulesWriter::recursiveSaveSettings(const QVariantMap& map, QSetting
         auto& key = item.key();
         auto& value = item.value();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
         if (value.typeId() == QMetaType::QVariantMap) {
+#else
+        if (value.type() == QVariant::Map) {
+#endif
             settings->beginGroup(key);
             recursiveSaveSettings(value.toMap(), settings);
             settings->endGroup();

@@ -75,7 +75,7 @@ IF (APPLE)
 ENDIF (APPLE)
 
 add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS} ${GraphicsRulesMakerUi_QMS})
-target_link_libraries(GraphicsRulesMakerUi PUBLIC GraphicsRulesMaker Qt6::Widgets)
+target_link_libraries(GraphicsRulesMakerUi PUBLIC GraphicsRulesMaker)
 graphicsrulesmaker_translations(GraphicsRulesMakerUi LANGUAGES nl)
 
 install(TARGETS GraphicsRulesMakerUi
@@ -92,27 +92,32 @@ if(WIN32)
     include(InstallRequiredSystemLibraries)
 
     # Install dependencies (Qt) for Windows
-    get_target_property(Qt6Core_Location Qt6::Core LOCATION)
-    get_filename_component(Qt6Core_BinDir "${Qt6Core_Location}" DIRECTORY)
+    if (NOT GraphicsRulesMaker_WITH_QT5)
+        get_target_property(QtCore_Location Qt6::Core LOCATION)
+        set(_pluginSourcePaths
+            "${QT6_INSTALL_PREFIX}/lib/qt6/plugins"
+            "${QT6_INSTALL_PREFIX}/plugins"
+        )
+    else()
+        get_target_property(QtCore_Location Qt5::Core LOCATION)
+        set(_pluginSourcePaths
+            "${_qt5Core_install_prefix}/lib/qt5/plugins"
+            "${_qt5Core_install_prefix}/lib/qt/plugins"
+            "${_qt5Core_install_prefix}/plugins"
+        )
+    endif()
+    get_filename_component(QtCore_BinDir "${QtCore_Location}" DIRECTORY)
 
     if (TARGET Qt6::QWindowsIntegrationPlugin)
-        # For MSVC (as generator), there's no active build config; the configuration is determined
-        # at build time instead of configure time. So: if there are imported configurations, use a
-        # generator expression to have the correct file deployed at install time; otherwise fallback
-        # to the default.
-        get_target_property(_qwindows_configs Qt6::QWindowsIntegrationPlugin IMPORTED_CONFIGURATIONS)
-        if (_qwindows_configs)
-            message(STATUS "Qt6 Windows integration plugin: FOUND, using imported location")
-            set(_plugins
-                "$<TARGET_FILE:Qt6::QWindowsIntegrationPlugin>"
-            )
-        else()
-            message(STATUS "Qt6 Windows integration plugin: FOUND, using default path")
-            set(_plugins
-                "platforms/qwindows.dll"
-            )
-        endif()
-
+        message(STATUS "Qt6 Windows integration plugin: FOUND, using imported location")
+        set(_plugins
+            "$<TARGET_FILE:Qt6::QWindowsIntegrationPlugin>"
+        )
+    elseif(TARGET Qt5::QWindowsIntegrationPlugin)
+        message(STATUS "Qt5 Windows integration plugin: FOUND, using imported location")
+        set(_plugins
+            "$<TARGET_FILE:Qt5::QWindowsIntegrationPlugin>"
+        )
     else()
         # Integration plugin target not defined - just hardcode it
         message(STATUS "Windows integration plugin not found; assuming default path")
@@ -120,11 +125,6 @@ if(WIN32)
             "platforms/qwindows.dll"
         )
     endif()
-
-    set(_pluginSourcePaths
-        "${QT6_INSTALL_PREFIX}/lib/qt6/plugins"
-        "${QT6_INSTALL_PREFIX}/plugins"
-    )
 
     foreach(_basePath ${_pluginSourcePaths})
         if(EXISTS ${_basePath})
@@ -157,7 +157,7 @@ if(WIN32)
     set(BundleLibraryDirs
         "\${CMAKE_INSTALL_PREFIX}/bin/"
         "\${CMAKE_INSTALL_PREFIX}/bin/gamewriters"
-        ${Qt6Core_BinDir}
+        ${QtCore_BinDir}
         ${CMAKE_FIND_ROOT_PATH}/bin
     )
 

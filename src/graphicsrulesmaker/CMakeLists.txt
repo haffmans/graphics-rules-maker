@@ -24,7 +24,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-find_package(Qt6Widgets 6.2 REQUIRED)
+option(WITH_QT5 "Build against Qt5 (5.15) instead of Qt6" OFF)
+set(GraphicsRulesMaker_WITH_QT5 ${WITH_QT5})
+
+if (NOT WITH_QT5)
+    find_package(Qt6Widgets 6.2 REQUIRED)
+else()
+    find_package(Qt5Widgets 5.15 REQUIRED)
+endif()
 
 if(WIN32)
     find_package(DirectX9 REQUIRED)
@@ -102,7 +109,11 @@ configure_file(graphicsrulesmaker_config.h.cmake
 
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
-target_link_libraries(GraphicsRulesMaker PUBLIC Qt6::Widgets)
+if(NOT GraphicsRulesMaker_WITH_QT5)
+    target_link_libraries(GraphicsRulesMaker PUBLIC Qt6::Widgets)
+else()
+    target_link_libraries(GraphicsRulesMaker PUBLIC Qt5::Widgets)
+endif()
 target_include_directories(GraphicsRulesMaker INTERFACE
     $<INSTALL_INTERFACE:include>
     $<INSTALL_INTERFACE:include/graphicsrulesmaker>

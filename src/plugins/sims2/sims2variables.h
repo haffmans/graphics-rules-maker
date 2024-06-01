@@ -40,7 +40,7 @@ struct Sims2Variables
         const QRegularExpression resolutionRegex("^(\\d+)x(\\d+)$");
 
         // Backwards compatibility: support loading resolution strings
-        if (map.contains("defaultResolution") && map.value("defaultResolution").typeId() == QMetaType::QString) {
+        if (map.contains("defaultResolution") && variantIsString(map.value("defaultResolution"))) {
             auto stringResolution = map.value("defaultResolution").toString();
             auto match = resolutionRegex.match(stringResolution);
             if (match.hasMatch()) {
@@ -49,7 +49,7 @@ struct Sims2Variables
             }
         }
 
-        if (map.contains("maximumResolution") && map.value("maximumResolution").typeId() == QMetaType::QString) {
+        if (map.contains("maximumResolution") && variantIsString(map.value("maximumResolution"))) {
             auto stringResolution = map.value("maximumResolution").toString();
             auto match = resolutionRegex.match(stringResolution);
             if (match.hasMatch()) {
@@ -86,6 +86,15 @@ struct Sims2Variables
 
     QSize defaultResolution;
     QSize maximumResolution;
+
+private:
+    bool variantIsString(const QVariant& var) const {
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+        return var.typeId() == QMetaType::QString;
+#else
+        return var.type() == QVariant::String;
+#endif
+    }
 };
 
 #endif // SIMS2_VARIABLES_H

@@ -1,4 +1,6 @@
-set(CPACK_PACKAGE_NAME "GraphicsRulesMaker")
+set(PACKAGE_VARIANT "" CACHE STRING "Variant of the package, added after the base name to CPack-created files")
+
+set(CPACK_PACKAGE_NAME "GraphicsRulesMaker${PACKAGE_VARIANT}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Graphics Rules Maker")
 set(CPACK_PACKAGE_VENDOR "SimsNetwork.com")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.txt")

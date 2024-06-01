@@ -9,7 +9,7 @@ stages:
 variables:
   # For most stages, PACKAGE_VERSION is defined through the environment step (which is a dependency
   # of those stages)
-  PACKAGE_NAME: 'GraphicsRulesMaker'
+  PACKAGE_NAME: 'GraphicsRulesMaker${PACKAGE_VARIANT}'
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${PACKAGE_VERSION}"
   DEPLOY_DIR: '${CI_PROJECT_DIR}/images'
   PACKNAME: '${PACKAGE_NAME}-${PACKAGE_VERSION}'
@@ -61,7 +61,9 @@ environment:
     -DCMAKE_MODULE_PATH=/usr/${TOOLCHAIN}/lib/cmake
     -DImageMagick_convert_EXECUTABLE=/usr/bin/convert
     -DGraphicsRulesMaker_GIT_VERSION="$([ -z ${CI_COMMIT_TAG} ] && echo ${CI_COMMIT_SHORT_SHA})"
+    -DWITH_QT5=${WITH_QT5}
     -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET}
+    -DPACKAGE_VARIANT="${PACKAGE_VARIANT}"
     -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
     ${CI_PROJECT_DIR}
   - make -j4
@@ -97,12 +99,25 @@ build:ubuntu-22.04:release:
     BUILD_TYPE: 'Release'
     LOWER_BUILD_TYPE: 'release'
 
-build:win32:release:
+build:win32-qt5:release:
   <<: *build-windows
+  image: haffmans/mingw-qt5:qt5
   variables:
     <<: *mingw-w32-vars
     BUILD_TYPE: 'Release'
     LOWER_BUILD_TYPE: 'release'
+    WITH_QT5: 'ON'
+    PACKAGE_VARIANT: '-legacy'
+
+build:win64-qt5:release:
+  <<: *build-windows
+  image: haffmans/mingw-qt5:qt5
+  variables:
+    <<: *mingw-w64-vars
+    BUILD_TYPE: 'Release'
+    LOWER_BUILD_TYPE: 'release'
+    WITH_QT5: 'ON'
+    PACKAGE_VARIANT: '-legacy'
 
 build:win64:release:
   <<: *build-windows
@@ -110,6 +125,7 @@ build:win64:release:
     <<: *mingw-w64-vars
     BUILD_TYPE: 'Release'
     LOWER_BUILD_TYPE: 'release'
+    WITH_QT5: 'OFF'
 
 package:ubuntu-22.04:
   image: haffmans/cmake-qt6:22.04
@@ -188,7 +204,7 @@ package:src:
     expire_in: 30 days
   script:
   - cd build/${ARCH}/release
-  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
+  - cpack -DCPACK_OUTPUT_FILE_PREFIX=${DEPLOYTARGET} -DPACKAGE_VARIANT="${PACKAGE_VARIANT}" -DCPACK_PACKAGE_VERSION=${PACKAGE_VERSION}
 
   # Creating checksums
   - cd "${DEPLOYTARGET}"
@@ -198,13 +214,27 @@ package:src:
   - sha256sum "${PACKNAME}-${ARCH}.zip" > "${PACKNAME}-${ARCH}.zip.sha256"
   stage: package
 
-package:win32:
+package:win32-qt5:
   <<: *package-windows
+  image: haffmans/mingw-qt5:qt5
   dependencies:
   - environment
-  - build:win32:release
+  - build:win32-qt5:release
   variables:
     <<: *mingw-w32-vars
+    WITH_QT5: 'ON'
+    PACKAGE_VARIANT: '-legacy'
+
+package:win64-qt5:
+  <<: *package-windows
+  image: haffmans/mingw-qt5:qt5
+  dependencies:
+  - environment
+  - build:win64-qt5:release
+  variables:
+    <<: *mingw-w64-vars
+    WITH_QT5: 'ON'
+    PACKAGE_VARIANT: '-legacy'
 
 package:win64:
   <<: *package-windows
@@ -221,15 +251,20 @@ upload:
   - environment
   - package:src
   - package:ubuntu-22.04
-  - package:win32
+  - package:win32-qt5
+  - package:win64-qt5
   - package:win64
   rules:
   - if: $CI_COMMIT_TAG
+  variables:
+    PACKNAME_QT5: '${PACKAGE_NAME}-legacy-${PACKAGE_VERSION}'
   script:
   # Note: these uploads rely on e.g. specific Ubuntu version knowledge and filename details.
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.exe"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME_QT5}-win32.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.exe"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME_QT5}-win64.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.exe"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.exe "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe"'
-  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME}-win32.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win32/${PACKNAME_QT5}-win32.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.zip"'
+  - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME_QT5}-win64.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.zip"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/win64/${PACKNAME}-win64.zip "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/jammy/${PACKNAME}.tar.gz  "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.gz"'
   - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file ${DEPLOY_DIR}/ubuntu/jammy/${PACKNAME}.tar.bz2 "${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.bz2"'
@@ -244,13 +279,17 @@ release:
   dependencies:
   - environment
   - upload
+  variables:
+    PACKNAME_QT5: '${PACKAGE_NAME}-legacy-${PACKAGE_VERSION}'
   script:
   # Source packages are created by Gitlab itself, so excluded from the links.
   - |
     release-cli create --name "Release ${PACKAGE_VERSION}" --tag-name "${CI_COMMIT_TAG}" \
-      --assets-link "{\"name\":\"${PACKNAME}-win32.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.exe\"}" \
+      --assets-link "{\"name\":\"${PACKNAME_QT5}-win32.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.exe\"}" \
+      --assets-link "{\"name\":\"${PACKNAME_QT5}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.exe\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win32.zip\"}" \
+      --assets-link "{\"name\":\"${PACKNAME_QT5}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.zip\"}" \
+      --assets-link "{\"name\":\"${PACKNAME_QT5}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.zip\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.gz\"}" \
       --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.bz2\"}" \
