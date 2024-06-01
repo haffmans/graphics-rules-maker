@@ -11,8 +11,6 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
-include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
-
 qt6_wrap_ui(GraphicsRulesMaker_SimsLifeStories_UIS simslssettings.ui)
 
 SET(GraphicsRulesMaker_SimsLifeStories_SRCS
@@ -33,7 +31,7 @@ endif(${Qt6LinguistTools_FOUND})
 
 add_library(SimsLifeStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsLifeStories_SRCS} ${GraphicsRulesMaker_SimsLifeStories_QMS})
 set_target_properties(SimsLifeStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsLifeStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
+target_link_libraries(SimsLifeStoriesGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimsLifeStoriesGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

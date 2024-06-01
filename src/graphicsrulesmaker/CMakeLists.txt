@@ -117,7 +117,7 @@ configure_file(graphicsrulesmaker_config.h.cmake
 
 add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
-target_link_libraries(GraphicsRulesMaker Qt6::Widgets)
+target_link_libraries(GraphicsRulesMaker PUBLIC Qt6::Widgets)
 target_include_directories(GraphicsRulesMaker INTERFACE
     $<INSTALL_INTERFACE:include>
     $<INSTALL_INTERFACE:include/graphicsrulesmaker>
@@ -128,7 +128,7 @@ target_include_directories(GraphicsRulesMaker INTERFACE
 )
 if(WIN32)
     # NOTE: ${DirectX9_DXGI_LIBRARY} is removed; we load it dynamically at runtime
-    target_link_libraries(GraphicsRulesMaker ${DirectX9_LIBRARY} )
+    target_link_libraries(GraphicsRulesMaker PRIVATE ${DirectX9_LIBRARY} )
 endif(WIN32)
 
 # Package installation

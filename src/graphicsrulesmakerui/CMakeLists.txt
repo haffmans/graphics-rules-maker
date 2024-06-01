@@ -11,8 +11,6 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
-include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
-
 find_package(ImageMagick REQUIRED COMPONENTS convert)
 
 # Create icon from icon.png
@@ -89,11 +87,7 @@ IF (APPLE)
 ENDIF (APPLE)
 
 add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS} ${GraphicsRulesMakerUi_QMS})
-target_link_libraries(GraphicsRulesMakerUi GraphicsRulesMaker Qt6::Widgets)
-
-if(WIN32)
-    target_link_libraries(GraphicsRulesMakerUi ${DirectX_LIBRARIES})
-endif(WIN32)
+target_link_libraries(GraphicsRulesMakerUi PUBLIC GraphicsRulesMaker Qt6::Widgets)
 
 install(TARGETS GraphicsRulesMakerUi
     RUNTIME DESTINATION bin

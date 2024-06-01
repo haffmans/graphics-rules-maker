@@ -11,8 +11,6 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
-include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
-
 qt6_wrap_ui(GraphicsRulesMaker_SimsCastawayStories_UIS simscssettings.ui)
 
 SET(GraphicsRulesMaker_SimsCastawayStories_SRCS
@@ -33,7 +31,7 @@ endif(${Qt6LinguistTools_FOUND})
 
 add_library(SimsCastawayStoriesGameWriter MODULE ${GraphicsRulesMaker_SimsCastawayStories_SRCS} ${GraphicsRulesMaker_SimsCastawayStories_QMS})
 set_target_properties(SimsCastawayStoriesGameWriter PROPERTIES PREFIX "")
-target_link_libraries(SimsCastawayStoriesGameWriter Qt6::Widgets GraphicsRulesMaker)
+target_link_libraries(SimsCastawayStoriesGameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS SimsCastawayStoriesGameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}

@@ -11,8 +11,6 @@ find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
 find_package(GraphicsRulesMaker REQUIRED)
 
-include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
-
 qt6_wrap_ui(GraphicsRulesMaker_Sims2_UIS sims2settings.ui)
 
 SET(GraphicsRulesMaker_Sims2_SRCS
@@ -33,7 +31,7 @@ endif(${Qt6LinguistTools_FOUND})
 
 add_library(Sims2GameWriter MODULE ${GraphicsRulesMaker_Sims2_SRCS} ${GraphicsRulesMaker_Sims2_QMS})
 set_target_properties(Sims2GameWriter PROPERTIES PREFIX "")
-target_link_libraries(Sims2GameWriter Qt6::Widgets GraphicsRulesMaker)
+target_link_libraries(Sims2GameWriter PUBLIC Qt6::Widgets GraphicsRulesMaker)
 
 install(TARGETS Sims2GameWriter
     RUNTIME DESTINATION ${GraphicsRulesMaker_INSTALL_PLUGIN_DIR}
