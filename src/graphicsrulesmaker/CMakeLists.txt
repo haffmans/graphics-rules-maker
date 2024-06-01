@@ -1,12 +1,27 @@
 cmake_minimum_required(VERSION 3.24)
-project(GraphicsRulesMaker)
+project(GraphicsRulesMaker
+    VERSION 2.3.0.0
+    DESCRIPTION "Graphics Rules Maker"
+    HOMEPAGE_URL "http://www.simsnetwork.com"
+    LANGUAGES CXX
+)
 
-# Find other dependencies
+# Version information
+set(GraphicsRulesMaker_COPYRIGHT_YEAR 2024)
+set(GraphicsRulesMaker_GIT_VERSION "" CACHE STRING "Version suffix, e.g. a git commit hash")
+
+if (NOT GraphicsRulesMaker_GIT_VERSION STREQUAL "")
+    set(GraphicsRulesMaker_VERSION
+        ${GraphicsRulesMaker_VERSION}${GraphicsRulesMaker_VERSION_SUFFIX})
+endif()
+
+message(STATUS "Building version: ${GraphicsRulesMaker_VERSION}")
+
+# Language/dependency setup
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 find_package(Qt6Widgets 6.2 REQUIRED)
@@ -100,21 +115,6 @@ else(WIN32 AND NOT CYGWIN)
 endif(WIN32 AND NOT CYGWIN)
 set(GraphicsRulesMaker_TRANSLATIONS_PATH ${CMAKE_INSTALL_PREFIX}/${TRANSLATIONS_INSTALL_DIR} )
 
-# Version information
-set(GraphicsRulesMaker_COPYRIGHT_YEAR 2023)
-set(GraphicsRulesMaker_GIT_VERSION "" CACHE STRING "Version suffix, e.g. a git commit hash")
-set(GraphicsRulesMaker_MAJOR_VERSION 2)
-set(GraphicsRulesMaker_MINOR_VERSION 3)
-set(GraphicsRulesMaker_PATCH_VERSION 0)
-
-if (NOT GraphicsRulesMaker_GIT_VERSION STREQUAL "")
-    set(GraphicsRulesMaker_VERSION_SUFFIX "-${GraphicsRulesMaker_GIT_VERSION}")
-endif()
-
-set(GraphicsRulesMaker_VERSION
-  ${GraphicsRulesMaker_MAJOR_VERSION}.${GraphicsRulesMaker_MINOR_VERSION}.${GraphicsRulesMaker_PATCH_VERSION}${GraphicsRulesMaker_VERSION_SUFFIX})
-message(STATUS "Building version: ${GraphicsRulesMaker_VERSION}")
-
 # Configuration file
 configure_file(graphicsrulesmaker_config.h.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
@@ -181,10 +181,9 @@ configure_package_config_file(GraphicsRulesMakerConfig.cmake.in
     GraphicsRulesMaker_PLUGIN_INSTALL_DIR
     TRANSLATIONS_INSTALL_DIR
 )
-
-# Version info
-configure_file(GraphicsRulesMakerVersion.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake" @ONLY)
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake"
+    COMPATIBILITY ExactVersion
+)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_CMAKE_DIR}/GraphicsRulesMakerConfig.cmake"
