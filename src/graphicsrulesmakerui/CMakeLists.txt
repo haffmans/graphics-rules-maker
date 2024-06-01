@@ -25,6 +25,45 @@ endif(WIN32 AND NOT CYGWIN)
 
 include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
+find_package(ImageMagick REQUIRED COMPONENTS convert)
+
+# Create icon from icon.png
+add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 48x48 "${CMAKE_CURRENT_BINARY_DIR}/icon-48.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 32x32 "${CMAKE_CURRENT_BINARY_DIR}/icon-32.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 16x16 "${CMAKE_CURRENT_BINARY_DIR}/icon-16.png"
+    COMMENT "Resizing icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+)
+
+add_custom_command(OUTPUT "icon.ico"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE}
+        "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+        "icon-48.png"
+        "icon-32.png"
+        "icon-16.png"
+        "icon.ico"
+    COMMENT "Creating final icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+    DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
+)
+
+set(GraphicsRulesMaker_Ico "${CMAKE_CURRENT_BINARY_DIR}/icon.ico")
+
+qt6_add_resources(GraphicsRulesMaker_IconRCC
+    icon.qrc
+)
+
+configure_file(graphicsrulesmakerico.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+)
+set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc APPEND PROPERTY OBJECT_DEPENDS ${GraphicsRulesMaker_Ico})
+
+add_library(GraphicsRulesMaker_Icon OBJECT
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+    ${GraphicsRulesMaker_IconRCC}
+)
+
 qt6_wrap_ui(GraphicsRulesMakerUi_UIS
     mainwindow.ui
     manualsaveconfirmationbox.ui

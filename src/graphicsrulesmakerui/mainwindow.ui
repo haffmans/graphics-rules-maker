@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../icon.qrc">
+   <iconset resource="icon.qrc">
     <normaloff>:/icon.png</normaloff>:/icon.png</iconset>
   </property>
   <property name="locale">
@@ -537,7 +537,7 @@
   <tabstop>videoCardsSave</tabstop>
  </tabstops>
  <resources>
-  <include location="../../icon.qrc"/>
+  <include location="icon.qrc"/>
  </resources>
  <connections>
   <connection>
