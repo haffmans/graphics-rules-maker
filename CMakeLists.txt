@@ -4,37 +4,10 @@ project(GraphicsRulesMakerBundle)
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_BINARY_DIR}")
 
-# Tell subprojects we're doing a full build (including library)
-set(GraphicsRulesMaker_FULL_BUILD 1)
-
-# Required to get "graphicsrulesmaker/*" includes working for the UI/plugins,
-# as with the split builds
-include_directories(
-  "${PROJECT_SOURCE_DIR}/src"
-  "${PROJECT_BINARY_DIR}/src"
-)
-
-# Determine plugin installation directory
-if(WIN32)
-    set(PLUGIN_INSTALL_DIR bin/gamewriters/)
-else(WIN32)
-    set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (eg. '64')")
-    set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
-    set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmaker/)
-endif(WIN32)
-set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
-
-# And install them to the same path too
-if(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/)
-else(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
-endif(WIN32 AND NOT CYGWIN)
-
-find_package(Qt6 6.2 REQUIRED COMPONENTS Core)
-
 # Add modules
 add_subdirectory(src/graphicsrulesmaker)
+set(GraphicsRulesMaker_DIR "${GraphicsRulesMaker_BUILD_CONFIG_LOCATION}")
+
 add_subdirectory(src/graphicsrulesmakerui)
 add_subdirectory(src/plugins)
 

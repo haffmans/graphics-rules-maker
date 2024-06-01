@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1.0)
+cmake_minimum_required(VERSION 3.24)
 project(Sims2GameWriter)
 
 # Find other dependencies
@@ -9,9 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
-if (NOT GraphicsRulesMaker_FULL_BUILD)
-    find_package(GraphicsRulesMaker REQUIRED)
-endif (NOT GraphicsRulesMaker_FULL_BUILD)
+find_package(GraphicsRulesMaker REQUIRED)
 
 include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
@@ -37,21 +35,13 @@ add_library(Sims2GameWriter MODULE ${GraphicsRulesMaker_Sims2_SRCS} ${GraphicsRu
 set_target_properties(Sims2GameWriter PROPERTIES PREFIX "")
 target_link_libraries(Sims2GameWriter Qt6::Widgets GraphicsRulesMaker)
 
-# Determine relative plugin path for CPACK
-file(RELATIVE_PATH PluginInstallDir "${CMAKE_INSTALL_PREFIX}" ${GraphicsRulesMaker_PLUGIN_PATH})
-
-# Determine *.qm installation path
-if (NOT DEFINED TRANSLATIONS_INSTALL_DIR)
-    set(TRANSLATIONS_INSTALL_DIR ${PluginInstallDir})
-endif(NOT DEFINED TRANSLATIONS_INSTALL_DIR)
-
 install(TARGETS Sims2GameWriter
-    RUNTIME DESTINATION ${PluginInstallDir}
-    LIBRARY DESTINATION ${PluginInstallDir}
+    RUNTIME DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
+    LIBRARY DESTINATION ${GraphicsRulesMaker_PLUGIN_PATH}
     COMPONENT sims2
 )
 install(
     FILES ${GraphicsRulesMaker_Sims2_QMS}
-    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
+    DESTINATION ${GraphicsRulesMaker_TRANSLATIONS_PATH}
     COMPONENT sims2
 )

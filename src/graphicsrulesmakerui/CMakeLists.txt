@@ -9,9 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6Widgets REQUIRED)
 find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
-if (NOT GraphicsRulesMaker_FULL_BUILD)
-    find_package(GraphicsRulesMaker REQUIRED)
-endif (NOT GraphicsRulesMaker_FULL_BUILD)
+find_package(GraphicsRulesMaker REQUIRED)
 
 if(WIN32 AND NOT CYGWIN)
     set(TRANSLATIONS_INSTALL_DIR share/)

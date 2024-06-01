@@ -1,13 +1,6 @@
 # - Config file for the Graphics Rules Maker package
 #
-# Once done, this will define:
-#   GraphicsRulesMaker_FOUND - system has Graphics Rules Maker
-#   GraphicsRulesMaker_INCLUDE_DIRS - the Graphics Rules Maker include directory
-#   GraphicsRulesMaker_LIBRARY - Graphics Rules Maker library
-#   GraphicsRulesMaker_PLUGIN_PATH - Plugin installation path
-#   GraphicsRulesMaker_TRANSLATIONS_PATH - Translation files installation path
-#
-# Copyright (C) 2014 Wouter Haffmans <wouter@simply-life.net>
+# Copyright (C) 2014-2024 Wouter Haffmans <wouter@simply-life.net>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,18 +16,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# Compute paths
-get_filename_component(GraphicsRulesMaker_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-set(GraphicsRulesMaker_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+@PACKAGE_INIT@
 
 # Our library dependencies (contains definitions for IMPORTED targets)
 if(NOT TARGET GraphicsRulesMaker AND NOT GraphicsRulesMaker_BINARY_DIR)
-  include("${GraphicsRulesMaker_CMAKE_DIR}/GraphicsRulesMakerTargets.cmake")
+  include("${CMAKE_CURRENT_LIST_DIR}/GraphicsRulesMakerTargets.cmake")
 endif()
 
-set(GraphicsRulesMaker_PLUGIN_PATH "@GraphicsRulesMaker_EXPORT_PLUGIN_PATH@")
-set(GraphicsRulesMaker_TRANSLATIONS_PATH "@GraphicsRulesMaker_EXPORT_TRANSLATIONS_PATH@")
+# These are relative paths
+set(GraphicsRulesMaker_PLUGIN_PATH "@GraphicsRulesMaker_PLUGIN_INSTALL_DIR@")
+set(GraphicsRulesMaker_TRANSLATIONS_PATH "@TRANSLATIONS_INSTALL_DIR@")
 
-# These are IMPORTED targets created by GraphicsRulesMakerTargets.cmake
-set(GraphicsRulesMaker_LIBRARIES GraphicsRulesMaker)
-set(GraphicsRulesMaker_EXECUTABLE GraphicsRulesMakerUI)
+# Note: dependencies may mess up the package prefix and therefore paths used above -> do this last!
+include(CMakeFindDependencyMacro)
+find_dependency(Qt6Widgets 6.2)
