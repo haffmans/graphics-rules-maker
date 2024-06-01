@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GraphicsRulesMaker REQUIRED)
 
-qt6_wrap_ui(GraphicsRulesMaker_SimsPetStories_UIS simspssettings.ui)
+qt_wrap_ui(GraphicsRulesMaker_SimsPetStories_UIS simspssettings.ui)
 
 graphicsrulesmaker_add_plugin(SimsPetStoriesGameWriter
     simspssettings.cpp

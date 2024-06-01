@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GraphicsRulesMaker REQUIRED)
 
-qt6_wrap_ui(GraphicsRulesMaker_SimCity4_UIS simcity4settings.ui)
+qt_wrap_ui(GraphicsRulesMaker_SimCity4_UIS simcity4settings.ui)
 
 graphicsrulesmaker_add_plugin(SimCity4GameWriter
     simcity4settings.cpp

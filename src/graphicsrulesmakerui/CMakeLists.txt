@@ -34,7 +34,7 @@ add_custom_command(OUTPUT "icon.ico"
 
 set(GraphicsRulesMaker_Ico "${CMAKE_CURRENT_BINARY_DIR}/icon.ico")
 
-qt6_add_resources(GraphicsRulesMaker_IconRCC
+qt_add_resources(GraphicsRulesMaker_IconRCC
     icon.qrc
 )
 
@@ -48,7 +48,7 @@ add_library(GraphicsRulesMaker_Icon OBJECT
     ${GraphicsRulesMaker_IconRCC}
 )
 
-qt6_wrap_ui(GraphicsRulesMakerUi_UIS
+qt_wrap_ui(GraphicsRulesMakerUi_UIS
     mainwindow.ui
     manualsaveconfirmationbox.ui
     aboutdialog.ui

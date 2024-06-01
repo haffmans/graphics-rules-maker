@@ -41,7 +41,7 @@ macro(graphicsrulesmaker_translations TARGET)
         message(STATUS "Qt Linguist found - will set up translations for ${TARGET}")
         list(TRANSFORM _grm_translations_LANGUAGES PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/translations/${TARGET}_")
         list(TRANSFORM _grm_translations_LANGUAGES APPEND ".ts")
-        qt6_create_translation(${TARGET}_TRANSLATIONS
+        qt_create_translation(${TARGET}_TRANSLATIONS
             ${CMAKE_CURRENT_SOURCE_DIR}
             ${_grm_translations_LANGUAGES}
             OPTIONS -source-language "en_US"

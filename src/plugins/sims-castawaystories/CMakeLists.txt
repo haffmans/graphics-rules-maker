@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GraphicsRulesMaker REQUIRED)
 
-qt6_wrap_ui(GraphicsRulesMaker_SimsCastawayStories_UIS simscssettings.ui)
+qt_wrap_ui(GraphicsRulesMaker_SimsCastawayStories_UIS simscssettings.ui)
 
 graphicsrulesmaker_add_plugin(SimsCastawayStoriesGameWriter
     simscssettings.cpp

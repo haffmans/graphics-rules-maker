@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GraphicsRulesMaker REQUIRED)
 
-qt6_wrap_ui(GraphicsRulesMaker_Sims2BodyShop_UIS sims2bodyshopsettings.ui)
+qt_wrap_ui(GraphicsRulesMaker_Sims2BodyShop_UIS sims2bodyshopsettings.ui)
 
 graphicsrulesmaker_add_plugin(Sims2BodyShopGameWriter
     sims2bodyshopsettings.cpp

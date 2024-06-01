@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(GraphicsRulesMaker REQUIRED)
 
-qt6_wrap_ui(GraphicsRulesMaker_SimsLifeStories_UIS simslssettings.ui)
+qt_wrap_ui(GraphicsRulesMaker_SimsLifeStories_UIS simslssettings.ui)
 
 graphicsrulesmaker_add_plugin(SimsLifeStoriesGameWriter
     simslssettings.cpp
