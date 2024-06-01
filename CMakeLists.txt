@@ -24,9 +24,6 @@ else(WIN32)
 endif(WIN32)
 set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
 
-# Put all translations together for more convenience
-set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-
 # And install them to the same path too
 if(WIN32 AND NOT CYGWIN)
     set(TRANSLATIONS_INSTALL_DIR share/)

@@ -15,11 +15,6 @@ endif (NOT GraphicsRulesMaker_FULL_BUILD)
 
 include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
 
-if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-    # This will put only this subproject's translations in a subdir within this project
-    set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-
 qt6_wrap_ui(GraphicsRulesMaker_Sims2BodyShop_UIS sims2bodyshopsettings.ui)
 
 SET(GraphicsRulesMaker_Sims2BodyShop_SRCS
@@ -33,7 +28,7 @@ if(${Qt6LinguistTools_FOUND})
     message(STATUS "Qt Linguist found - will set up translations")
     qt6_create_translation(GraphicsRulesMaker_Sims2BodyShop_QMS
         ${CMAKE_CURRENT_SOURCE_DIR}
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/Sims2BodyShopGameWriter_nl.ts"
+        "${CMAKE_CURRENT_SOURCE_DIR}/translations/Sims2BodyShopGameWriter_nl.ts"
         OPTIONS -source-language "en_US"
     )
 endif(${Qt6LinguistTools_FOUND})
