@@ -282,14 +282,26 @@ release:
   variables:
     PACKNAME_QT5: '${PACKAGE_NAME}-legacy-${PACKAGE_VERSION}'
   script:
-  # Source packages are created by Gitlab itself, so excluded from the links.
-  - |
-    release-cli create --name "Release ${PACKAGE_VERSION}" --tag-name "${CI_COMMIT_TAG}" \
-      --assets-link "{\"name\":\"${PACKNAME_QT5}-win32.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.exe\"}" \
-      --assets-link "{\"name\":\"${PACKNAME_QT5}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.exe\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-win64.exe\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe\"}" \
-      --assets-link "{\"name\":\"${PACKNAME_QT5}-win32.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.zip\"}" \
-      --assets-link "{\"name\":\"${PACKNAME_QT5}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.zip\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-win64.zip\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.gz\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.gz\"}" \
-      --assets-link "{\"name\":\"${PACKNAME}-ubuntu-jammy.tar.bz2\",\"url\":\"${PACKAGE_REGISTRY_URL}/${PACKNAME}-ubuntu-jammy.tar.bz2\"}" \
+    - echo "Creating release"
+  release:
+    name: "Release ${PACKAGE_VERSION}"
+    description: "${CI_COMMIT_TAG_MESSAGE}"
+    tag_name: "${CI_COMMIT_TAG}"
+    assets:
+      links:
+        - name: "Windows 10/11 64-bit installer"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.exe"
+        - name: "Windows 10/11 64-bit archive (zip)"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME}-win64.zip"
+        - name: "Windows 7/8/8.1 32-bit installer"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.exe"
+        - name: "Windows 7/8/8.1 64-bit installer"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.exe"
+        - name: "Windows 7/8/8.1 32-bit archive (zip)"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win32.zip"
+        - name: "Windows 7/8/8.1 64-bit archive (zip)"
+          url: "${PACKAGE_REGISTRY_URL}/${PACKNAME_QT5}-win64.zip"
+        - name: "Ubuntu Jammy 64-bit archive (tar.gz)"
+          url: "${PACKAGE_REGISTRY_URL}/{PACKNAME}-ubuntu-jammy.tar.gz"
+        - name: "Ubuntu Jammy 64-bit archive (tar.bz2)"
+          url: "${PACKAGE_REGISTRY_URL}/{PACKNAME}-ubuntu-jammy.tar.bz2"
