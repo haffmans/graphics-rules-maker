@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
-    <height>393</height>
+    <width>432</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -218,25 +218,6 @@
     </widget>
    </item>
    <item row="11" column="1">
-    <widget class="QLabel" name="no60HzAvailable">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no 60hz display mode available on your system. You may have to define a 60hz custom resolution (using other software), or the game may not work correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="1">
     <layout class="QHBoxLayout" name="defaultsLayout" stretch="0,0">
      <item>
       <widget class="QPushButton" name="autodetect">
@@ -262,6 +243,34 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="12" column="0" colspan="2">
+    <widget class="QLabel" name="highRefreshRateWarning">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>40</width>
+       <height>1</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>* Resolutions marked with this may not work in the game, because it is not available with a refresh rate below 100Hz.  You may need to define a 60Hz custom resolution (using other software) for these resolutions, or run the game in windowed mode.</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::PlainText</enum>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

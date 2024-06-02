@@ -45,9 +45,14 @@ public slots:
     void reset();
     void autodetect();
 
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+    void showEvent(QShowEvent* event) override;
+
 private:
     void selectResolution(QComboBox* comboBox, const QSize& resolution);
     bool shadowFixModInstalled() const;
+    void resizeRefreshRateWarning();
     std::unique_ptr<Ui::SimsPSSettings> ui;
     DeviceModel *m_devices;
 };

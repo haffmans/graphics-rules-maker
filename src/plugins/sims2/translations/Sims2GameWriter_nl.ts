@@ -137,27 +137,31 @@
         <translation>Ma&amp;ximale resolutie:</translation>
     </message>
     <message>
-        <location filename="../sims2settings.ui" line="213"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no 60hz display mode available on your system. You may have to define a 60hz custom resolution (using other software), or the game may not work correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Er is geen 60hz schermmodus beschikbaar op je systeem. Je moet mogelijk een aangepaste 60hz-resolutie definiëren (met andere software) om het spel correct te laten werken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../sims2settings.ui" line="246"/>
+        <source>* Resolutions marked with this may not work in the game, because it is not available with a refresh rate below 100Hz.  You may need to define a 60Hz custom resolution (using other software) for these resolutions, or run the game in windowed mode.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../sims2settings.ui" line="228"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;There is no 60hz display mode available on your system. You may have to define a 60hz custom resolution (using other software), or the game may not work correctly.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Er is geen 60hz schermmodus beschikbaar op je systeem. Je moet mogelijk een aangepaste 60hz-resolutie definiëren (met andere software) om het spel correct te laten werken.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../sims2settings.ui" line="209"/>
         <source>&amp;Auto-detect</source>
         <translation>&amp;Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../sims2settings.ui" line="238"/>
+        <location filename="../sims2settings.ui" line="219"/>
         <source>Disable all tweaks and restore default values.</source>
         <translation>Zet alle instellingen terug naar de standaardwaarden.</translation>
     </message>
     <message>
-        <location filename="../sims2settings.ui" line="241"/>
+        <location filename="../sims2settings.ui" line="222"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset all settings to their default values.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zet alle instellingen terug naar de standaardwaarden&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../sims2settings.ui" line="244"/>
+        <location filename="../sims2settings.ui" line="225"/>
         <source>&amp;Default Settings</source>
         <translation>Standaard&amp;instellingen</translation>
     </message>
@@ -202,12 +206,12 @@
         <translation>Geen aanpassing van schatting van textuurgeheugen</translation>
     </message>
     <message>
-        <location filename="../sims2settings.cpp" line="155"/>
+        <location filename="../sims2settings.cpp" line="157"/>
         <source>Auto-detect Settings</source>
         <translation>Instellingen Automatisch Detecteren</translation>
     </message>
     <message>
-        <location filename="../sims2settings.cpp" line="156"/>
+        <location filename="../sims2settings.cpp" line="158"/>
         <source>Graphics Rules Maker will now attempt to automatically detect the best settings for your system. They will not be saved until you click &quot;Save Files&quot;.
 
 These settings are not guaranteed to work!

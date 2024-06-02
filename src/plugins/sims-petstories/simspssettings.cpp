@@ -23,6 +23,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QStandardPaths>
 #include <QMessageBox>
+#include <QFontMetrics>
 
 #include <algorithm>
 
@@ -54,15 +55,7 @@ SimsPSSettings::SimsPSSettings(DeviceModel *devices, VideoCardDatabase *database
     // Remove too low resolutions
     validModes.erase(std::remove_if(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.width < 800 || mode.height < 600; }),
                      validModes.end());
-
-    bool have60HzMode = std::any_of(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.refreshRate == 60; });
-    ui->no60HzAvailable->setVisible(!have60HzMode);
-
-    if (have60HzMode) {
-        // Remove all non-60hz modes
-        validModes.erase(std::remove_if(validModes.begin(), validModes.end(), [](const GraphicsMode& mode) { return mode.refreshRate != 60; }),
-                     validModes.end());
-    }
+    bool anyHighRefreshRateOnlyResolution = false;
 
     foreach(const GraphicsMode &mode, validModes) {
         QSize size(mode.width, mode.height);
@@ -70,11 +63,20 @@ SimsPSSettings::SimsPSSettings(DeviceModel *devices, VideoCardDatabase *database
         if (size != previousSize) {
             previousSize = size;
 
-            QString text = QString("%1x%2").arg(size.width()).arg(size.height());
+            // Modes are sorted by refresh rate -> if this one's over 100, it's a dodgy one
+            QString text = QString("%1x%2").arg(size.width()).arg(size.height()) +
+                         ((mode.refreshRate >= 100) ? " *" : "");
             ui->defaultResolution->addItem(text, size);
             ui->maxResolution->addItem(text, size);
+
+            if (mode.refreshRate >= 100) {
+                anyHighRefreshRateOnlyResolution = true;
+            }
         }
     }
+
+    ui->highRefreshRateWarning->setVisible(anyHighRefreshRateOnlyResolution);
+    resizeRefreshRateWarning();
 
     // Pick the best matching default resolutions
     selectResolution(ui->defaultResolution, QSize(1024, 768));
@@ -274,6 +276,35 @@ bool SimsPSSettings::shadowFixModInstalled() const
         }
     }
     return false;
+}
+
+void SimsPSSettings::resizeEvent(QResizeEvent* event)
+{
+    resizeRefreshRateWarning();
+    AbstractSettingsWidget::resizeEvent(event);
+}
+
+void SimsPSSettings::showEvent(QShowEvent* event)
+{
+    resizeRefreshRateWarning();
+    AbstractSettingsWidget::showEvent(event);
+}
+
+void SimsPSSettings::resizeRefreshRateWarning()
+{
+    if (!this->isVisible() || !ui->highRefreshRateWarning->isVisible()) {
+        return;
+    }
+
+    // The label's sizeHint() gives bogus results (height is always the same regardless of width ->
+    // Qt bug?), so this is a work-around
+    QFontMetrics metrics(ui->highRefreshRateWarning->font());
+    QRect boundingRect = metrics.boundingRect(0, 0, ui->highRefreshRateWarning->width(), 10000,
+                                              Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap,
+                                              ui->highRefreshRateWarning->text());
+
+    QSize minSize(0, boundingRect.height());
+    ui->highRefreshRateWarning->setMinimumSize(minSize);
 }
 
 SimsPSSettings::~SimsPSSettings()
