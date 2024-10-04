@@ -1,14 +1,37 @@
-cmake_minimum_required(VERSION 3.1.0)
-project(GraphicsRulesMaker)
+cmake_minimum_required(VERSION 3.24)
+project(GraphicsRulesMaker
+    VERSION 2.3.0.0
+    DESCRIPTION "Graphics Rules Maker"
+    HOMEPAGE_URL "http://www.simsnetwork.com"
+    LANGUAGES CXX
+)
 
-# Find other dependencies
+# Version information
+set(GraphicsRulesMaker_COPYRIGHT_YEAR 2024)
+set(GraphicsRulesMaker_GIT_VERSION "" CACHE STRING "Version suffix, e.g. a git commit hash")
+
+if (NOT GraphicsRulesMaker_GIT_VERSION STREQUAL "")
+    set(GraphicsRulesMaker_VERSION
+        ${GraphicsRulesMaker_VERSION}${GraphicsRulesMaker_VERSION_SUFFIX})
+endif()
+
+message(STATUS "Building version: ${GraphicsRulesMaker_VERSION}")
+
+# Language/dependency setup
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-find_package(Qt6Widgets 6.2 REQUIRED)
-find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
+option(WITH_QT5 "Build against Qt5 (5.15) instead of Qt6" OFF)
+set(GraphicsRulesMaker_WITH_QT5 ${WITH_QT5})
+
+if (NOT WITH_QT5)
+    find_package(Qt6Widgets 6.2 REQUIRED)
+else()
+    find_package(Qt5Widgets 5.15 REQUIRED)
+endif()
 
 if(WIN32)
     find_package(DirectX9 REQUIRED)
@@ -19,11 +42,6 @@ if(WIN32)
         add_definitions(-DDXGI)
     endif(DirectX9_DXGI_LIBRARY)
 endif(WIN32)
-
-if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-    # This will put only this subproject's translations in a subdir within this project
-    set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
 
 set(GraphicsRulesMaker_SRCS
     abstractsettingswidget.cpp
@@ -42,19 +60,9 @@ set(GraphicsRulesMaker_HDRS
     graphicsruleswriter.h
     abstractsettingswidget.h
     messagehandler.h
-    ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmaker_config.h
     ${CMAKE_CURRENT_BINARY_DIR}/pci.vendors.h
 )
-
-# Translations
-if(${Qt6LinguistTools_FOUND})
-    message(STATUS "Qt Linguist found - will set up translations")
-    qt6_create_translation(GraphicsRulesMaker_QMS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMaker_nl.ts"
-        OPTIONS -source-language "en_US"
-    )
-endif(${Qt6LinguistTools_FOUND})
 
 # PCI Vendor ID database
 add_custom_command(
@@ -71,120 +79,115 @@ add_custom_command(
 )
 list(APPEND GraphicsRulesMaker_SRCS "pci.vendors.h")
 
-# Determine installation path for CMake files
+# Determine installation paths (CMake files, plugins and translation .qm files)
+include(GNUInstallDirs)
 if(WIN32 AND NOT CYGWIN)
-    set(INSTALL_CMAKE_DIR CMake)
+    set(GraphicsRulesMaker_INSTALL_CMAKE_DIR CMake)
+    set(GraphicsRulesMaker_INSTALL_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
+    set(GraphicsRulesMaker_INSTALL_PLUGIN_DIR ${CMAKE_INSTALL_BINDIR}/gamewriters/)
+    set(GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR ${CMAKE_INSTALL_DATADIR})
+    set(GraphicsRulesMaker_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 else()
-    set(INSTALL_CMAKE_DIR lib/cmake/GraphicsRulesMaker)
+    set(GraphicsRulesMaker_INSTALL_CMAKE_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/GraphicsRulesMaker)
+    set(GraphicsRulesMaker_INSTALL_LIB_DIR ${CMAKE_INSTALL_LIBDIR})
+    set(GraphicsRulesMaker_INSTALL_PLUGIN_DIR ${CMAKE_INSTALL_LIBDIR}/graphicsrulesmaker)
+    set(GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR ${CMAKE_INSTALL_DATADIR}/graphicsrulesmaker/)
+    set(GraphicsRulesMaker_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 endif()
 
-# Determine plugin installation path
-# A bit of duplicate code (shared with the main project) to support split builds
-if(NOT DEFINED GraphicsRulesMaker_PLUGIN_PATH)
-    if(WIN32 AND NOT CYGWIN)
-        set(PLUGIN_INSTALL_DIR bin/gamewriters/)
-    else(WIN32 AND NOT CYGWIN)
-        set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (eg. '64')")
-        set(LIB_INSTALL_DIR lib${LIB_SUFFIX} )
-        set(PLUGIN_INSTALL_DIR lib${LIB_SUFFIX}/graphicsrulesmaker/)
-    endif(WIN32 AND NOT CYGWIN)
-    set(GraphicsRulesMaker_PLUGIN_PATH ${CMAKE_INSTALL_PREFIX}/${PLUGIN_INSTALL_DIR} )
-endif(NOT DEFINED GraphicsRulesMaker_PLUGIN_PATH)
-# And for .qm files
-if(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
-    if(WIN32 AND NOT CYGWIN)
-        set(TRANSLATIONS_INSTALL_DIR share/)
-    else(WIN32 AND NOT CYGWIN)
-        set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
-    endif(WIN32 AND NOT CYGWIN)
-    set(GraphicsRulesMaker_TRANSLATIONS_PATH ${CMAKE_INSTALL_PREFIX}/${TRANSLATIONS_INSTALL_DIR} )
-endif(NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_PATH)
-
-# Version information
-set(GraphicsRulesMaker_COPYRIGHT_YEAR 2023)
-set(GraphicsRulesMaker_GIT_VERSION "" CACHE STRING "Version suffix, e.g. a git commit hash")
-set(GraphicsRulesMaker_MAJOR_VERSION 2)
-set(GraphicsRulesMaker_MINOR_VERSION 3)
-set(GraphicsRulesMaker_PATCH_VERSION 0)
-
-if (NOT GraphicsRulesMaker_GIT_VERSION STREQUAL "")
-    set(GraphicsRulesMaker_VERSION_SUFFIX "-${GraphicsRulesMaker_GIT_VERSION}")
+if (NOT PROJECT_IS_TOP_LEVEL)
+    # For the all-in-one build, so find_package(GraphicsRulesMaker) works as expected
+    set(GraphicsRulesMaker_BUILD_CONFIG_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}" PARENT_SCOPE)
 endif()
-
-set(GraphicsRulesMaker_VERSION
-  ${GraphicsRulesMaker_MAJOR_VERSION}.${GraphicsRulesMaker_MINOR_VERSION}.${GraphicsRulesMaker_PATCH_VERSION}${GraphicsRulesMaker_VERSION_SUFFIX})
-message(STATUS "Building version: ${GraphicsRulesMaker_VERSION}")
+set(GraphicsRulesMaker_FULL_PLUGIN_DIR ${CMAKE_INSTALL_PREFIX}/${GraphicsRulesMaker_INSTALL_PLUGIN_DIR} )
+set(GraphicsRulesMaker_FULL_TRANSLATIONS_DIR ${CMAKE_INSTALL_PREFIX}/${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR} )
+include(GraphicsRulesMakerMacros.cmake)
 
 # Configuration file
 configure_file(graphicsrulesmaker_config.h.cmake
-    ${PROJECT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmaker_config.h @ONLY)
 
-add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS} ${GraphicsRulesMaker_QMS})
+add_library(GraphicsRulesMaker SHARED ${GraphicsRulesMaker_SRCS})
 target_compile_definitions(GraphicsRulesMaker PRIVATE GRAPHICSRULESMAKER_LIBRARY)
-target_link_libraries(GraphicsRulesMaker Qt6::Widgets)
+if(NOT GraphicsRulesMaker_WITH_QT5)
+    target_link_libraries(GraphicsRulesMaker PUBLIC Qt6::Widgets)
+else()
+    target_link_libraries(GraphicsRulesMaker PUBLIC Qt5::Widgets)
+endif()
+target_include_directories(GraphicsRulesMaker INTERFACE
+    $<INSTALL_INTERFACE:include>
+    $<INSTALL_INTERFACE:include/graphicsrulesmaker>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
+)
+graphicsrulesmaker_translations(GraphicsRulesMaker LANGUAGES nl)
+
 if(WIN32)
     # NOTE: ${DirectX9_DXGI_LIBRARY} is removed; we load it dynamically at runtime
-    target_link_libraries(GraphicsRulesMaker ${DirectX9_LIBRARY} )
+    target_link_libraries(GraphicsRulesMaker PRIVATE ${DirectX9_LIBRARY} )
 endif(WIN32)
 
+# Package installation
+include(CMakePackageConfigHelpers)
 if(WIN32)
-    install(TARGETS GraphicsRulesMaker
-        EXPORT GraphicsRulesMakerTargets
-        RUNTIME DESTINATION bin
+    set(GraphicsRulesMaker_INSTALL_LIB_COMPONENT application)
+else()
+    set(GraphicsRulesMaker_INSTALL_LIB_COMPONENT dev)
+endif()
+
+install(TARGETS GraphicsRulesMaker
+    EXPORT GraphicsRulesMakerTargets
+    RUNTIME
+        DESTINATION ${CMAKE_INSTALL_BINDIR}
         COMPONENT application
-    )
-    # Different component for installer
-    install(TARGETS GraphicsRulesMaker
-        LIBRARY DESTINATION lib${LIB_SUFFIX}
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        COMPONENT dev
-    )
-else(WIN32)
-    install(TARGETS GraphicsRulesMaker
-        EXPORT GraphicsRulesMakerTargets
-        LIBRARY DESTINATION lib${LIB_SUFFIX}
-        ARCHIVE DESTINATION lib${LIB_SUFFIX}
-        COMPONENT application
-    )
-endif(WIN32)
+    LIBRARY
+        DESTINATION ${GraphicsRulesMaker_INSTALL_LIB_DIR}
+        COMPONENT ${GraphicsRulesMaker_INSTALL_LIB_COMPONENT}
+    ARCHIVE
+        DESTINATION ${GraphicsRulesMaker_INSTALL_LIB_DIR}
+        COMPONENT ${GraphicsRulesMaker_INSTALL_LIB_COMPONENT}
+)
 
 install(
     FILES ${GraphicsRulesMaker_HDRS}
-    DESTINATION include/graphicsrulesmaker
+    DESTINATION ${GraphicsRulesMaker_INSTALL_INCLUDE_DIR}/graphicsrulesmaker
     COMPONENT dev
 )
 install(
-    FILES ${GraphicsRulesMaker_QMS}
-    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
+    FILES ${GraphicsRulesMaker_TRANSLATIONS}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT application
 )
 
 # Write out CMake files (for developers)
 export(TARGETS GraphicsRulesMaker
-    FILE "${PROJECT_BINARY_DIR}/GraphicsRulesMakerTargets.cmake")
-# For installation (using absolute path on non-windows)
-if(WIN32 AND NOT CYGWIN)
-    set(CONF_INCLUDE_DIRS "\${GraphicsRulesMaker_CMAKE_DIR}/../include")
-    set(GraphicsRulesMaker_EXPORT_PLUGIN_PATH "\${GraphicsRulesMaker_CMAKE_DIR}/../${PLUGIN_INSTALL_DIR}")
-else(WIN32 AND NOT CYGWIN)
-    set(CONF_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
-    set(GraphicsRulesMaker_EXPORT_PLUGIN_PATH "${GraphicsRulesMaker_PLUGIN_PATH}")
-endif(WIN32 AND NOT CYGWIN)
+    FILE "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerTargets.cmake")
 
-configure_file(GraphicsRulesMakerConfig.cmake.in
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/GraphicsRulesMakerConfig.cmake" @ONLY)
-# Version info
-configure_file(GraphicsRulesMakerVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/GraphicsRulesMakerVersion.cmake" @ONLY)
+configure_package_config_file(GraphicsRulesMakerConfig.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerConfig.cmake"
+  INSTALL_DESTINATION "${GraphicsRulesMaker_INSTALL_CMAKE_DIR}"
+  PATH_VARS
+    GraphicsRulesMaker_INSTALL_INCLUDE_DIR
+    GraphicsRulesMaker_INSTALL_PLUGIN_DIR
+    GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR
+)
+write_basic_package_version_file("${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake"
+    COMPATIBILITY ExactVersion
+)
+configure_file(GraphicsRulesMakerMacros.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerMacros.cmake COPYONLY)
 
 install(FILES
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/GraphicsRulesMakerConfig.cmake"
-  "${PROJECT_BINARY_DIR}/GraphicsRulesMakerVersion.cmake"
-  DESTINATION "${INSTALL_CMAKE_DIR}"
+  "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/${GraphicsRulesMaker_INSTALL_CMAKE_DIR}/GraphicsRulesMakerMacros.cmake"
+  DESTINATION "${GraphicsRulesMaker_INSTALL_CMAKE_DIR}"
   COMPONENT dev
 )
 
 install(EXPORT GraphicsRulesMakerTargets
-    DESTINATION "${INSTALL_CMAKE_DIR}"
+    DESTINATION "${GraphicsRulesMaker_INSTALL_CMAKE_DIR}"
     COMPONENT dev
 )

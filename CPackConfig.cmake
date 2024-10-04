@@ -1,4 +1,6 @@
-set(CPACK_PACKAGE_NAME "GraphicsRulesMaker")
+set(PACKAGE_VARIANT "" CACHE STRING "Variant of the package, added after the base name to CPack-created files")
+
+set(CPACK_PACKAGE_NAME "GraphicsRulesMaker${PACKAGE_VARIANT}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Graphics Rules Maker")
 set(CPACK_PACKAGE_VENDOR "SimsNetwork.com")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/Readme.txt")
@@ -78,7 +80,7 @@ if(WIN32 AND NOT UNIX)
     # There is a bug in NSI that does not handle full unix paths properly. Make
     # sure there is at least one set of four (4) backslashes.
     set(CPACK_PACKAGE_ICON "${PROJECT_BINARY_DIR}\\\\header.bmp")
-    set(CPACK_NSIS_MUI_ICON "${PROJECT_BINARY_DIR}\\\\icon.ico")
+    set(CPACK_NSIS_MUI_ICON "${PROJECT_BINARY_DIR}\\\\src\\\\graphicsrulesmakerui\\\\icon.ico")
     set(CPACK_NSIS_INSTALLED_ICON_NAME "bin\\\\GraphicsRulesMakerUI.exe")
     set(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
     set(CPACK_NSIS_HELP_LINK "http://www.simsnetwork.com")

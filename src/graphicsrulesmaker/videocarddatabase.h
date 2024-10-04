@@ -22,7 +22,7 @@
 #include <QtCore/QAbstractItemModel>
 
 #include <QtCore/QUrl>
-#include "graphicsrulesmaker/graphicsrulesmaker_config.h"
+#include "graphicsrulesmaker_config.h"
 
 #define MAX_VENDOR_IDS 8
 

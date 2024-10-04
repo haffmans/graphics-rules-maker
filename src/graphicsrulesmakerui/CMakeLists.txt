@@ -7,25 +7,48 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6Widgets REQUIRED)
-find_package(Qt6LinguistTools NO_CMAKE_FIND_ROOT_PATH)
-if (NOT GraphicsRulesMaker_FULL_BUILD)
-    find_package(GraphicsRulesMaker REQUIRED)
-endif (NOT GraphicsRulesMaker_FULL_BUILD)
+find_package(GraphicsRulesMaker REQUIRED)
 
-if (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-    # This will put only this subproject's translations in a subdir within this project
-    set(GraphicsRulesMaker_TRANSLATIONS_DIR "${PROJECT_SOURCE_DIR}/translations")
-endif (NOT DEFINED GraphicsRulesMaker_TRANSLATIONS_DIR)
-if(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/)
-else(WIN32 AND NOT CYGWIN)
-    set(TRANSLATIONS_INSTALL_DIR share/graphicsrulesmaker/)
-endif(WIN32 AND NOT CYGWIN)
+find_package(ImageMagick REQUIRED COMPONENTS convert)
 
-include_directories(${GraphicsRulesMaker_INCLUDE_DIRS})
+# Create icon from icon.png
+add_custom_command(OUTPUT "icon-48.png" "icon-32.png" "icon-16.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 48x48 "${CMAKE_CURRENT_BINARY_DIR}/icon-48.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 32x32 "${CMAKE_CURRENT_BINARY_DIR}/icon-32.png"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/icon.png" -resize 16x16 "${CMAKE_CURRENT_BINARY_DIR}/icon-16.png"
+    COMMENT "Resizing icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+)
 
-qt6_wrap_ui(GraphicsRulesMakerUi_UIS
+add_custom_command(OUTPUT "icon.ico"
+    COMMAND ${IMAGEMAGICK_CONVERT_EXECUTABLE}
+        "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+        "icon-48.png"
+        "icon-32.png"
+        "icon-16.png"
+        "icon.ico"
+    COMMENT "Creating final icon"
+    MAIN_DEPENDENCY "${CMAKE_CURRENT_SOURCE_DIR}/icon.png"
+    DEPENDS "icon-48.png" "icon-32.png" "icon-16.png"
+)
+
+set(GraphicsRulesMaker_Ico "${CMAKE_CURRENT_BINARY_DIR}/icon.ico")
+
+qt_add_resources(GraphicsRulesMaker_IconRCC
+    icon.qrc
+)
+
+configure_file(graphicsrulesmakerico.rc.in
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+)
+set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc APPEND PROPERTY OBJECT_DEPENDS ${GraphicsRulesMaker_Ico})
+
+add_library(GraphicsRulesMaker_Icon OBJECT
+    ${CMAKE_CURRENT_BINARY_DIR}/graphicsrulesmakerico.rc
+    ${GraphicsRulesMaker_IconRCC}
+)
+
+qt_wrap_ui(GraphicsRulesMakerUi_UIS
     mainwindow.ui
     manualsaveconfirmationbox.ui
     aboutdialog.ui
@@ -42,16 +65,6 @@ set(GraphicsRulesMakerUi_SRCS
     $<TARGET_OBJECTS:GraphicsRulesMaker_Icon>
 )
 
-# Translations
-if(${Qt6LinguistTools_FOUND})
-    message(STATUS "Qt Linguist found - will set up translations")
-    qt6_create_translation(GraphicsRulesMakerUi_QMS
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        "${GraphicsRulesMaker_TRANSLATIONS_DIR}/GraphicsRulesMakerUi_nl.ts"
-        OPTIONS -source-language "en_US"
-    )
-endif(${Qt6LinguistTools_FOUND})
-
 # Set some Win32 Specific Settings
 IF(WIN32)
     SET(GUI_TYPE WIN32)
@@ -62,19 +75,16 @@ IF (APPLE)
 ENDIF (APPLE)
 
 add_executable(GraphicsRulesMakerUi ${GUI_TYPE} ${GraphicsRulesMakerUi_SRCS} ${GraphicsRulesMakerUi_QMS})
-target_link_libraries(GraphicsRulesMakerUi GraphicsRulesMaker Qt6::Widgets)
-
-if(WIN32)
-    target_link_libraries(GraphicsRulesMakerUi ${DirectX_LIBRARIES})
-endif(WIN32)
+target_link_libraries(GraphicsRulesMakerUi PUBLIC GraphicsRulesMaker)
+graphicsrulesmaker_translations(GraphicsRulesMakerUi LANGUAGES nl)
 
 install(TARGETS GraphicsRulesMakerUi
     RUNTIME DESTINATION bin
     COMPONENT application
 )
 install(
-    FILES ${GraphicsRulesMakerUi_QMS}
-    DESTINATION ${TRANSLATIONS_INSTALL_DIR}
+    FILES ${GraphicsRulesMakerUi_TRANSLATIONS}
+    DESTINATION ${GraphicsRulesMaker_INSTALL_TRANSLATIONS_DIR}
     COMPONENT application
 )
 
@@ -82,27 +92,32 @@ if(WIN32)
     include(InstallRequiredSystemLibraries)
 
     # Install dependencies (Qt) for Windows
-    get_target_property(Qt6Core_Location Qt6::Core LOCATION)
-    get_filename_component(Qt6Core_BinDir "${Qt6Core_Location}" DIRECTORY)
+    if (NOT GraphicsRulesMaker_WITH_QT5)
+        get_target_property(QtCore_Location Qt6::Core LOCATION)
+        set(_pluginSourcePaths
+            "${QT6_INSTALL_PREFIX}/lib/qt6/plugins"
+            "${QT6_INSTALL_PREFIX}/plugins"
+        )
+    else()
+        get_target_property(QtCore_Location Qt5::Core LOCATION)
+        set(_pluginSourcePaths
+            "${_qt5Core_install_prefix}/lib/qt5/plugins"
+            "${_qt5Core_install_prefix}/lib/qt/plugins"
+            "${_qt5Core_install_prefix}/plugins"
+        )
+    endif()
+    get_filename_component(QtCore_BinDir "${QtCore_Location}" DIRECTORY)
 
     if (TARGET Qt6::QWindowsIntegrationPlugin)
-        # For MSVC (as generator), there's no active build config; the configuration is determined
-        # at build time instead of configure time. So: if there are imported configurations, use a
-        # generator expression to have the correct file deployed at install time; otherwise fallback
-        # to the default.
-        get_target_property(_qwindows_configs Qt6::QWindowsIntegrationPlugin IMPORTED_CONFIGURATIONS)
-        if (_qwindows_configs)
-            message(STATUS "Qt6 Windows integration plugin: FOUND, using imported location")
-            set(_plugins
-                "$<TARGET_FILE:Qt6::QWindowsIntegrationPlugin>"
-            )
-        else()
-            message(STATUS "Qt6 Windows integration plugin: FOUND, using default path")
-            set(_plugins
-                "platforms/qwindows.dll"
-            )
-        endif()
-
+        message(STATUS "Qt6 Windows integration plugin: FOUND, using imported location")
+        set(_plugins
+            "$<TARGET_FILE:Qt6::QWindowsIntegrationPlugin>"
+        )
+    elseif(TARGET Qt5::QWindowsIntegrationPlugin)
+        message(STATUS "Qt5 Windows integration plugin: FOUND, using imported location")
+        set(_plugins
+            "$<TARGET_FILE:Qt5::QWindowsIntegrationPlugin>"
+        )
     else()
         # Integration plugin target not defined - just hardcode it
         message(STATUS "Windows integration plugin not found; assuming default path")
@@ -110,11 +125,6 @@ if(WIN32)
             "platforms/qwindows.dll"
         )
     endif()
-
-    set(_pluginSourcePaths
-        "${QT6_INSTALL_PREFIX}/lib/qt6/plugins"
-        "${QT6_INSTALL_PREFIX}/plugins"
-    )
 
     foreach(_basePath ${_pluginSourcePaths})
         if(EXISTS ${_basePath})
@@ -147,7 +157,7 @@ if(WIN32)
     set(BundleLibraryDirs
         "\${CMAKE_INSTALL_PREFIX}/bin/"
         "\${CMAKE_INSTALL_PREFIX}/bin/gamewriters"
-        ${Qt6Core_BinDir}
+        ${QtCore_BinDir}
         ${CMAKE_FIND_ROOT_PATH}/bin
     )
 

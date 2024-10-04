@@ -10,12 +10,12 @@
 /**
  * The installation directory for the default plugins
  */
-#define GRAPHICSRULESMAKER_PLUGIN_PATH "@GraphicsRulesMaker_PLUGIN_PATH@"
+#define GRAPHICSRULESMAKER_PLUGIN_PATH "@GraphicsRulesMaker_FULL_PLUGIN_DIR@"
 
 /**
  * The installation directory for translation files
  */
-#define GRAPHICSRULESMAKER_TRANSLATIONS_PATH "@GraphicsRulesMaker_TRANSLATIONS_PATH@"
+#define GRAPHICSRULESMAKER_TRANSLATIONS_PATH "@GraphicsRulesMaker_FULL_TRANSLATIONS_DIR@"
 
 /**
  * The library version

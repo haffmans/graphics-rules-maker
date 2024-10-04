@@ -30,7 +30,11 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QCompleter>
 #include <QtGui/QDesktopServices>
-#include <QtGui/QFileSystemModel>
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    #include <QtGui/QFileSystemModel>
+#else
+    #include <QtWidgets/QFileSystemModel>
+#endif
 
 #include "graphicsrulesmaker/abstractsettingswidget.h"
 #include "graphicsrulesmaker/devicemodel.h"
